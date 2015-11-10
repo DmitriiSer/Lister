@@ -48,11 +48,11 @@ app.config(["$routeProvider", "$locationProvider", function ($routeProvider, $lo
                     controller: "HomeController"
                 }).
                 // user's home page with/without lists
-                when("home", {
+                when("/home", {
                     templateUrl: "partials/home.html",
                     controller: "HomeController"//"DataController"
                 }).
-                when("listEditor", {
+                when("/listEditor", {
                     templateUrl: "partials/listEditor.html",
                     controller: "OpenListEditorController"
                 }).
@@ -66,7 +66,7 @@ app.config(["$routeProvider", "$locationProvider", function ($routeProvider, $lo
                  controller: "DetailsController"
                  }).*/
                 otherwise({
-                    redirectTo: "index.html"
+                    redirectTo: "/"
                 });
         // use the HTML5 History API
         $locationProvider.html5Mode(true);

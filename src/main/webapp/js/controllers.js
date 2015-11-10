@@ -6,8 +6,8 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$templateCach
         console.debug("HomeController was loaded");
         $scope.listButtonDisabled = false;
         // set popover templates
-        $rootScope.passwordPopoverHtml = $templateCache.get("/Lister/partials/passwordPopoverHtml.html");
-        $rootScope.avatarPopoverHtml = $templateCache.get("/Lister/partials/avatarPopoverHtml.html");
+        $rootScope.passwordPopoverHtml = $templateCache.get("partials/passwordPopoverHtml.html");
+        $rootScope.avatarPopoverHtml = $templateCache.get("partials/avatarPopoverHtml.html");
         // happens when ng-view loaded
         // we need to check if user already been logged in
         if (!session.isLoggedIn())
@@ -39,7 +39,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$templateCach
                             rouletteOptions = {
                                 rouletteContentOffset: "{10,-10}",
                                 rouletteAnimation: "slide",
-                                rouletteMaskImage: "Lister/images/triangle_graph.png",
+                                rouletteMaskImage: "images/triangle_graph.png",
                                 rouletteBackgroundOpacity: 0.4
                             };
                         }
@@ -51,7 +51,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$templateCach
                     // get lists in case if database was updated
                     //session.updateLists();
                     // redirect to 'home'
-                    $location.url("/Lister/home");
+                    $location.url("/home");
             });
         //
         $scope.userProfile = session.getUserProfile();
@@ -72,7 +72,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$templateCach
                 // create a list
                 $scope.userProfile = session.getUserProfile();
                 // send information to the server
-                $http.get("/Lister/DataServlet?addList=" + $scope.listName).then(function (response) {
+                $http.get("/DataServlet?addList=" + $scope.listName).then(function (response) {
                     console.log("addList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                     $scope.userProfile.lists.push($scope.listName);
                     session.setOpenedListName($scope.listName);
@@ -92,7 +92,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$templateCach
         $scope.listNameToRemove;
         $scope.removeList = function (listName) {
             $rootScope.listNameToRemove = listName;
-            //$location.url("/Lister/confirmation");
+            //$location.url("/confirmation");
             // ask if user really wants to delete list
             $rootScope.confirmationWindow = $uibModal.open({
                 templateUrl: "confirmationWindow",
@@ -108,7 +108,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$templateCach
             $rootScope.confirmationWindow.close();
             if (listName !== undefined && listName != "") {
                 // remove a list
-                $http.get("/Lister/DataServlet?removeList=" + listName).then(function (response) {
+                $http.get("/DataServlet?removeList=" + listName).then(function (response) {
                     console.log("removeList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                     if ($scope.userProfile.lists.indexOf(listName) != -1)
                         $scope.userProfile.lists.splice($scope.userProfile.lists.indexOf(listName), 1);
@@ -123,7 +123,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$templateCach
         };
         $scope.getList = function (listName) {
             console.log($scope.listButtonDisabled);
-            $http.get("/Lister/DataServlet?getList=" + listName).then(function (response) {
+            $http.get("/DataServlet?getList=" + listName).then(function (response) {
                 console.log("getList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                 session.setOpenedListName(listName);
                 session.setOpenedListContent(response.data.content);
@@ -133,7 +133,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$templateCach
             });
         };
         $scope.openListWidget = function () {
-            $location.url("/Lister/listEditor");
+            $location.url("/listEditor");
         };
     }]);
 controllers.controller("LoginController", ["$rootScope", "$scope", "$location", "$http",
@@ -253,7 +253,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
                 avatar: data.avatar,
                 lists: data.lists
             });
-            $location.url("/Lister/home");
+            $location.url("/home");
             $rootScope.loginWindow.close();
         };
         $scope.authentificationError = function (data) {
@@ -267,7 +267,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
             console.error(data);
         };
         $scope.login = function () {
-            $http.post("/Lister/LoginServlet", {
+            $http.post("/LoginServlet", {
                 username: $scope.userProfile.username,
                 password: $scope.encryptPassword($scope.userProfile.password)
             }).then(function (response) {
@@ -282,7 +282,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
         $scope.signUp = function () {
             // check if password meets all the requirements
             if ($scope.passwordStrength.progress >= 70) {
-                $http.post("/Lister/SignUpServlet",
+                $http.post("/SignUpServlet",
                         {
                             username: $scope.userProfile.username,
                             password: $scope.encryptPassword($scope.userProfile.password),
@@ -409,7 +409,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$locati
         ];
         $rootScope.listEditorWindow.result.then(function () {
         }, function () {
-            $location.url("/Lister/home");
+            $location.url("/home");
         });
         $scope.timer = null;
         var getSelection = function (elem) {
@@ -624,7 +624,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$locati
         $scope.submit = function () {
             // transform list data to JSON
             console.log("JSON.stringify($scope.data) = %s", JSON.stringify($scope.data));
-            $http.post("/Lister/DataServlet?changeList=" + $scope.listName, JSON.stringify($scope.data)).then(function (response) {
+            $http.post("/DataServlet?changeList=" + $scope.listName, JSON.stringify($scope.data)).then(function (response) {
                 console.log("changeList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                 //$scope.userProfile.lists.push($scope.listName);
                 //$scope.openListWidget();
@@ -633,6 +633,6 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$locati
             });
             // close modal window
             $rootScope.listEditorWindow.close();
-            $location.url("/Lister/home");
+            $location.url("/home");
         };
     }]);

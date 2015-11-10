@@ -5,25 +5,25 @@
     app.directive("navbar", function () {
         return {
             "restrict": "E",
-            "templateUrl": "/Lister/partials/navbar.html"
+            "templateUrl": "partials/navbar.html"
         };
     });
     app.directive("loginBodyAndFooter", function () {
         return {
             "restrict": "E",
-            "templateUrl": "/Lister/partials/loginContent.html"
+            "templateUrl": "partials/loginContent.html"
         };
     });
     app.directive("listEditorContent", function () {
         return {
             "restrict": "E",
-            "templateUrl": "/Lister/partials/listEditorContent.html"
+            "templateUrl": "partials/listEditorContent.html"
         };
     });
     app.directive("confirmationContent", function () {
         return {
             "restrict": "E",
-            "templateUrl": "/Lister/partials/confirmationContent.html"
+            "templateUrl": "partials/confirmationContent.html"
         };
     });
     /* behavior directives */

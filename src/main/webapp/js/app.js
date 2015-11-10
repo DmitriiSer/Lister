@@ -32,10 +32,10 @@ app.run(["$window", "$http", "$templateCache", function ($window, $http, $templa
             }
         }
         // set templates
-        $http.get("/Lister/partials/passwordPopoverHtml.html", {cache: $templateCache}).then(function (response) {
+        $http.get("partials/passwordPopoverHtml.html", {cache: $templateCache}).then(function (response) {
             $templateCache.put("/Lister/partials/passwordPopoverHtml.html", response.data);
         });
-        $http.get("/Lister/partials/avatarPopoverHtml.html", {cache: $templateCache}).then(function (response) {
+        $http.get("partials/avatarPopoverHtml.html", {cache: $templateCache}).then(function (response) {
             $templateCache.put("/Lister/partials/avatarPopoverHtml.html", response.data);
         });
     }]);
@@ -44,7 +44,7 @@ app.config(["$routeProvider", "$locationProvider", function ($routeProvider, $lo
         $routeProvider.
                 // loads login page after the site loads
                 when("/Lister", {
-                    templateUrl: "/Lister/partials/login.html",
+                    templateUrl: "/partials/login.html",
                     controller: "HomeController"
                 }).
                 // user's home page with/without lists

@@ -33,10 +33,10 @@ public class DBUtils {
     public static boolean connect() {
         try {
             // Localhost
-            // "jdbc:mysql://localhost:3306/lister?", "root", "root"
+            // "jdbc:mysql://localhost:3306/lister", "root", "root"
             logger.info("Attempting to get database connection");
-            String url = "jdbc:mysql://admintxyeVtZ:R9AGStuM75FE@127.12.206.2:3306/lister";
-            con = DriverManager.getConnection(url);
+            String url = "jdbc:mysql://127.12.206.2:3306/lister";
+            con = DriverManager.getConnection(url,"admintxyeVtZ","R9AGStuM75FE");
             logger.info("Connection to the database was established");
             return true;
         } catch (SQLException e) {

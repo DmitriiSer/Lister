@@ -47,7 +47,7 @@ services.factory("session", ["$http", function ($http) {
             },
             // check if user already logged in
             checkIfLoggedIn: function (success, error) {
-                $http.get("/Lister/LoginServlet?isLoggedIn").then(function (response) {
+                $http.get("/LoginServlet?isLoggedIn").then(function (response) {
                     console.log("isLoggedIn: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                     if (response.data === null) {
                         service.loggedIn = false;
@@ -64,7 +64,7 @@ services.factory("session", ["$http", function ($http) {
             // clear the session
             clear: function (success, error) {
                 this.userProfile = {};
-                $http.get("/Lister/LoginServlet?logout").then(function (response) {
+                $http.get("/LoginServlet?logout").then(function (response) {
                     success(response);
                 }, function (response) {
                     error(response);

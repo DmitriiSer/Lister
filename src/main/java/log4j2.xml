@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>        
+        <Property name="logPath">${sys:catalina.home}/logs</Property>
+        <Property name="patternLayout">%d{DEFAULT} [%t] %-5level %logger{36} - %msg%n</Property>
+        <Property name="patternLayout2">%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+        <Property name="patternLayout3">%d{DEFAULT} [%t] %-5level %C{2} (%F:%L) - %msg%n</Property>
+    </Properties>
+    <Appenders>        
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${patternLayout}"/>
+        </Console>
+        <File name="DBUtilsLogFile" fileName="${logPath}/DBUtils.log">
+            <PatternLayout pattern="${patternLayout}"/>
+        </File>
+        <File name="FileUtilsLogFile" fileName="${logPath}/FileUtils.log">
+            <PatternLayout pattern="${patternLayout}"/>
+        </File>
+        <File name="LoginServletLogFile" fileName="${logPath}/LoginServlet.log">
+            <PatternLayout pattern="${patternLayout}"/>
+        </File>
+        <File name="SignUpServletLogFile" fileName="${logPath}/SignUpServlet.log">
+            <PatternLayout pattern="${patternLayout}"/>
+        </File>
+        <File name="DataServletLogFile" fileName="${logPath}/DataServlet.log">
+            <PatternLayout pattern="${patternLayout}"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.lister.utils.DBUtils" level="trace" additivity="true">
+            <AppenderRef ref="DBUtilsLogFile"/>
+        </Logger>
+        <Logger name="com.lister.utils.FileUtils" level="trace" additivity="true">
+            <AppenderRef ref="FileUtilsLogFile"/>
+        </Logger>
+        <Logger name="com.lister.servlets.LoginServlet" level="trace" additivity="true">
+            <AppenderRef ref="LoginServletLogFile"/>
+        </Logger>
+        <Logger name="com.lister.servlets.SignUpServlet" level="trace" additivity="true">
+            <AppenderRef ref="SignUpServletLogFile"/>
+        </Logger>
+        <Logger name="com.lister.servlets.DataServlet" level="trace" additivity="true">
+            <AppenderRef ref="DataServletLogFile"/>
+        </Logger>
+        <Root level="error">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Properties>        
-        <Property name="logPath">${sys:catalina.home}/logs</Property>
+        <!--<Property name="logPath">${sys:catalina.home}/logs</Property>-->
+        <Property name="logPath">/var/lib/openshift/5641f1df7628e13b7f00008a/app-root/data/logs</Property>
         <Property name="patternLayout">%d{DEFAULT} [%t] %-5level %logger{36} - %msg%n</Property>
         <Property name="patternLayout2">%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
         <Property name="patternLayout3">%d{DEFAULT} [%t] %-5level %C{2} (%F:%L) - %msg%n</Property>

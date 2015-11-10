@@ -44,16 +44,16 @@ app.config(["$routeProvider", "$locationProvider", function ($routeProvider, $lo
         $routeProvider.
                 // loads login page after the site loads
                 when("/Lister", {
-                    templateUrl: "/partials/login.html",
+                    templateUrl: "partials/login.html",
                     controller: "HomeController"
                 }).
                 // user's home page with/without lists
                 when("/Lister/home", {
-                    templateUrl: "/Lister/partials/home.html",
+                    templateUrl: "partials/home.html",
                     controller: "HomeController"//"DataController"
                 }).
                 when("/Lister/listEditor", {
-                    templateUrl: "/Lister/partials/listEditor.html",
+                    templateUrl: "partials/listEditor.html",
                     controller: "OpenListEditorController"
                 }).
                 // page with an empty list
@@ -66,7 +66,7 @@ app.config(["$routeProvider", "$locationProvider", function ($routeProvider, $lo
                  controller: "DetailsController"
                  }).*/
                 otherwise({
-                    redirectTo: "/Lister/index.html"
+                    redirectTo: "index.html"
                 });
         // use the HTML5 History API
         $locationProvider.html5Mode(true);

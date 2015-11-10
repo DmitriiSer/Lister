@@ -33,26 +33,26 @@ app.run(["$window", "$http", "$templateCache", function ($window, $http, $templa
         }
         // set templates
         $http.get("partials/passwordPopoverHtml.html", {cache: $templateCache}).then(function (response) {
-            $templateCache.put("/Lister/partials/passwordPopoverHtml.html", response.data);
+            $templateCache.put("partials/passwordPopoverHtml.html", response.data);
         });
         $http.get("partials/avatarPopoverHtml.html", {cache: $templateCache}).then(function (response) {
-            $templateCache.put("/Lister/partials/avatarPopoverHtml.html", response.data);
+            $templateCache.put("partials/avatarPopoverHtml.html", response.data);
         });
     }]);
 /* configure routing */
 app.config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
         $routeProvider.
                 // loads login page after the site loads
-                when("/Lister", {
+                when("/", {
                     templateUrl: "partials/login.html",
                     controller: "HomeController"
                 }).
                 // user's home page with/without lists
-                when("/Lister/home", {
+                when("home", {
                     templateUrl: "partials/home.html",
                     controller: "HomeController"//"DataController"
                 }).
-                when("/Lister/listEditor", {
+                when("listEditor", {
                     templateUrl: "partials/listEditor.html",
                     controller: "OpenListEditorController"
                 }).

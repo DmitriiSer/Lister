@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 4.0//EN"
+        "http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
+<!--Configuration file for UrlRewriteFilter http://www.tuckey.org/urlrewrite/-->
+<urlrewrite>
+    <rule match-type="wildcard">
+        <from>/home</from>
+        <to type="redirect">%{context-path}/</to>
+    </rule>
+    <rule match-type="wildcard">
+        <from>/listEditor</from>
+        <to type="redirect">%{context-path}/home</to>
+    </rule>
+</urlrewrite>
+

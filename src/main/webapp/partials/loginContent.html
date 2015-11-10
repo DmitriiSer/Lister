@@ -1,0 +1,73 @@
+<div class="modal-body row">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row" id="row-username-controls">
+                <div class="col-xs-4"><h5>User name</h5></div>
+                <div class="col-xs-8">
+                    <input type="text"
+                           class="form-control"
+                           name="username"
+                           tabindex
+                           ng-model="userProfile.username"
+                           placeholder="User name" autofocus required/>
+                </div>
+            </div>
+            <div class="row" id="row-password-controls">
+                <div class="col-xs-4"><h5>Password</h5></div>
+                <div class="col-xs-8">
+                    <input type="password"
+                           class="form-control"
+                           name="password"
+                           placeholder="Password"
+                           tabindex
+                           required
+                           ng-model="userProfile.password"
+                           ng-focus="passwordFocused = 'progress-focused'"
+                           ng-blur="passwordFocused = ''"
+                           ng-change="changePassword()"
+                           uib-popover-html="loginWindow ? '' : passwordPopoverHtml"
+                           popover-placement="left"
+                           popover-trigger="focus"/>
+                </div>
+            </div>
+            <!-- additional body elements -->
+            <div class="row" id="row-additional-controls">
+                <div class="col-xs-offset-4 col-xs-8">
+                    <!-- 'I forgot my password' link -->
+                    <a href="signup-body2.html" ng-show="loginWindow">I forgot my password</a>
+                    <!-- password strength progress bar -->
+                    <div class="progress {{passwordFocused}}" id="password-progress" ng-hide="loginWindow">
+                        <div class="progress-bar progress-bar-danger" style="width: 10%" ng-show="passwordStrength.progress >= 10"></div>
+                        <div class="progress-bar progress-bar-danger" style="width: 10%" ng-show="passwordStrength.progress >= 20"></div>
+                        <div class="progress-bar progress-bar-danger" style="width: 10%" ng-show="passwordStrength.progress >= 30"></div>
+                        <div class="progress-bar progress-bar-warning" style="width: 10%" ng-show="passwordStrength.progress >= 40"></div>
+                        <div class="progress-bar progress-bar-warning" style="width: 30%" ng-show="passwordStrength.progress >= 70"></div>
+                        <div class="progress-bar progress-bar-success" style="width: 30%" ng-show="passwordStrength.progress === 100"></div>
+                    </div>
+                </div>
+                <!-- avatar controls -->
+                <div id="row-avatar-controls" ng-hide="loginWindow">
+                    <div class="col-xs-4" style="text-align: left">Avatar</div>
+                    <div class="col-xs-8" style="text-align: center" ng-click="changeAvatar($event)">
+                        <!--TODO: fix avatar popover-->
+                        <button type="button" class="btn btn-default" id="btn-avatars"
+                                uib-popover-html="loginWindow ? '' : avatarPopoverHtml"
+                                popover-placement="top"
+                                popover-trigger="click">
+                            <div class="avatars">                                            
+                                <div class="avatar {{userProfile.avatar}}"></div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary" tabindex>{{loginWindow === true ? "Login" : "Sign Up"}}</button>
+    <div class="alert alert-danger" id="login-window-alert" role="alert" 
+         ng-show="alertMsg.length > 0">
+        <p ng-bind-html="alertMsg"></p>
+    </div> 
+</div>

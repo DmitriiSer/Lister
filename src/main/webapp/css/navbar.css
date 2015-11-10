@@ -1,0 +1,67 @@
+/* 
+    Created on : Sep 23, 2015, 8:16:43 AM
+    Author     : dmitr
+*/
+.navbar {
+    margin: 0;
+    min-height: 67px;
+    padding: 0;
+    border: none;
+    border-radius: 0px;
+    background: rgba(144, 238, 144, 0.3);
+}
+/* navbar brand */
+.navbar .navbar-brand {
+    font-size: 3.5rem;
+    cursor: default;
+}
+.navbar .navbar-brand, .navbar .navbar-text {
+    font-family: 'Lobster', cursive;
+    color: #F0FFF0;
+    text-shadow: 0px 0px 3px rgba(255, 0, 0, 1);
+}
+.navbar .navbar-brand:hover { color: #FFE0C0; }
+/* navbar toggle button */
+.navbar-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0px 15px 0px 0px;
+    padding: 0px;
+    border: none;
+}
+.navbar-default .navbar-toggle:hover { background: transparent; }
+.navbar-toggle .dropdown-toggle {
+    float: right;
+}
+.navbar-toggle .uib-dropdown-menu.dropdown-menu {
+    background: rgb(240, 240, 240);/*rgba(255, 255, 255, 0.5);*/
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    border: 1px solid rgba(0,0,0,.15);
+    clear: both;
+}
+.navbar-default .navbar-toggle .uib-dropdown-menu.dropdown-menu>li>a:focus,
+.navbar-default .navbar-toggle .uib-dropdown-menu.dropdown-menu>li>a:hover {
+    color: black !important;
+    text-decoration: none;
+    background-color: #fcfcfc;
+}
+/* navbar search */
+.navbar [role="search"] {
+    padding-top: 10px;
+}
+/* navbar menu */
+ul.collapse {
+    padding: 0;
+}
+.navbar [role="menu_button"] > li > a {
+    margin: 0;
+    padding: 5px;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    background: rgba(255, 255, 255, 0.3);
+}
+.uib-dropdown-menu.dropdown-menu {
+    background: rgba(255, 255, 255, 0.5);
+}

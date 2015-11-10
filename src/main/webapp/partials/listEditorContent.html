@@ -1,0 +1,93 @@
+<!-- new list widget -->
+<section class="no-select" id="list-editor-window-header"
+         ng-mouseenter="headerFocused = true"
+         ng-mouseleave="headerFocused = false">
+    <h3 ng-click="headerClicked = true"
+        ng-show="!headerClicked">
+        {{listName}}
+        <!-- TODO: fix init animation -->
+        <a href class="animate-show fast" ng-show="headerFocused"><i class="fast fa fa-minus-circle" aria-hidden="true"></i></a>
+    </h3>
+    <input type="text" id="list-editor-window-header-input" value="Header"
+           ng-show="headerClicked"
+           ng-model="listName"
+           ng-keypress="($event.which === 13) ? headerClicked = false : ''" autofocus/>
+    <hr/>
+</section>
+<section id="list-editor-window-body">
+    <!-- TODO: make columns resizable -->
+    <table class="table" id="list-editor-window-table">
+        <thead>
+            <tr id="list-editor-window-table-headings"
+                ng-show="data.headings.length > 1">
+                <th ng-style="{display: checkboxesColumnDisplay}"></th>
+                <th title="Double click to change column title"
+                    ng-dblclick="editHeadings = !editHeadings"
+                    ng-repeat="headingTitle in data.headings track by $index">
+                    <span ng-hide="editHeadings">{{headingTitle}}</span>
+                    <input ng-keydown="$event.keyCode == 13 ? editHeadings = !editHeadings : ''"
+                           ng-model="headingTitle"
+                           ng-change="headingChange(headingTitle, $index)"
+                           ng-show="editHeadings"
+                           focus-on-show/>
+                </th>
+            </tr>
+        </thead>
+        <tr>
+            <td class="no-select" id="list-editor-window-checkboxes-column" 
+                ng-style="{display: checkboxesColumnDisplay}">
+                <div class="list-editor-window-checkbox"
+                     ng-repeat="checked in checkboxColumnData track by $index">
+                    <a ng-click="checked = !checked; checkboxChange($index)"><i class="fa fa-{{checked ? checkboxIcon : checkboxIconUnchecked}}" aria-label="Checkbox"></i></a>
+                    <hr class="strikethrough" 
+                        ng-style="{ display: checked ? 'block' : 'none', width: '10000px'}">
+                </div>
+            </td>
+            <td id="list-editor-window-textarea-column">
+                <textarea id="list-editor-window-textarea"
+                          ng-style="{textAlign: textAlign, cursor: textareaCursor}"
+                          ng-trim="false"
+                          ng-click="textareaMouseleave()"
+                          ng-mousemove="textareaMousemove($event)"
+                          ng-mouseleave="textareaMouseleave()"
+                          ng-change="textareaChange()"
+                          ng-model="listBody"
+                          ng-show="true" focus-on-show></textarea>
+            </td>
+            <td class="list-editor-window-additional-column"
+                ng-class="currentColumn = 'ad' + $index"
+                ng-repeat="column in additionalColumnsData track by $index">
+                <div class="list-editor-window-additional-item"
+                     ng-repeat="item in column track by $index">
+                    <input 
+                        ng-change="additionalChange(item, $index, currentColumn)"
+                        ng-model="item"/>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <!-- floating toolbox -->
+    <div class="animate-show fast" id="list-editor-window-cursor-toolbox"
+         ng-style="{
+                 display: toolboxDisplay, left
+                     : textareaMousePosition.x, top
+                     : textareaMousePosition.y}"         
+         ng-mouseleave="toolboxMouseleave()"
+         ng-show="showToolbox">
+        <a class="{{item.icon.length == 0 ? 'separator':''}}" title="{{item.title}}"
+           ng-class="{
+                       active: item.state
+                   }"
+           ng-repeat="item in toolboxIcons"           
+           ng-click="toolboxClick(item.icon)">
+            <i class="fa fa-{{item.icon}}" aria-label="{{item.title}}"></i>
+            <span ng-bind-html="item.content"></span>
+        </a>
+    </div>
+</section>
+<section class="no-select" id="list-editor-window-footer">
+    <hr/>
+    <div id="list-editor-window-submit-container">
+        <button id="list-editor-window-submit" ng-click="submit()" autofocus><i class="fa fa-check"></i></button>
+    </div>
+</section>

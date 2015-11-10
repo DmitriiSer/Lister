@@ -1,0 +1,15 @@
+<script type="text/ng-template" id="loginWindow">
+    <div class="modal-body" style="padding: 0px;">
+        <form name="loginForm" ng-submit="submit()" novalidate>
+            <div class="modal-header text-center " id="login-window-header"
+                id="modal-header"
+                data-toggle="roulette"
+                data-roulette-trigger="click"
+                data-roulette-content="<div><h1 class='modal-title'>Sign Up</h1></div>"
+                ng-click="changeLoginWindowBody()">
+                    <div><h1 class="modal-title">Log In</h1></div>
+            </div>
+            <login-body-and-footer></login-body-and-footer>
+        </form>
+    </div>
+</script>

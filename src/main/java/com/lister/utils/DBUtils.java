@@ -32,10 +32,16 @@ public class DBUtils {
     }
     public static boolean connect() {
         try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lister?", "root", "root");
+            // Localhost
+            // "jdbc:mysql://localhost:3306/lister?", "root", "root"
+            logger.info("Attempting to get database connection");
+            String url = "jdbc:mysql://admintxyeVtZ:R9AGStuM75FE@127.12.206.2:3306/lister";
+            con = DriverManager.getConnection(url);
+            logger.info("Connection to the database was established");
             return true;
         } catch (SQLException e) {
-            logger.error(errorMesage(e));
+            logger.error("Connection to the database was not established", e);
+            //logger.error(errorMesage(e));
             return false;
         }
     }

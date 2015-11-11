@@ -47,8 +47,8 @@ public class FileUtils {
             }
         } catch (IOException e) {
             logger.error(errorMesage(e));
-            return false;
         }
+        return false;
     }
     public static boolean removeListFile(String filePath) {
         try {

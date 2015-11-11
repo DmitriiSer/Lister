@@ -32,6 +32,11 @@ public class FileUtils {
             File f = new File(currentDirectory + File.separator + filePath);
             Path path = Paths.get(currentDirectory + File.separator + filePath);
             if (!f.exists()) {
+                Path parentDir = path.getParent();
+                // if there is a parent folder
+                if (parentDir != null) {
+                    Files.createDirectories(parentDir);
+                }
                 Files.createFile(path);
                 try (BufferedWriter writer = Files.newBufferedWriter(path, charset)) {
                     writer.write("{}", 0, 2);
@@ -39,12 +44,11 @@ public class FileUtils {
                     throw e;
                 }
                 return true;
-            } else {
             }
         } catch (IOException e) {
             logger.error(errorMesage(e));
+            return false;
         }
-        return false;
     }
     public static boolean removeListFile(String filePath) {
         try {
@@ -106,5 +110,5 @@ public class FileUtils {
         } catch (IOException e) {
             logger.error(errorMesage(e));
         }
-    } 
+    }
 }

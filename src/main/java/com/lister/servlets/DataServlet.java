@@ -70,14 +70,17 @@ public class DataServlet extends HttpServlet {
                         } else {
                             // list does not exists in database
                             // create a list in database
+                            logger.info("Attempt to create a record in the database and a file referenced to that record with [" + paramListname + "] data");
                             if (DBUtils.createList(sessionUsername, paramListname)
                                     && FileUtils.createListFile("/data/" + sessionUsername + "_" + paramListname + ".dt")) {
+                                logger.info("The record in the database and the file were created");
                                 UserProfile sessionData = (UserProfile) session.getAttribute("Data");
                                 sessionData.lists.add(paramListname);
                                 UserList userList = new UserList(paramListname, "{}", UserList.CREATED_BY_SERVER);
                                 Utils.sendResponse("DataServlet", response, userList);
                                 logger.info("List with name \"" + paramListname + "\" was created in user [" + sessionRemoteIP + "] profile");
                             } else {
+                                logger.error("The record in the database and the file were not created");
                                 response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: The list with name[" + paramListname + "] cannot be created in database");
                                 throw new IOException("DataServlet cannot create a list in database");
                             }

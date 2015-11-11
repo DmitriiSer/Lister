@@ -179,7 +179,7 @@ public class DBUtils {
                 listID = rs.getLong(1);
             }
             stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO List_Contents(ListID, DataRef) "
+            stmt.executeUpdate("INSERT INTO list_contents(ListID, DataRef) "
                     + "VALUES('" + listID + "', '/data/" + username + "_" + listname + ".dt')");
             rs.close();
             stmt.close();

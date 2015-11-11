@@ -29,9 +29,9 @@ public class FileUtils {
     }
     public static boolean createListFile(String filePath) {
         try {
-            File f = new File(currentDirectory + File.separator + filePath);
+            //File f = new File(currentDirectory + File.separator + filePath);
             Path path = Paths.get(currentDirectory + File.separator + filePath);
-            if (!f.exists()) {
+            if (!Files.exists(path)) {
                 Path parentDir = path.getParent();
                 // if there is a parent folder
                 if (parentDir != null) {
@@ -52,10 +52,11 @@ public class FileUtils {
     }
     public static boolean removeListFile(String filePath) {
         try {
-            File f = new File(currentDirectory + File.separator + filePath);
+            //File f = new File(currentDirectory + File.separator + filePath);
             Path path = Paths.get(currentDirectory + File.separator + filePath);
-            if (f.exists()) {
+            if (Files.exists(path)) {
                 Files.delete(path);
+                logger.info("The file was removed");
                 return true;
             } else {
                 return false;

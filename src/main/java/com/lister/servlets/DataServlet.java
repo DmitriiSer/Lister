@@ -70,14 +70,14 @@ public class DataServlet extends HttpServlet {
                         } else {
                             // list does not exists in database
                             // create a list in database
-                            logger.info("Attempt to create a record in the database and a file referenced to that record with [" + paramListname + "] data");
+                            logger.info("Attempt to create a record in the database and a file referenced to that record with list[" + paramListname + "] data");
                             if (DBUtils.createList(sessionUsername, paramListname)
                                     && FileUtils.createListFile("/data/" + sessionUsername + "_" + paramListname + ".dt")) {
                                 logger.info("The record in the database and the file were created");
                                 UserProfile sessionData = (UserProfile) session.getAttribute("Data");
                                 sessionData.lists.add(paramListname);
                                 UserList userList = new UserList(paramListname, "{}", UserList.CREATED_BY_SERVER);
-                                Utils.sendResponse("DataServlet", response, userList);
+                                Utils.sendResponse(DataServlet.class.getName(), response, userList);
                                 logger.info("List with name \"" + paramListname + "\" was created in user [" + sessionRemoteIP + "] profile");
                             } else {
                                 logger.error("The record in the database and the file were not created");
@@ -93,7 +93,7 @@ public class DataServlet extends HttpServlet {
                         if ((DataRef = DBUtils.getListContentRef(sessionUsername, paramListname)) != null) {
                             String listContent = FileUtils.getFileContent(DataRef);
                             UserList userList = new UserList(paramListname, listContent, UserList.CREATED_BY_USER);
-                            Utils.sendResponse("DataServlet", response, userList);
+                            Utils.sendResponse(DataServlet.class.getName(), response, userList);
                             logger.info("user [" + sessionRemoteIP + "] requested list content for the list with name \"" + paramListname + "\"");
                         } // there is no a reference to a local file in database
                         else {
@@ -102,12 +102,14 @@ public class DataServlet extends HttpServlet {
                     else if (request.getParameter("removeList") != null) {
                         String paramListname = request.getParameter("removeList");
                         String DataRef;
+                        logger.info("Attempt to remove a record in the database and a file referenced to that record with list[" + paramListname + "] data");
                         if ((DBUtils.removeList(sessionUsername, paramListname))
                                 && (FileUtils.removeListFile("/data/" + sessionUsername + "_" + paramListname + ".dt"))) {
-                            Utils.sendResponse("DataServlet", response, "list with name \"" + paramListname + "\" was deleted");
+                            logger.info("The record in the database and the file were removed");
+                            Utils.sendResponse(DataServlet.class.getName(), response, "list with name \"" + paramListname + "\" was deleted");
                             logger.info("user [" + sessionRemoteIP + "] removedr a list with name \"" + paramListname + "\"");
                         } else {
-                            response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error");
+                            response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error. File cannot be removed from the database");
                             throw new IOException("DataServlet cannot remove list " + paramListname + " from the database");
                         }
                     }
@@ -154,7 +156,7 @@ public class DataServlet extends HttpServlet {
                         if ((DataRef = DBUtils.getListContentRef(sessionUsername, paramListname)) != null) {
                             FileUtils.setFileContent(DataRef, listContent);
                             //UserList userList = new UserList(paramListname, listContent, UserList.CREATED_BY_USER);
-                            //Utils.sendResponse("DataServlet", response, userList);
+                            //Utils.sendResponse(DataServlet.class.getName(), response, userList);
                         } // there is no a reference to a local file in database
                         else {
                         }

@@ -197,6 +197,7 @@ public class DBUtils {
                 throw new SQLException("There is no rows to delete from table 'lists'");
             }
             stmt.close();
+            logger.info("The record in the database was removed");
             return true;
         } catch (SQLException e) {
             logger.error(errorMesage(e));

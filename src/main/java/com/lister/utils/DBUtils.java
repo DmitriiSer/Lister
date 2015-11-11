@@ -55,9 +55,9 @@ public class DBUtils {
     public static boolean checkUserExistance(String username) {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT UserName FROM Users");
+            ResultSet rs = stmt.executeQuery("SELECT UserName FROM users");
             while (rs.next()) {
-                // check if 'username' equalsIgnoreCase to 'UserName' in 'Users' table
+                // check if 'username' equalsIgnoreCase to 'UserName' in 'users' table
                 if (username.equalsIgnoreCase(rs.getString("UserName"))) {
                     rs.close();
                     stmt.close();
@@ -78,7 +78,7 @@ public class DBUtils {
             ResultSet rs = stmt.executeQuery("SELECT UserName, ListName FROM Lists WHERE UserName='"
                     + username + "' AND ListName='" + listname + "'");
             while (rs.next()) {
-                // check if 'username' equalsIgnoreCase to 'UserName' in 'Users' table
+                // check if 'username' equalsIgnoreCase to 'UserName' in 'users' table
                 rs.close();
                 stmt.close();
                 return true;
@@ -94,7 +94,7 @@ public class DBUtils {
     public static boolean createUser(String username, String password, String avatar) {
         try {
             Statement stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO Users(UserName, Password, Avatar) "
+            stmt.executeUpdate("INSERT INTO users(UserName, Password, Avatar) "
                     + "VALUES('" + username + "', '" + password + "', '" + avatar + "')");
             stmt.close();
             return true;
@@ -106,11 +106,11 @@ public class DBUtils {
     public static boolean checkCreds(String username, String password) {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT UserName, Password FROM Users");
+            ResultSet rs = stmt.executeQuery("SELECT UserName, Password FROM users");
             while (rs.next()) {
-                // check if 'username' equalsIgnoreCase to 'UserName' in 'Users' table
+                // check if 'username' equalsIgnoreCase to 'UserName' in 'users' table
                 if (username.equalsIgnoreCase(rs.getString("UserName"))) {
-                    // check if 'password' equals to 'Password' in 'Users' table
+                    // check if 'password' equals to 'Password' in 'users' table
                     if (password.equals(rs.getString("Password"))) {
                         rs.close();
                         stmt.close();
@@ -129,9 +129,9 @@ public class DBUtils {
     public static UserProfile getUserProfile(String username) {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Users");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM users");
             while (rs.next()) {
-                // check if 'username' equalsIgnoreCase to 'UserName' in 'Users' table
+                // check if 'username' equalsIgnoreCase to 'UserName' in 'users' table
                 if (username.equalsIgnoreCase(rs.getString("UserName"))) {
                     // return UserProfile object
                     UserProfile userInfo = new UserProfile(rs.getString("UserName"), rs.getString("Avatar"));
@@ -154,7 +154,7 @@ public class DBUtils {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM Lists WHERE UserName='" + username + "'");
             while (rs.next()) {
-                // check if 'username' equalsIgnoreCase to 'UserName' in 'Users' table
+                // check if 'username' equalsIgnoreCase to 'UserName' in 'users' table
                 if (username.equalsIgnoreCase(rs.getString("UserName"))) {
                     logger.info(rs.getString("UserName") + ", " + rs.getString("ListName"));
                     lists.add(rs.getString("ListName"));

@@ -31,7 +31,10 @@ public class DataServlet extends HttpServlet {
             logger.info("JDBC driver was loaded correctly");
         }
         // set FileUtils current directory
-        FileUtils.setCurrentDirectory("C:\\Users\\dmitr\\workspace-nb");
+        //String currentDirectory = "C:\\Users\\dmitr\\workspace-nb";
+        String currentDirectory = System.getenv("OPENSHIFT_DATA_DIR");
+        FileUtils.setCurrentDirectory(currentDirectory);
+        logger.info("Current directory is \"" + currentDirectory + "\"");
     }
     /**
      * Handles the HTTP <code>GET</code> method.

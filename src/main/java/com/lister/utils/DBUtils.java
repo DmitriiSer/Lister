@@ -75,7 +75,7 @@ public class DBUtils {
     public static boolean checkListExistance(String username, String listname) {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT UserName, ListName FROM Lists WHERE UserName='"
+            ResultSet rs = stmt.executeQuery("SELECT UserName, ListName FROM lists WHERE UserName='"
                     + username + "' AND ListName='" + listname + "'");
             while (rs.next()) {
                 // check if 'username' equalsIgnoreCase to 'UserName' in 'users' table
@@ -152,7 +152,7 @@ public class DBUtils {
         try {
             List<String> lists = new ArrayList<>();
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Lists WHERE UserName='" + username + "'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM lists WHERE UserName='" + username + "'");
             while (rs.next()) {
                 // check if 'username' equalsIgnoreCase to 'UserName' in 'users' table
                 if (username.equalsIgnoreCase(rs.getString("UserName"))) {
@@ -171,7 +171,7 @@ public class DBUtils {
     public static boolean createList(String username, String listname) {
         try {
             Statement stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO Lists(UserName, ListName) "
+            stmt.executeUpdate("INSERT INTO lists(UserName, ListName) "
                     + "VALUES('" + username + "', '" + listname + "')", Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = stmt.getGeneratedKeys();
             long listID = -1;
@@ -192,9 +192,9 @@ public class DBUtils {
     public static boolean removeList(String username, String listname) {
         try {
             Statement stmt = con.createStatement();
-            int result = stmt.executeUpdate("DELETE FROM Lists WHERE UserName='" + username + "' AND ListName='" + listname + "'");
+            int result = stmt.executeUpdate("DELETE FROM lists WHERE UserName='" + username + "' AND ListName='" + listname + "'");
             if (result != 1) {
-                throw new SQLException("There is no rows to delete from table 'Lists'");
+                throw new SQLException("There is no rows to delete from table 'lists'");
             }
             stmt.close();
             return true;

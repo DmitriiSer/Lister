@@ -55,11 +55,10 @@ public class FileUtils {
             //File f = new File(currentDirectory + File.separator + filePath);
             Path path = Paths.get(currentDirectory + File.separator + filePath);
             if (Files.exists(path)) {
+                logger.info("The file exists");
                 Files.delete(path);
                 logger.info("The file was removed");
                 return true;
-            } else {
-                return false;
             }
         } catch (IOException e) {
             logger.error(errorMesage(e));

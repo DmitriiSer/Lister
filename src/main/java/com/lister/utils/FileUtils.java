@@ -54,14 +54,11 @@ public class FileUtils {
         try {
             //File f = new File(currentDirectory + File.separator + filePath);
             Path path = Paths.get(currentDirectory + File.separator + filePath);
-            logger.info("removeListFile: path = " + path);
-            logger.info("Files.exists(path) = " + Files.exists(path));
             if (Files.exists(path)) {
-                logger.info("The file exists");
                 Files.delete(path);
-                logger.info("The file was removed");
-                return true;
             }
+            logger.info("The file was removed");
+            return true;
         } catch (IOException e) {
             logger.error(errorMesage(e));
         }

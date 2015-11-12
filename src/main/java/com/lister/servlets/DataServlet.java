@@ -106,7 +106,7 @@ public class DataServlet extends HttpServlet {
                         if ((DBUtils.removeList(sessionUsername, paramListname))
                                 && (FileUtils.removeListFile("/data/" + sessionUsername + "_" + paramListname + ".dt"))) {
                             logger.info("The record in the database and the file were removed");
-                            Utils.sendResponse(DataServlet.class.getName(), response, "list with name &quot;" + paramListname + "&quot; was deleted");
+                            Utils.sendResponse(DataServlet.class.getName(), response, "list with name '" + paramListname + "' was deleted");
                             logger.info("user [" + sessionRemoteIP + "] removedr a list with name \"" + paramListname + "\"");
                         } else {
                             response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error. File cannot be removed from the database");

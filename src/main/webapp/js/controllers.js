@@ -99,8 +99,8 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$templateCach
                 controller: "HomeController",
                 windowClass: "center-modal no-border-radius",
                 size: "md",
-                animation: true,
-                backdrop: "static"
+                animation: true
+                //backdrop: "static"
             });
         };
         $scope.confirmationYes = function () {
@@ -325,8 +325,8 @@ controllers.controller("OpenListEditorController", ["$rootScope", "$uibModal", f
             windowClass: "list-editor-window",
             backdropClass: "list-editor-window-backdrop",
             size: "lg",
-            animation: true,
-            backdrop: "static"
+            animation: true
+            //backdrop: "static"
         });
     }]);
 controllers.controller("ListEditorController", ["$rootScope", "$scope", "$location", "$timeout", "$http", "session", "browser",

@@ -142,7 +142,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
         // default variables
         $scope.loginWindow = true;
         //TODO: remove $scope.userProfile
-        $scope.userProfile = {username: "Di", password: "Qq!23", avatar: "avt11"};
+        $scope.userProfile = {username: "", password: "", avatar: ""};
         $scope.passwordStrength = {
             minimumLength: false,
             recommendLength: false,

@@ -165,10 +165,11 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
                 $scope.userProfile.avatar = "avt" + Math.floor((Math.random() * 24) + 1);
             }
         };
-        $scope.changeAvatar = function ($event) {
+        $scope.changeAvatar = function (e) {
             console.log("$scope.changeAvatar, $event:");
-            console.log(JSON.stringify($event));
-            var avt = $event.toElement.className;
+            console.log(e);
+            console.log(JSON.stringify(e));
+            var avt = e.toElement.className;
             avt = avt.substring(avt.indexOf("avt"));
             if (avt.indexOf("avt") != -1)
                 $scope.userProfile.avatar = avt;

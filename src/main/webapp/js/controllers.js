@@ -166,6 +166,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
             }
         };
         $scope.changeAvatar = function (e) {
+            console.log("$scope.changeAvatar: $scope.loginWindow = %s", $scope.loginWindow);
             var elem = e.toElement;
             if (elem == null) {
                 elem = e.target;

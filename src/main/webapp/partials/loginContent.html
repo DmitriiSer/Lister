@@ -51,7 +51,7 @@
                     <div class="col-xs-8" style="text-align: center" ng-click="changeAvatar($event)">
                         <!--TODO: fix avatar popover-->
                         <button type="button" class="btn btn-default" id="btn-avatars"
-                                uib-popover-html="loginWindow ? '' : avatarPopoverHtml"
+                                uib-popover-html="loginWindow ? '' : $root.avatarPopoverHtml"
                                 popover-placement="top"
                                 popover-trigger="click">
                             <div class="avatars">                                            

@@ -166,6 +166,8 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
             }
         };
         $scope.changeAvatar = function ($event) {
+            console.log("$scope.changeAvatar, $event:");
+            console.log(JSON.stringify($event));
             var avt = $event.toElement.className;
             avt = avt.substring(avt.indexOf("avt"));
             if (avt.indexOf("avt") != -1)

@@ -54,8 +54,9 @@
     width: 216px;  /* 3 + (3+64+3)/2*6 + 3 = 216 - 2 = 214px */
     height: 176px; /* 3 + (3+80+3)/2*4 + 3 = 178 - 2 = 176px */
     padding: 3px;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
+    /*overflow-x: hidden;
+    overflow-y: auto;*/
 }
 #row-avatar-controls .popover-content .avatars {
     display: inline-block;

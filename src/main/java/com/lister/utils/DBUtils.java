@@ -36,10 +36,10 @@ public class DBUtils {
     }
     public static boolean connect() {
         try {
-            String hostName = InetAddress.getLocalHost().getHostName();
-            logger.info("InetAddress.getLocalHost().getHostName = " + hostName);
+            String host = InetAddress.getLocalHost().getHostAddress();
+            logger.info("InetAddress.getLocalHost().getHostAddress = " + host);
             logger.info("Attempting to get database connection");
-            if (hostName.equals("http://lister-advancedlists.rhcloud.com/")) {
+            if (host.equals("http://lister-advancedlists.rhcloud.com/")) {
                 // Remote "http://lister-advancedlists.rhcloud.com/" database connectipn
                 con = DriverManager.getConnection("jdbc:mysql://127.12.206.2:3306/lister", "admintxyeVtZ", "R9AGStuM75FE");
             } else {

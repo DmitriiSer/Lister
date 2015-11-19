@@ -2,7 +2,6 @@ package com.lister.utils;
 
 import com.lister.servlets.UserProfile;
 import static com.lister.utils.Utils.errorMesage;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,15 +35,19 @@ public class DBUtils {
     }
     public static boolean connect() {
         try {
-            String host = InetAddress.getLocalHost().getHostAddress();
-            logger.info("InetAddress.getLocalHost().getHostAddress = " + host);
             logger.info("Attempting to get database connection");
-            if (host.equals("http://lister-advancedlists.rhcloud.com/")) {
-                // Remote "http://lister-advancedlists.rhcloud.com/" database connectipn
-                con = DriverManager.getConnection("jdbc:mysql://127.12.206.2:3306/lister", "admintxyeVtZ", "R9AGStuM75FE");
-            } else {
+            // trying to connect to local database
+            try {
                 // Localhost database connection
                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lister", "root", "root");
+            } catch (SQLException ex1) {
+                // trying to connect to remote (http://lister-advancedlists.rhcloud.com/) database
+                try {
+                    // Remote "http://lister-advancedlists.rhcloud.com/" database connectipn
+                    con = DriverManager.getConnection("jdbc:mysql://127.12.206.2:3306/lister", "admintxyeVtZ", "R9AGStuM75FE");
+                } catch (SQLException ex2) {
+                    throw ex2;
+                }
             }
             logger.info("Connection to the database was established");
             return true;

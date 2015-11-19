@@ -47,7 +47,7 @@ public class LoginServlet extends HttpServlet {
                 } // check if user already logged in and it's remote IP is the same as IP stored in session
                 else {
                     logger.info("user [" + request.getRemoteAddr()
-                            + "] have already been logged in in session [" + session.getId() + "]");
+                            + "] have already been logged in session [" + session.getId() + "]");
                     // update list titles
                     // connect to database
                     List<String> lists = null;

@@ -30,7 +30,7 @@ public class Utils {
         Logger logger = LogManager.getLogger(callerClassName);
         PrintWriter responsePrintWriter = response.getWriter();
         String responseString = gson.toJson(obj);
-        logger.info("Server is trying to serialize obj=[" + obj + "]");
+        logger.info("Server is trying to serialize obj=[" + responseString + "]");
         logger.info("Server sent response: " + responseString);
         responsePrintWriter.print(responseString);
         responsePrintWriter.flush();

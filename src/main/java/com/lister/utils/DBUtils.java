@@ -2,6 +2,8 @@ package com.lister.utils;
 
 import com.lister.servlets.UserProfile;
 import static com.lister.utils.Utils.errorMesage;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -9,6 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,14 +36,19 @@ public class DBUtils {
     }
     public static boolean connect() {
         try {
-            // Localhost
-            // "jdbc:mysql://localhost:3306/lister", "root", "root"
+            String hostName = InetAddress.getLocalHost().getHostName();
+            logger.info("InetAddress.getLocalHost().getHostName = " + hostName);
             logger.info("Attempting to get database connection");
-            String url = "jdbc:mysql://127.12.206.2:3306/lister";
-            con = DriverManager.getConnection(url,"admintxyeVtZ","R9AGStuM75FE");
+            if (hostName.equals("http://lister-advancedlists.rhcloud.com/")) {
+                // Remote "http://lister-advancedlists.rhcloud.com/" database connectipn
+                con = DriverManager.getConnection("jdbc:mysql://127.12.206.2:3306/lister", "admintxyeVtZ", "R9AGStuM75FE");
+            } else {
+                // Localhost database connection
+                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lister", "root", "root");
+            }
             logger.info("Connection to the database was established");
             return true;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.error("Connection to the database was not established", e);
             //logger.error(errorMesage(e));
             return false;

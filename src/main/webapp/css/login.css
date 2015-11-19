@@ -76,7 +76,7 @@
   }
 }
 #row-avatar-controls .popover-content .avatar:active {
-    background-image: url('../icons/social_media_03.jpg');
+    background-image: url("../icons/social_media_03.png");
     -webkit-box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
     -moz-box-shadow:    inset 0px 0px 15px rgba(0, 0, 0, 0.3);
     box-shadow:         inset 0px 0px 15px rgba(0, 0, 0, 0.3);

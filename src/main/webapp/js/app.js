@@ -1,7 +1,7 @@
 "use strict";
 /* Angular app */
 var app = angular.module("appLister", ["app.directives", "app.controllers",
-    "ngAnimate", "ngRoute", "ngSanitize", "ngTouch", "ui.bootstrap"
+    "ngAnimate", "ngRoute", "ngSanitize", /*"ngTouch",*/ "ui.bootstrap"
 ]);
 /* configure routing */
 app.config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
@@ -37,6 +37,7 @@ app.config(["$routeProvider", "$locationProvider", function ($routeProvider, $lo
     }]);
 /* load templates for popovers into $templateCache */
 app.run(["$window", "$http", "$templateCache", function ($window, $http, $templateCache) {
+        // TODO: move it from here to modal window show function
         $window.onkeydown = function (e) {
             var modal = document.getElementsByName("loginForm")[0];
             if (modal === undefined)

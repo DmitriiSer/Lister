@@ -25,11 +25,19 @@
         <script type="application/javascript" src="lib/angular-route.min.1.4.7.js"></script>
         <script type="application/javascript" src="lib/angular-animate.min.1.4.7.js"></script>
         <script type="application/javascript" src="lib/angular-sanitize.min.1.5.0.js"></script>
-        <script type="application/javascript" src="lib/angular-touch.min.1.4.7.js"></script>
+        <!--<script type="application/javascript" src="lib/angular-touch.min.1.4.7.js"></script>-->
         <script type="application/javascript" src="lib/ui-bootstrap-tpls-0.14.0.min.js"></script>
         <script type="application/javascript" src="lib/velocity.min.1.2.3.js"></script>
         <script type="application/javascript" src="lib/textarea-caret-position.js"></script>
         <script type="application/javascript" src="lib/sha3.3.1.2.js"></script>
+        <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+        <script>
+            if ('addEventListener' in document) {
+                document.addEventListener('DOMContentLoaded', function () {
+                    FastClick.attach(document.body);
+                }, false);
+            }
+        </script>
         <!--user scripts-->
         <script type="application/javascript" src="js/roulette.js"></script>
         <script type="application/javascript" src="js/directives.js"></script>

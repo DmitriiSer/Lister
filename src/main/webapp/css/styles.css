@@ -93,7 +93,9 @@
     z-index: 0;
 }
 h1, h2, h3, h4 { font-family: 'Lobster', cursive; }
-a:link, a:visited, a:hover, a:active { text-decoration: none; }
+a:link, a:visited, a:active,
+.no-touchevents a:hover,
+.no-touchevents a:focus { text-decoration: none; }
 button {
     border: 2px solid blue;
     font-family: 'Montserrat', sans-serif;

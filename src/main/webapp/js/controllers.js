@@ -100,7 +100,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$templateCach
                 windowClass: "center-modal no-border-radius",
                 size: "md",
                 animation: true
-                //backdrop: "static"
+                        //backdrop: "static"
             });
         };
         $scope.confirmationYes = function () {
@@ -136,8 +136,8 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$templateCach
             $location.url("/listEditor");
         };
     }]);
-controllers.controller("LoginController", ["$rootScope", "$scope", "$location", "$http",
-    "session", function ($rootScope, $scope, $location, $http, session) {
+controllers.controller("LoginController", ["$rootScope", "$scope", "$location", "$http", "session", "browser",
+    function ($rootScope, $scope, $location, $http, session, browser) {
         console.debug("LoginController was loaded");
         // default variables
         $scope.loginWindow = true;
@@ -165,19 +165,58 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
                 $scope.userProfile.avatar = "avt" + Math.floor((Math.random() * 24) + 1);
             }
         };
-        $scope.changeAvatar = function (e) {
-            console.log("$scope.changeAvatar: $scope.loginWindow = %s", $scope.loginWindow);
+        $scope.avatarPopoverTrigger = function () {
+            if (browser.isMobileOrTablet())
+                return "touchend";
+            else
+                return "focus";
+        };
+        $scope.buttonAvatarClick = function (e) {
+            e.stopImmediatePropagation();
             var elem = e.toElement;
-            if (elem == null) {
+            if (elem == null)
                 elem = e.target;
-            }
-            if (elem == null) {
+            if (elem == null)
                 elem = e.relatedTarget;
+            // attach event listener to click inside the popover
+            var popover = elem.parentNode.parentNode.nextSibling;
+            //console.log(popover);
+            if (browser.isMobileOrTablet()) {
+                //alert("buttonAvatarClick");
+                document.addEventListener("touchstart", function (e) {
+                    //e.stopImmediatePropagation();
+                    var popoverElem = e.toElement;
+                    if (popoverElem == null)
+                        popoverElem = e.target;
+                    if (popoverElem == null)
+                        popoverElem = e.relatedTarget;
+                    var avt = popoverElem.className;
+                    avt = avt.substring(avt.indexOf("avt"));
+                    if (avt.indexOf("avt") != -1) {
+                        $scope.userProfile.avatar = avt;
+                        // remove itself
+                        var popover = document.getElementById("btn-avatars").nextSibling;
+                        popover && popover.parentNode && popover.parentNode.removeChild(popover);
+                    }
+                    // remove event handler
+                    document.removeEventListener("touchend");
+                });
+            } else {
+                popover.addEventListener("mousedown", function (e) {
+                    e.stopImmediatePropagation();
+                    var popoverElem = e.toElement;
+                    if (popoverElem == null)
+                        popoverElem = e.target;
+                    if (popoverElem == null)
+                        popoverElem = e.relatedTarget;
+                    var avt = popoverElem.className;
+                    avt = avt.substring(avt.indexOf("avt"));
+                    if (avt.indexOf("avt") != -1)
+                        $scope.userProfile.avatar = avt;
+                    // remove event handler
+                    this.removeEventListener("mousedown");
+                });
             }
-            var avt = elem.className;
-            avt = avt.substring(avt.indexOf("avt"));
-            if (avt.indexOf("avt") != -1)
-                $scope.userProfile.avatar = avt;
         };
         $scope.changePassword = function () {
             // hide alert
@@ -334,7 +373,7 @@ controllers.controller("OpenListEditorController", ["$rootScope", "$uibModal", f
             backdropClass: "list-editor-window-backdrop",
             size: "lg",
             animation: true
-            //backdrop: "static"
+                    //backdrop: "static"
         });
     }]);
 controllers.controller("ListEditorController", ["$rootScope", "$scope", "$location", "$timeout", "$http", "session", "browser",

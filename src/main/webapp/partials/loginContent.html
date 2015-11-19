@@ -26,7 +26,7 @@
                            ng-blur="passwordFocused = ''"
                            ng-change="changePassword()"
                            uib-popover-html="loginWindow ? '' : passwordPopoverHtml"
-                           popover-placement="left"
+                           popover-placement="top"
                            popover-trigger="focus"/>
                 </div>
             </div>
@@ -48,14 +48,15 @@
                 <!-- avatar controls -->
                 <div id="row-avatar-controls" ng-hide="loginWindow">
                     <div class="col-xs-4" style="text-align: left">Avatar</div>
-                    <div class="col-xs-8" style="text-align: center" ng-click="changeAvatar($event)">
+                    <div class="col-xs-8" style="text-align: center">
                         <!--TODO: fix avatar popover-->
                         <button type="button" class="btn btn-default" id="btn-avatars"
+                                ng-click="buttonAvatarClick($event)"
                                 uib-popover-html="loginWindow ? '' : $root.avatarPopoverHtml"
                                 popover-placement="top"
-                                popover-trigger="click">
-                            <div class="avatars">                                            
-                                <div class="avatar {{userProfile.avatar}}"></div>
+                                ng-attr-popover-trigger="{{ avatarPopoverTrigger() }}">
+                            <div class="avatars">
+                                <div class="avatar" ng-class="userProfile.avatar"></div>
                             </div>
                         </button>
                     </div>

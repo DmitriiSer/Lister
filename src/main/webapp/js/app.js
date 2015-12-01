@@ -16,13 +16,13 @@ app.config(["$routeProvider", "$locationProvider", "$stateProvider", "$urlRouter
                 })
                 // user's home page with/without lists
                 .state("home", {
-                    url: "home",
+                    url: "/home",
                     templateUrl: "partials/home.html",
                     controller: "HomeController"
                 })
                 // list editor mode
                 .state("listEditor", {
-                    url: "listEditor",
+                    url: "/listEditor",
                     templateUrl: "partials/listEditor.html",
                     controller: "OpenListEditorController"
                 });

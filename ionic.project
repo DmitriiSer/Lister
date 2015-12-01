@@ -1,0 +1,15 @@
+{
+  "name": "lister",
+  "app_id": "",
+  "documentRoot": "src/main/webapp",
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "src/main/webapp/**/*",
+    "src/main/webapp/js/*",
+    "!src/main/webapp/css/**/*",
+    "!src/main/webapp/lib/**/*"
+  ]
+}

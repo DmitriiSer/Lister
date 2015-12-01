@@ -1,13 +1,14 @@
 "use strict";
 /* controllers */
 var controllers = angular.module("app.controllers", ["app.services"]);
-controllers.controller("HomeController", ["$rootScope", "$scope", "$templateCache", "$location", "$http", "$uibModal", "session", "browser",
-    function ($rootScope, $scope, $templateCache, $location, $http, $uibModal, session, browser) {
+controllers.controller("HomeController", ["$rootScope", "$scope", /*"$templateCache",*/ "$location", "$http", "$uibModal", "session", "browser",
+    function ($rootScope, $scope, /*$templateCache,*/ $location, $http, $uibModal, session, browser) {
         console.debug("HomeController was loaded");
         $scope.listButtonDisabled = false;
+        // TODO: remove this
         // set popover templates
-        $rootScope.passwordPopoverHtml = $templateCache.get("partials/passwordPopoverHtml.html");
-        $rootScope.avatarPopoverHtml = $templateCache.get("partials/avatarPopoverHtml.html");
+        // $rootScope.passwordPopoverHtml = $templateCache.get("partials/passwordPopoverHtml.html");
+        // $rootScope.avatarPopoverHtml = $templateCache.get("partials/avatarPopoverHtml.html");
         // happens when ng-view loaded
         // we need to check if user already been logged in
         if (!session.isLoggedIn())
@@ -169,7 +170,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
             if (browser.isMobileOrTablet())
                 return "touchend";
             else
-                return "focus";
+                return (browser.name() == "safari") ? "click" : "focus";
         };
         $scope.buttonAvatarClick = function (e) {
             e.stopImmediatePropagation();
@@ -211,8 +212,10 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
                         popoverElem = e.relatedTarget;
                     var avt = popoverElem.className;
                     avt = avt.substring(avt.indexOf("avt"));
-                    if (avt.indexOf("avt") != -1)
+                    if (avt.indexOf("avt") != -1) {
                         $scope.userProfile.avatar = avt;
+                        alert("you have pressed the '" + $scope.userProfile.avatar + "' icon");
+                    }
                     // remove event handler
                     this.removeEventListener("mousedown");
                 });

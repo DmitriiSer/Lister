@@ -64,11 +64,12 @@ app.run(["$window", "$http", "$templateCache", function ($window, $http, $templa
                 }
             }
         }
+        // TODO: remove this
         // set templates
-        $http.get("partials/passwordPopoverHtml.html", {cache: $templateCache}).then(function (response) {
-            $templateCache.put("partials/passwordPopoverHtml.html", response.data);
-        });
-        $http.get("partials/avatarPopoverHtml.html", {cache: $templateCache}).then(function (response) {
-            $templateCache.put("partials/avatarPopoverHtml.html", response.data);
-        });
+        // $http.get("partials/passwordPopoverHtml.html", {cache: $templateCache}).then(function (response) {
+        //    $templateCache.put("partials/passwordPopoverHtml.html", response.data);
+        // });
+        // $http.get("partials/avatarPopoverHtml.html", {cache: $templateCache}).then(function (response) {
+        //    $templateCache.put("partials/avatarPopoverHtml.html", response.data);
+        // });
     }]);

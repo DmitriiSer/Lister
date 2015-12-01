@@ -2,7 +2,7 @@
 <html ng-app="appLister">
     <head>
         <!--TODO fix mobile devices support-->
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
         <meta content="utf-8" http-equiv="encoding">
         <base href="/"/>
@@ -17,19 +17,31 @@
         <link rel="stylesheet" type="text/css" href="css/login.css">
         <link rel="stylesheet" type="text/css" href="css/home.css">
         <link rel="stylesheet" type="text/css" href="css/listEditor.css">
+        <!-- Ionic styles -->
+        <link rel="stylesheet" type="text/css" href="lib/ionic/css/ionic.css">
+        <!-- <link rel="stylesheet" type="text/css" href="css/style.css" > -->
         <!--scripts-->
         <!--TODO change to minified version-->
         <script type="application/javascript" src="lib/modernizr-touch-events.js"></script>
-        <script type="application/javascript" src="lib/angular.min.1.4.7.js"></script>
+        <!-- Ionic Scripts -->
+        <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above -->
+        <!--<link href="css/ionic.app.css" rel="stylesheet">-->
+        <!-- ionic/angularjs js (already included angular.js) -->
+        <script src="lib/ionic/js/ionic.bundle.js"></script>
+        <!-- cordova script (this will be a 404 during development) -->
+        <script src="cordova.js"></script>
+        <!------------------------->
+        <!-- <script type="application/javascript" src="lib/angular.min.1.4.7.js"></script> -->
         <!--<script type="application/javascript" src="lib/angular.1.4.7.js"></script>-->
         <script type="application/javascript" src="lib/angular-route.min.1.4.7.js"></script>
-        <script type="application/javascript" src="lib/angular-animate.min.1.4.7.js"></script>
+        <!--<script type="application/javascript" src="lib/angular-animate.min.1.4.7.js"></script>-->
         <script type="application/javascript" src="lib/angular-sanitize.min.1.5.0.js"></script>
         <!--<script type="application/javascript" src="lib/angular-touch.min.1.4.7.js"></script>-->
         <script type="application/javascript" src="lib/ui-bootstrap-tpls-0.14.0.min.js"></script>
         <script type="application/javascript" src="lib/velocity.min.1.2.3.js"></script>
         <script type="application/javascript" src="lib/textarea-caret-position.js"></script>
         <script type="application/javascript" src="lib/sha3.3.1.2.js"></script>
+        <!-- fastclick and it's init script for smoother click events on mobile platforms -->
         <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
         <script>
             if ('addEventListener' in document) {
@@ -44,6 +56,13 @@
         <script type="application/javascript" src="js/services.js"></script>
         <script type="application/javascript" src="js/controllers.js"></script>
         <script type="application/javascript" src="js/app.js"></script>
+        <!-- templates -->
+        <script type="text/ng-template" id="passwordPopoverHtml.html">
+            <div ng-include="'partials/passwordPopoverHtml.html'"></div>
+        </script>
+        <script type="text/ng-template" id="avatarPopoverHtml.html">
+            <div ng-include="'partials/avatarPopoverHtml.html'"></div>
+        </script>
         <!-- no enabled javascript-->
         <noscript>Your browser does not support JavaScript!</noscript>
         <!--title-->

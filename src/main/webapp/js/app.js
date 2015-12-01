@@ -18,7 +18,7 @@ app.config(["$routeProvider", "$locationProvider", "$stateProvider", "$urlRouter
                 .state("home", {
                     url: "home",
                     templateUrl: "partials/home.html",
-                    controller: "HomeController"//"DataController"
+                    controller: "HomeController"
                 })
                 // list editor mode
                 .state("listEditor", {
@@ -35,7 +35,7 @@ app.config(["$routeProvider", "$locationProvider", "$stateProvider", "$urlRouter
          // user's home page with/without lists
          when("/home", {
          templateUrl: "partials/home.html",
-         controller: "HomeController"//"DataController"
+         controller: "HomeController"
          }).
          // list editor mode
          when("/listEditor", {

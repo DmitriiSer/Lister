@@ -1,39 +1,55 @@
 "use strict";
 /* Angular app */
 var app = angular.module("appLister", ["app.directives", "app.controllers",
-    "ngAnimate", "ngRoute", "ngSanitize", /*"ngTouch",*/ "ui.bootstrap"
+    "ngAnimate", "ngRoute", "ui.router", "ngSanitize", "ui.bootstrap"
 ]);
 /* configure routing */
-app.config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
-        $routeProvider.
+app.config(["$routeProvider", "$locationProvider", "$stateProvider", "$urlRouterProvider",
+    function ($routeProvider, $locationProvider, $stateProvider, $urlRouterProvider) {
+        $urlRouterProvider.otherwise('/');
+        $stateProvider
                 // loads login page after the site loads
-                when("/", {
+                .state("/", {
+                    url: "/",
                     templateUrl: "partials/login.html",
                     controller: "HomeController"
-                }).
+                })
                 // user's home page with/without lists
-                when("/home", {
+                .state("home", {
+                    url: "home",
                     templateUrl: "partials/home.html",
                     controller: "HomeController"//"DataController"
-                }).
-                when("/listEditor", {
+                })
+                // list editor mode
+                .state("listEditor", {
+                    url: "listEditor",
                     templateUrl: "partials/listEditor.html",
                     controller: "OpenListEditorController"
-                }).
-                // page with an empty list
-                /*when("/list", {
-                 templateUrl: "/partials/list.html",
-                 controller: "ListController"
-                 }).
-                 when("/details/:itemId", {
-                 templateUrl: "/partials/details.html",
-                 controller: "DetailsController"
-                 }).*/
-                otherwise({
-                    redirectTo: "/"
                 });
-        // use the HTML5 History API
-        $locationProvider.html5Mode(true);
+        /*$routeProvider.
+         // loads login page after the site loads
+         when("/", {
+         templateUrl: "partials/login.html",
+         controller: "HomeController"
+         }).
+         // user's home page with/without lists
+         when("/home", {
+         templateUrl: "partials/home.html",
+         controller: "HomeController"//"DataController"
+         }).
+         // list editor mode
+         when("/listEditor", {
+         templateUrl: "partials/listEditor.html",
+         controller: "OpenListEditorController"
+         }).
+         //when("/details/:itemId", {
+         //    templateUrl: "/partials/details.html",
+         //    controller: "DetailsController"
+         //}).
+         otherwise({redirectTo: "/"});
+         */
+         // use the HTML5 History API
+         $locationProvider.html5Mode(true);
     }]);
 /* load templates for popovers into $templateCache */
 app.run(["$window", "$http", "$templateCache", function ($window, $http, $templateCache) {

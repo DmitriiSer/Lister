@@ -7,6 +7,10 @@
         <meta content="utf-8" http-equiv="encoding">
         <base href="/"/>
         <!--styles-->
+        <!-- Ionic styles -->
+        <!--<link rel="stylesheet" type="text/css" href="lib/ionic/css/ionic.css">-->
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <!-------------------------------------------------------->
         <link rel="shortcut icon" href="icons/supermarket35.png"/>
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lobster|Montserrat:400,700|Open+Sans+Condensed:300,700">
         <link rel="stylesheet" type="text/css" href="css/font-awesome.min.4.4.0.css">
@@ -17,8 +21,6 @@
         <link rel="stylesheet" type="text/css" href="css/login.css">
         <link rel="stylesheet" type="text/css" href="css/home.css">
         <link rel="stylesheet" type="text/css" href="css/listEditor.css">
-        <!-- Ionic styles -->
-        <link rel="stylesheet" type="text/css" href="css/style.css">
         <!-- <link rel="stylesheet" type="text/css" href="css/style.css" > -->
         <!--scripts-->
         <!--TODO change to minified version-->
@@ -29,17 +31,19 @@
         <!-- ionic/angularjs js (already included angular.js) -->
         <script src="lib/ionic/js/ionic.bundle.js"></script>
         <!------------------------->
-        <!-- <script type="application/javascript" src="lib/angular.min.1.4.7.js"></script> -->
-        <!--<script type="application/javascript" src="lib/angular.1.4.7.js"></script>-->
-        <script type="application/javascript" src="lib/angular-route.min.1.4.7.js"></script>
-        <!--<script type="application/javascript" src="lib/angular-animate.min.1.4.7.js"></script>-->
+        <!-- Already inside the ionic.bundle
+        <script type="application/javascript" src="lib/angular.1.4.7.js"></script>
+        <script type="application/javascript" src="lib/angular-animate.min.1.4.7.js"></script>
         <script type="application/javascript" src="lib/angular-sanitize.min.1.5.0.js"></script>
+        -->
+        <!-- Using UI.router instead that is inside the ionic.bundle
+        <script type="application/javascript" src="lib/angular-ui-router.0.2.15.js"></script>-->
         <script type="application/javascript" src="lib/ui-bootstrap-tpls-0.14.0.min.js"></script>
         <script type="application/javascript" src="lib/velocity.min.1.2.3.js"></script>
         <script type="application/javascript" src="lib/textarea-caret-position.js"></script>
         <script type="application/javascript" src="lib/sha3.3.1.2.js"></script>
         <!-- fastclick and it's init script for smoother click events on mobile platforms -->
-        <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+        <script type="application/javascript" src="lib/fastclick.min.js"></script>
         <script>
             if ('addEventListener' in document) {
                 document.addEventListener('DOMContentLoaded', function () {
@@ -72,7 +76,8 @@
         <div class="content">
             <header><navbar></navbar></header>
             <!--<section ng-view></section>-->
-            <section ui-view></section>
+            <!--<section ui-view></section>-->
+            <ion-nav-view></ion-nav-view>
             <footer>
                 &copy;2015 Dmitrii Serikov
                 <div class="pull-right">
@@ -80,6 +85,10 @@
                     Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>
                 </div>
             </footer>
+            <div class="bar bar-footer bar-balanced">
+                <div class="title">Footer</div>
+            </div>
+            
         </div>
     </body>
 </html>

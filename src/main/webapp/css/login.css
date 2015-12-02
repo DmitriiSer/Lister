@@ -4,6 +4,7 @@
 */
 .modal-open .modal {
     text-align: center;
+    background-color: transparent; 
 }
 @media screen and (min-width: 768px) { 
     /*.modal:before {

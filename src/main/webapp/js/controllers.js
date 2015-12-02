@@ -1,14 +1,10 @@
 "use strict";
 /* controllers */
 var controllers = angular.module("app.controllers", ["app.services"]);
-controllers.controller("HomeController", ["$rootScope", "$scope", /*"$templateCache",*/ "$location", "$http", "$uibModal", "session", "browser",
-    function ($rootScope, $scope, /*$templateCache,*/ $location, $http, $uibModal, session, browser) {
+controllers.controller("HomeController", ["$rootScope", "$scope", "$location", "$http", "$uibModal", "session", "browser",
+    function ($rootScope, $scope, $location, $http, $uibModal, session, browser) {
         console.debug("HomeController was loaded");
         $scope.listButtonDisabled = false;
-        // TODO: remove this
-        // set popover templates
-        // $rootScope.passwordPopoverHtml = $templateCache.get("partials/passwordPopoverHtml.html");
-        // $rootScope.avatarPopoverHtml = $templateCache.get("partials/avatarPopoverHtml.html");
         // happens when ng-view loaded
         // we need to check if user already been logged in
         if (!session.isLoggedIn())
@@ -20,6 +16,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", /*"$templateCa
                         templateUrl: "loginWindow",
                         controller: "LoginController",
                         size: "sm",
+                        windowClass: "center-modal",
                         animation: true,
                         backdrop: "static",
                         keyboard: false
@@ -73,7 +70,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", /*"$templateCa
                 // create a list
                 $scope.userProfile = session.getUserProfile();
                 // send information to the server
-                $http.get("/DataServlet?addList=" + $scope.listName).then(function (response) {
+                $http.get(server.servletPath() + "/DataServlet?addList=" + $scope.listName).then(function (response) {
                     console.log("addList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                     $scope.userProfile.lists.push($scope.listName);
                     session.setOpenedListName($scope.listName);
@@ -109,7 +106,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", /*"$templateCa
             $rootScope.confirmationWindow.close();
             if (listName !== undefined && listName != "") {
                 // remove a list
-                $http.get("/DataServlet?removeList=" + listName).then(function (response) {
+                $http.get(server.servletPath() + "/DataServlet?removeList=" + listName).then(function (response) {
                     console.log("removeList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                     if ($scope.userProfile.lists.indexOf(listName) != -1)
                         $scope.userProfile.lists.splice($scope.userProfile.lists.indexOf(listName), 1);
@@ -124,7 +121,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", /*"$templateCa
         };
         $scope.getList = function (listName) {
             console.log($scope.listButtonDisabled);
-            $http.get("/DataServlet?getList=" + listName).then(function (response) {
+            $http.get(server.servletPath() + "/DataServlet?getList=" + listName).then(function (response) {
                 console.log("getList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                 session.setOpenedListName(listName);
                 session.setOpenedListContent(response.data.content);
@@ -137,8 +134,8 @@ controllers.controller("HomeController", ["$rootScope", "$scope", /*"$templateCa
             $location.url("/listEditor");
         };
     }]);
-controllers.controller("LoginController", ["$rootScope", "$scope", "$location", "$http", "session", "browser",
-    function ($rootScope, $scope, $location, $http, session, browser) {
+controllers.controller("LoginController", ["$rootScope", "$scope", "$location", "$http", "server", "browser", "session",
+    function ($rootScope, $scope, $location, $http, server, browser, session) {
         console.debug("LoginController was loaded");
         // default variables
         $scope.loginWindow = true;
@@ -317,7 +314,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
             console.error(data);
         };
         $scope.login = function () {
-            $http.post("/LoginServlet", {
+            $http.post(server.servletPath() + "/LoginServlet", {
                 username: $scope.userProfile.username,
                 password: $scope.encryptPassword($scope.userProfile.password)
             }).then(function (response) {
@@ -332,7 +329,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
         $scope.signUp = function () {
             // check if password meets all the requirements
             if ($scope.passwordStrength.progress >= 70) {
-                $http.post("/SignUpServlet",
+                $http.post(server.servletPath() + "/SignUpServlet",
                         {
                             username: $scope.userProfile.username,
                             password: $scope.encryptPassword($scope.userProfile.password),
@@ -356,9 +353,32 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
             }
         };
     }]);
-controllers.controller("AccountController", ["$scope", "$location", "session", function ($scope, $location, session) {
+controllers.controller("AccountController", ["$scope", "$location", "$ionicActionSheet", "$timeout", "session",
+    function ($scope, $location, $ionicActionSheet, $timeout, session) {
         console.debug("AccountController was loaded");
         $scope.userProfile = session.getUserProfile();
+        $scope.clickTitle = function () {
+            // Show the action sheet
+            var hideSheet = $ionicActionSheet.show({
+                buttons: [
+                    {text: '<b>Share</b> This'},
+                    {text: 'Move'}
+                ],
+                destructiveText: 'Delete',
+                titleText: 'Modify your album',
+                cancelText: 'Cancel',
+                cancel: function () {
+                    // add cancel code..
+                },
+                buttonClicked: function (index) {
+                    return true;
+                }
+            });
+            // For example's sake, hide the sheet after two seconds
+            $timeout(function () {
+                hideSheet();
+            }, 2000);
+        };
         $scope.logout = function () {
             session.clear(function (response) {
                 $scope.userProfile = session.getUserProfile();
@@ -674,7 +694,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$locati
         $scope.submit = function () {
             // transform list data to JSON
             console.log("JSON.stringify($scope.data) = %s", JSON.stringify($scope.data));
-            $http.post("/DataServlet?changeList=" + $scope.listName, JSON.stringify($scope.data)).then(function (response) {
+            $http.post(server.servletPath() + "/DataServlet?changeList=" + $scope.listName, JSON.stringify($scope.data)).then(function (response) {
                 console.log("changeList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                 //$scope.userProfile.lists.push($scope.listName);
                 //$scope.openListWidget();

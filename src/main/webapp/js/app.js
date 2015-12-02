@@ -1,11 +1,10 @@
 "use strict";
 /* Angular app */
 var app = angular.module("appLister", ["app.directives", "app.controllers",
-    "ngAnimate", "ngRoute", "ui.router", "ngSanitize", "ui.bootstrap"
-]);
+    "ionic", "ngAnimate", /*"ngRoute",*/ "ui.router", "ngSanitize", "ui.bootstrap"]);
 /* configure routing */
-app.config(["$routeProvider", "$locationProvider", "$stateProvider", "$urlRouterProvider",
-    function ($routeProvider, $locationProvider, $stateProvider, $urlRouterProvider) {
+app.config(["$stateProvider", "$urlRouterProvider", "$locationProvider", /*"$routeProvider"*/
+    function ($stateProvider, $urlRouterProvider, $locationProvider /*$routeProvider*/) {
         $urlRouterProvider.otherwise('/');
         $stateProvider
                 // loads login page after the site loads
@@ -48,11 +47,11 @@ app.config(["$routeProvider", "$locationProvider", "$stateProvider", "$urlRouter
          //}).
          otherwise({redirectTo: "/"});
          */
-         // use the HTML5 History API
-         $locationProvider.html5Mode(true);
+        // use the HTML5 History API
+        $locationProvider.html5Mode(true);
     }]);
-/* load templates for popovers into $templateCache */
-app.run(["$window", "$http", "$templateCache", function ($window, $http, $templateCache) {
+app.run(["$ionicPlatform", "$window", "$http",
+    function ($ionicPlatform, $window, $http) {
         // TODO: move it from here to modal window show function
         $window.onkeydown = function (e) {
             var modal = document.getElementsByName("loginForm")[0];
@@ -80,12 +79,17 @@ app.run(["$window", "$http", "$templateCache", function ($window, $http, $templa
                 }
             }
         }
-        // TODO: remove this
-        // set templates
-        // $http.get("partials/passwordPopoverHtml.html", {cache: $templateCache}).then(function (response) {
-        //    $templateCache.put("partials/passwordPopoverHtml.html", response.data);
-        // });
-        // $http.get("partials/avatarPopoverHtml.html", {cache: $templateCache}).then(function (response) {
-        //    $templateCache.put("partials/avatarPopoverHtml.html", response.data);
-        // });
+        /* load ionic plugins */
+        $ionicPlatform.ready(function () {
+            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
+            if (window.cordova && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+                cordova.plugins.Keyboard.disableScroll(true);
+            }
+            if (window.StatusBar) {
+                // org.apache.cordova.statusbar required
+                StatusBar.styleDefault();
+            }
+        });
     }]);

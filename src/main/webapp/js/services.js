@@ -5,8 +5,8 @@ var services = angular.module("app.services", []);
 services.service("server", ["$location", function ($location) {
         return {
             servletPath: function () {
-                if ($location.host() == "localhost")
-                    return "http://lister-advancedlists.rhcloud.com";
+                /*if ($location.host() == "localhost")
+                    return "http://lister-advancedlists.rhcloud.com";*/
                 return "";
             }
         }

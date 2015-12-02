@@ -117,7 +117,7 @@ header {
     background: none;
     z-index: 10;
 }
-.content > section {
+.content > section, .content > ion-nav-view {
     position: fixed;
     width: 100%;
     top: 67px;
@@ -155,4 +155,14 @@ footer {
     font-family: 'Montserrat', sans-serif;
     /*font-size: 1.2rem;*/
     font-size: 0.9rem;
+}
+/* Ionic standard css changes */
+[nav-view-transition="ios"][nav-view-direction="forward"], [nav-view-transition="ios"][nav-view-direction="back"] {
+    background-color: transparent;
+}
+.pane, .view {
+    background-color: transparent;
+}
+@media all {
+    .modal { width: 100%; }
 }

@@ -1,8 +1,8 @@
 "use strict";
 /* controllers */
 var controllers = angular.module("app.controllers", ["app.services"]);
-controllers.controller("HomeController", ["$rootScope", "$scope", "$location", "$http", "$uibModal", "session", "browser",
-    function ($rootScope, $scope, $location, $http, $uibModal, session, browser) {
+controllers.controller("HomeController", ["$rootScope", "$scope", "$location", "$http", "$uibModal", "server", "browser", "session",
+    function ($rootScope, $scope, $location, $http, $uibModal, server, browser, session) {
         console.debug("HomeController was loaded");
         $scope.listButtonDisabled = false;
         // happens when ng-view loaded
@@ -63,7 +63,6 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$location", "
             }
             data = data.split(/[<>-]/)[3].trim();
             console.error(data);
-            /*alert(data);*/
         };
         $scope.addList = function () {
             if ($scope.listName != "") {
@@ -180,7 +179,6 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
             var popover = elem.parentNode.parentNode.nextSibling;
             //console.log(popover);
             if (browser.isMobileOrTablet()) {
-                //alert("buttonAvatarClick");
                 document.addEventListener("touchstart", function (e) {
                     //e.stopImmediatePropagation();
                     var popoverElem = e.toElement;
@@ -211,7 +209,6 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
                     avt = avt.substring(avt.indexOf("avt"));
                     if (avt.indexOf("avt") != -1) {
                         $scope.userProfile.avatar = avt;
-                        alert("you have pressed the '" + $scope.userProfile.avatar + "' icon");
                     }
                     // remove event handler
                     this.removeEventListener("mousedown");
@@ -399,8 +396,8 @@ controllers.controller("OpenListEditorController", ["$rootScope", "$uibModal", f
                     //backdrop: "static"
         });
     }]);
-controllers.controller("ListEditorController", ["$rootScope", "$scope", "$location", "$timeout", "$http", "session", "browser",
-    function ($rootScope, $scope, $location, $timeout, $http, session, browser) {
+controllers.controller("ListEditorController", ["$rootScope", "$scope", "$location", "$timeout", "$http", "server", "browser", "session",
+    function ($rootScope, $scope, $location, $timeout, $http, server, browser, session) {
         console.debug("ListEditorController was loaded");
         $scope.headerFocused = true;
         $scope.checkboxesColumnDisplay = "none";

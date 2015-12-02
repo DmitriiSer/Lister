@@ -7,6 +7,9 @@
 * {
     box-sizing: border-box;    
 }
+body, .ionic-body {
+    word-wrap: normal;
+}
 /* small phones <= 639px */
 @media all and (min-width: 50px) and (max-width: 639px) {
     header h1 { text-align: center; }
@@ -186,7 +189,16 @@ footer {
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;*/
 }
 .row {
+    display: block;
     width: auto !important;
-    margin-right: -15px !important;
     margin-left: -15px !important;
+    margin-right: -15px !important;
+    padding: 0px;
+}
+.row + .row {
+    margin-top: 0px !important;
+}
+.modal-body.row {
+    margin: 0px !important;
+    padding: 15px;
 }

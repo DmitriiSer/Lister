@@ -101,8 +101,8 @@ public class LoginServlet extends HttpServlet {
                     userProfile.setListTitles(lists);
                     // get session object and set session relative attributes
                     HttpSession session = request.getSession(false);
-                    logger.info("session = ", session);
-                    logger.info("request.getRemoteAddr() = ", request.getRemoteAddr());
+                    logger.info("session = " + session);
+                    logger.info("request.getRemoteAddr() = " + request.getRemoteAddr());
                     session.setAttribute("RemoteIP", new String(request.getRemoteAddr()));
                     session.setAttribute("Username", new String(username));
                     session.setAttribute("Data", userProfile);

@@ -51,10 +51,9 @@
                     <div class="col-xs-4" style="text-align: left">Avatar</div>
                     <div class="col-xs-8" style="text-align: center">
                         <!--TODO: fix avatar popover-->
-                        <!--uib-popover-html="loginWindow ? '' : $root.avatarPopoverHtml"-->
                         <button type="button" class="btn btn-default" id="btn-avatars"
                                 ng-click="buttonAvatarClick($event)"
-                                uib-popover-template="loginWindow ? '' : 'avatarPopoverHtml.html'"
+                                uib-popover-template="'avatarPopoverHtml.html'"
                                 popover-placement="top"
                                 ng-attr-popover-trigger="{{ avatarPopoverTrigger()}}">
                             <div class="avatars">

@@ -165,6 +165,7 @@ footer {
 }
 @media all {
     .modal { width: 100%; }
+    .popover { width: auto; height: auto; }
 }
 .form-control {
     padding: 6px 12px !important;
@@ -201,4 +202,7 @@ footer {
 .modal-body.row {
     margin: 0px !important;
     padding: 15px;
+}
+.popover {
+    margin: 0px;
 }

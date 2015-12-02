@@ -166,7 +166,8 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
             if (browser.isMobileOrTablet())
                 return "touchend";
             else
-                return (browser.name() == "safari") ? "click" : "focus";
+                // TODO: needed a fix for Safari
+                return "click";//(browser.name() == "safari") ? "click" : "focus";            
         };
         $scope.buttonAvatarClick = function (e) {
             e.stopImmediatePropagation();

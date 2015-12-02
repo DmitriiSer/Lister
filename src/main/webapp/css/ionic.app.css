@@ -6210,7 +6210,10 @@ button.item.item-button-right {
 .item-image {
   padding: 0;
   text-align: center; }
-  .item-image img:first-child, .item-image .list-img {
+  .item-image img:first-child {
+    width: 100%;
+    vertical-align: middle; }
+  .item-image .list-img {
     width: 100%;
     vertical-align: middle; }
 

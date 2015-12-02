@@ -82,8 +82,7 @@ public class LoginServlet extends HttpServlet {
      * @param response servlet response
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response
-    ) {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
             // set response type to JSON
             response.setContentType("application/json");
@@ -122,6 +121,11 @@ public class LoginServlet extends HttpServlet {
                 throw new IOException("LoginServlet cannot connect to the database");
             }
         } catch (Exception e) {
+            try {
+                response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error");
+            } catch (IOException ie) {
+                logger.error(Utils.errorMesage(ie));
+            }
             logger.error(Utils.errorMesage(e));
         }
     }

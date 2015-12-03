@@ -27,6 +27,18 @@
         };
     });
     /* behavior directives */
+    app.directive('popoverClose', function () {
+        return {
+            "restrict": "A",
+            link: function (scope, elem, attrs) {
+
+                element.on('click', function (event) {
+                    alert("popoverClose");
+                    console.log("popoverClose");
+                });
+            }
+        };
+    });
     /*app.directive("ngEnterKey", function () {
      return function (scope, element, attrs) {
      element.bind("keydown keypress", function (event) {
@@ -42,7 +54,7 @@
     app.directive("focusOnShow", function ($timeout) {
         return {
             restrict: 'A',
-            link: function ($scope, $element, $attr) {                
+            link: function ($scope, $element, $attr) {
                 var timeout = ($attr["focusOnShow"] != "") ? $attr["focusOnShow"] : 0;
                 if ($attr.ngShow) {
                     $scope.$watch($attr.ngShow, function (newValue) {

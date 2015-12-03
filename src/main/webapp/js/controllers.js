@@ -1,8 +1,8 @@
 "use strict";
 /* controllers */
 var controllers = angular.module("app.controllers", ["app.services"]);
-controllers.controller("HomeController", ["$rootScope", "$scope", "$location", "$http", "$uibModal", "server", "browser", "session",
-    function ($rootScope, $scope, $location, $http, $uibModal, server, browser, session) {
+controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$http", "$uibModal", "server", "browser", "session",
+    function ($rootScope, $scope, $state, $http, $uibModal, server, browser, session) {
         console.debug("HomeController was loaded");
         $scope.listButtonDisabled = false;
         // happens when ng-view loaded
@@ -49,11 +49,11 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$location", "
                     // get lists in case if database was updated
                     //session.updateLists();
                     // redirect to 'home'
-                    $location.url("/home");
+                    $state.go("home");
             });
         //
-        $scope.userProfile = session.getUserProfile();
-        //console.log("$scope.userProfile = %s", JSON.stringify($scope.userProfile));
+        $rootScope.userProfile = session.getUserProfile();
+        console.log("$scope.userProfile = %s", JSON.stringify($scope.userProfile));
         //
         $scope.dataError = function (data) {
             var data = JSON.stringify(data);
@@ -89,7 +89,6 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$location", "
         $scope.listNameToRemove;
         $scope.removeList = function (listName) {
             $rootScope.listNameToRemove = listName;
-            //$location.url("/confirmation");
             // ask if user really wants to delete list
             $rootScope.confirmationWindow = $uibModal.open({
                 templateUrl: "confirmationWindow",
@@ -97,7 +96,6 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$location", "
                 windowClass: "center-modal no-border-radius",
                 size: "md",
                 animation: true
-                        //backdrop: "static"
             });
         };
         $scope.confirmationYes = function () {
@@ -130,16 +128,16 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$location", "
             });
         };
         $scope.openListWidget = function () {
-            $location.url("/listEditor");
+            $state.go("listEditor");
         };
     }]);
-controllers.controller("LoginController", ["$rootScope", "$scope", "$location", "$http", "server", "browser", "session",
-    function ($rootScope, $scope, $location, $http, server, browser, session) {
+controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$http", "server", "browser", "session",
+    function ($rootScope, $scope, $state, $http, server, browser, session) {
         console.debug("LoginController was loaded");
         // default variables
         $scope.loginWindow = true;
         //TODO: remove $scope.userProfile
-        $scope.userProfile = {username: "", password: "", avatar: ""};
+        $scope.userProfile = {username: "Ed", password: "Ed!23", avatar: ""};
         $scope.passwordStrength = {
             minimumLength: false,
             recommendLength: false,
@@ -167,54 +165,30 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
                 return "touchend";
             else
                 // TODO: needed a fix for Safari
-                return (browser.name() == "safari") ? "click" : "focus";            
+                //return "click";    
+                return (browser.name() == "safari") ? "click" : "focus";
         };
-        $scope.buttonAvatarClick = function (e) {
-            e.stopImmediatePropagation();
-            var elem = e.toElement;
-            if (elem == null)
-                elem = e.target;
-            if (elem == null)
-                elem = e.relatedTarget;
-            // attach event listener to click inside the popover
-            var popover = elem.parentNode.parentNode.nextSibling;
-            //console.log(popover);
-            if (browser.isMobileOrTablet()) {
-                document.addEventListener("touchstart", function (e) {
-                    //e.stopImmediatePropagation();
-                    var popoverElem = e.toElement;
-                    if (popoverElem == null)
-                        popoverElem = e.target;
-                    if (popoverElem == null)
-                        popoverElem = e.relatedTarget;
-                    var avt = popoverElem.className;
-                    avt = avt.substring(avt.indexOf("avt"));
-                    if (avt.indexOf("avt") != -1) {
-                        $scope.userProfile.avatar = avt;
-                        // remove itself
-                        var popover = document.getElementById("btn-avatars").nextSibling;
-                        popover && popover.parentNode && popover.parentNode.removeChild(popover);
-                    }
-                    // remove event handler
-                    document.removeEventListener("touchend");
-                });
-            } else {
-                popover.addEventListener("mousedown", function (e) {
-                    e.stopImmediatePropagation();
-                    var popoverElem = e.toElement;
-                    if (popoverElem == null)
-                        popoverElem = e.target;
-                    if (popoverElem == null)
-                        popoverElem = e.relatedTarget;
-                    var avt = popoverElem.className;
-                    avt = avt.substring(avt.indexOf("avt"));
-                    if (avt.indexOf("avt") != -1) {
-                        $scope.userProfile.avatar = avt;
-                    }
-                    // remove event handler
-                    this.removeEventListener("mousedown");
-                });
-            }
+        $scope.fingerMoved = false;
+        $scope.chooseAvatar = function (e) {
+            if (!$scope.fingerMoved) {
+                var popoverElem = e.toElement;
+                if (popoverElem == null)
+                    popoverElem = e.target;
+                if (popoverElem == null)
+                    popoverElem = e.relatedTarget;
+                var avt = popoverElem.className;
+                avt = avt.substring(avt.indexOf("avt"));
+                if (avt.indexOf("avt") != -1) {
+                    $scope.userProfile.avatar = avt;
+                    // remove itself
+                    var btnAvatars = document.getElementById("btn-avatars");
+                    var popover = btnAvatars.nextSibling;
+                    popover && popover.parentNode && popover.parentNode.removeChild(popover);
+                    btnAvatars.focus();
+                    btnAvatars.click();
+                }
+            } else
+                $scope.fingerMoved = false;
         };
         $scope.changePassword = function () {
             // hide alert
@@ -298,7 +272,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
                 avatar: data.avatar,
                 lists: data.lists
             });
-            $location.url("/home");
+            $state.go("home");
             $rootScope.loginWindow.close();
         };
         $scope.authentificationError = function (data) {
@@ -351,40 +325,6 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$location", 
             }
         };
     }]);
-controllers.controller("AccountController", ["$scope", "$location", "$ionicActionSheet", "$timeout", "session",
-    function ($scope, $location, $ionicActionSheet, $timeout, session) {
-        console.debug("AccountController was loaded");
-        $scope.userProfile = session.getUserProfile();
-        $scope.clickTitle = function () {
-            // Show the action sheet
-            var hideSheet = $ionicActionSheet.show({
-                buttons: [
-                    {text: '<b>Share</b> This'},
-                    {text: 'Move'}
-                ],
-                destructiveText: 'Delete',
-                titleText: 'Modify your album',
-                cancelText: 'Cancel',
-                cancel: function () {
-                    // add cancel code..
-                },
-                buttonClicked: function (index) {
-                    return true;
-                }
-            });
-            // For example's sake, hide the sheet after two seconds
-            $timeout(function () {
-                hideSheet();
-            }, 2000);
-        };
-        $scope.logout = function () {
-            session.clear(function (response) {
-                $scope.userProfile = session.getUserProfile();
-                console.log("logout: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
-                $location.url("/Lister");
-            });
-        };
-    }]);
 controllers.controller("OpenListEditorController", ["$rootScope", "$uibModal", function ($rootScope, $uibModal) {
         console.debug("OpenListEditorController was loaded");
         $rootScope.listEditorWindow = $uibModal.open({
@@ -397,8 +337,8 @@ controllers.controller("OpenListEditorController", ["$rootScope", "$uibModal", f
                     //backdrop: "static"
         });
     }]);
-controllers.controller("ListEditorController", ["$rootScope", "$scope", "$location", "$timeout", "$http", "server", "browser", "session",
-    function ($rootScope, $scope, $location, $timeout, $http, server, browser, session) {
+controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state", "$timeout", "$http", "server", "browser", "session",
+    function ($rootScope, $scope, $state, $timeout, $http, server, browser, session) {
         console.debug("ListEditorController was loaded");
         $scope.headerFocused = true;
         $scope.checkboxesColumnDisplay = "none";
@@ -477,7 +417,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$locati
         ];
         $rootScope.listEditorWindow.result.then(function () {
         }, function () {
-            $location.url("/home");
+            $state.go("home");
         });
         $scope.timer = null;
         var getSelection = function (elem) {
@@ -701,6 +641,6 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$locati
             });
             // close modal window
             $rootScope.listEditorWindow.close();
-            $location.url("/home");
+            $state.go("home");
         };
     }]);

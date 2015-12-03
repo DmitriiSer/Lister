@@ -9,8 +9,7 @@
         <!--styles-->
         <!-- Ionic styles -->
         <link rel="stylesheet" type="text/css" href="lib/ionic/css/ionic.css">
-        <link rel="stylesheet" type="text/css" href="css/style.css">
-        
+        <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
         <!-------------------------------------------------------->
         <link rel="shortcut icon" href="icons/supermarket35.png"/>
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lobster|Montserrat:400,700|Open+Sans+Condensed:300,700">
@@ -22,7 +21,6 @@
         <link rel="stylesheet" type="text/css" href="css/login.css">
         <link rel="stylesheet" type="text/css" href="css/home.css">
         <link rel="stylesheet" type="text/css" href="css/listEditor.css">
-        <!-- <link rel="stylesheet" type="text/css" href="css/style.css" > -->
         <!--scripts-->
         <!--TODO change to minified version-->
         <script type="application/javascript" src="lib/modernizr-touch-events.js"></script>
@@ -43,7 +41,7 @@
         <script type="application/javascript" src="lib/velocity.min.1.2.3.js"></script>
         <script type="application/javascript" src="lib/textarea-caret-position.js"></script>
         <script type="application/javascript" src="lib/sha3.3.1.2.js"></script>
-        <!-- fastclick and it's init script for smoother click events on mobile platforms -->
+        <!-- fastclick and it's init script for smoother click events on mobile platforms
         <script type="application/javascript" src="lib/fastclick.min.js"></script>
         <script>
             if ('addEventListener' in document) {
@@ -52,6 +50,9 @@
                 }, false);
             }
         </script>
+        -->
+        <!-- cordova script (this will be a 404 during development) -->
+        <!-- <script src="cordova.js"></script> -->
         <!--user scripts-->
         <script type="application/javascript" src="js/roulette.js"></script>
         <script type="application/javascript" src="js/directives.js"></script>
@@ -63,31 +64,57 @@
             <div ng-include="'partials/passwordPopoverHtml.html'"></div>
         </script>
         <script type="text/ng-template" id="avatarPopoverHtml.html">
-            <div ng-include="'partials/avatarPopoverHtml.html'"></div>
+            <div ng-include="'partials/avatarPopoverHtml.html'" ng-mouseup="chooseAvatar($event)"></div>
         </script>
-        <!-- cordova script (this will be a 404 during development) -->
-        <script src="cordova.js"></script>
         <!-- no enabled javascript-->
         <noscript>Your browser does not support JavaScript!</noscript>
         <!--title-->
         <title>Lister</title>
     </head>
     <body>
-        <div class="bg-image blur"></div>
-        <div class="content">
-            <header><navbar></navbar></header>
-            <!--<section ui-view></section>-->
-            <ion-nav-view></ion-nav-view>
-            <footer>
-                &copy;2015 Dmitrii Serikov
-                <div class="pull-right">
-                    Avatars <a href='http://www.freepik.com/free-vector/user-avatars-pack_746488.htm'>designed by Freepik</a>.
-                    Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>
-                </div>
-            </footer>
-            <div class="bar bar-footer bar-balanced">
-                <div class="title">Footer</div>
+    <ion-side-menus enable-menu-with-back-views="false">
+        <ion-side-menu-content drag-content="true">
+            <ion-nav-bar class="bar-stable" ng-show="$root.isLoggedIn()">
+                <ion-nav-back-button></ion-nav-back-button>
+                <ion-nav-buttons side="right">
+                    <!--<button class="button button-icon button-clear ion-navicon" menu-toggle="right"></button>-->
+                    <button class="button button-icon button-clear" menu-toggle="right">
+                        <div class="avatar-circle">
+                            <div class="avatars absolute-center">                                            
+                                <div class="avatar {{userProfile.avatar}}"></div>
+                            </div>
+                        </div>
+                    </button>
+                </ion-nav-buttons>
+            </ion-nav-bar>
+            <div class="bg-image blur"></div>
+            <div class="content">
+                <header><navbar></navbar></header>
+                <!--<ion-nav-view></ion-nav-view>-->
+                <ion-nav-view></ion-nav-view>
+                <footer>
+                    &copy;2015 Dmitrii Serikov
+                    <div class="pull-right">
+                        Avatars <a href='http://www.freepik.com/free-vector/user-avatars-pack_746488.htm'>designed by Freepik</a>.
+                        Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>
+                    </div>
+                </footer>
             </div>
-        </div>
-    </body>
+        </ion-side-menu-content>
+        <!-- Left Side Menu -->
+        <!-- Right Side Menu -->
+        <ion-side-menu side="right" ng-show="$root.isLoggedIn()">
+            <ion-header-bar class="bar-stable">
+                <h1 class="title">username</h1>
+            </ion-header-bar>
+            <ion-content>
+                <ion-list>
+                    <ion-item href="#/app/search" ng-click="login()">Create a list</ion-item>
+                    <ion-item href="#/app/browse">Settings</ion-item>
+                    <ion-item menu-close ng-click="$root.logout()">Log Out</ion-item>
+                </ion-list>
+            </ion-content>
+        </ion-side-menu>
+    </ion-side-menus>
+</body>
 </html>

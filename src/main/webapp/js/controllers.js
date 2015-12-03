@@ -53,7 +53,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ht
             });
         //
         $rootScope.userProfile = session.getUserProfile();
-        console.log("$scope.userProfile = %s", JSON.stringify($scope.userProfile));
+        /*console.log("$scope.userProfile = %s", JSON.stringify($scope.userProfile));*/
         //
         $scope.dataError = function (data) {
             var data = JSON.stringify(data);

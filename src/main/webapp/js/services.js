@@ -6,7 +6,7 @@ services.service("server", ["$location", function ($location) {
         return {
             servletPath: function () {
                 /*if ($location.host() == "localhost")
-                    return "http://lister-advancedlists.rhcloud.com";*/
+                 return "http://lister-advancedlists.rhcloud.com";*/
                 return "";
             }
         }
@@ -93,7 +93,8 @@ services.factory("session", ["$http", "server", function ($http, server) {
             // check if user already logged in
             checkIfLoggedIn: function (success, error) {
                 $http.get(server.servletPath() + "/LoginServlet?isLoggedIn").then(function (response) {
-                    console.log("isLoggedIn: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
+                    console.log("checkIfLoggedIn: " + response.status + " " + response.statusText);
+                    console.log("isLoggedIn: %s", response.data.isLoggenIn ? "YES" : "NO");
                     if (response.data === null) {
                         service.loggedIn = false;
                     } else {

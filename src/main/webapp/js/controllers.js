@@ -7,8 +7,11 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ht
         $scope.listButtonDisabled = false;
         // happens when ng-view loaded
         // we need to check if user already been logged in
-        if (!session.isLoggedIn())
+        //if (session.isLoggedIn()) {
+        console.log("$state.current.name = %s", $state.current.name);
+        if ($state.current.name == "/" || $state.current.name == "logout")
             session.checkIfLoggedIn(function (response) {
+                //console.log("session.isLoggedIn() = %s", session.isLoggedIn());
                 // user needs to log in
                 if (!session.isLoggedIn()) {
                     // show a modal window when page is loaded
@@ -45,12 +48,14 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ht
                     });
                 }
                 // user already logged in
-                else
-                    // get lists in case if database was updated
+                else {
+                    // TODO: get lists in case if database was updated
                     //session.updateLists();
                     // redirect to 'home'
                     $state.go("home");
+                }
             });
+        //}
         //
         $rootScope.userProfile = session.getUserProfile();
         /*console.log("$scope.userProfile = %s", JSON.stringify($scope.userProfile));*/
@@ -272,8 +277,9 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$h
                 avatar: data.avatar,
                 lists: data.lists
             });
-            $state.go("home");
             $rootScope.loginWindow.close();
+            $state.go("home");
+            //$state.reload();
         };
         $scope.authentificationError = function (data) {
             var data = JSON.stringify(data);
@@ -291,7 +297,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$h
                 password: $scope.encryptPassword($scope.userProfile.password)
             }).then(function (response) {
                 console.log("login: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
-                if (response.data.loggedIn === true) {
+                if (JSON.parse(response.data.loggedIn) === true) {
                     $scope.grantAccess(response.data);
                 }
             }, function (response) {

@@ -73,7 +73,10 @@ app.run(["$ionicPlatform", "$ionicActionSheet", "$window", "$state", "$rootScope
             session.clear(function (response) {
                 $rootScope.userProfile = session.getUserProfile();
                 console.log("logout: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
-                $state.go("logout");
+                //$state.transitionTo("logout", null, {"reload":true});
+                $state.go("/");
+                //$state.go("logout", null, {reload: true});
+                //$state.reload();
             });
         };
     }]);
@@ -83,7 +86,7 @@ app.config(["$stateProvider", "$urlRouterProvider", "$locationProvider",
         $stateProvider
                 // loads login page after the site loads
                 .state("/", {
-                    url: "/",
+                    url: "/index.html",
                     templateUrl: "partials/login.html",
                     controller: "HomeController"
                 })

@@ -93,13 +93,13 @@ services.factory("session", ["$http", "server", function ($http, server) {
             // check if user already logged in
             checkIfLoggedIn: function (success, error) {
                 $http.get(server.servletPath() + "/LoginServlet?isLoggedIn").then(function (response) {
-                    console.log("checkIfLoggedIn: " + response.status + " " + response.statusText);
-                    console.log("isLoggedIn: %s", response.data.isLoggenIn ? "YES" : "NO");
                     if (response.data === null) {
                         service.loggedIn = false;
                     } else {
                         service.setUserProfile(response.data);
                     }
+                    /*console.log("checkIfLoggedIn: " + response.status + " " + response.statusText);*/
+                    console.log("isLoggedIn: %s", JSON.parse(response.data.loggedIn) ? "YES" : "NO");
                     if (success !== undefined)
                         success(response);
                 }, function (response) {

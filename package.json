@@ -1,6 +1,6 @@
 {
   "name": "lister",
-  "version": "0.0.8",
+  "version": "0.1.4",
   "description": "lister: An Angular.js + Ionic project",
   "dependencies": {
     "gulp": "^3.5.6",

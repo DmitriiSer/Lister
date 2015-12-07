@@ -9,7 +9,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ht
         // we need to check if user already been logged in
         //if (session.isLoggedIn()) {
         console.log("$state.current.name = %s", $state.current.name);
-        if ($state.current.name == "/" || $state.current.name == "logout")
+        if ($state.current.name == "index" || $state.current.name == "logout")
             session.checkIfLoggedIn(function (response) {
                 //console.log("session.isLoggedIn() = %s", session.isLoggedIn());
                 // user needs to log in
@@ -279,7 +279,6 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$h
             });
             $rootScope.loginWindow.close();
             $state.go("home");
-            //$state.reload();
         };
         $scope.authentificationError = function (data) {
             var data = JSON.stringify(data);

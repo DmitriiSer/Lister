@@ -66,17 +66,14 @@ app.run(["$ionicPlatform", "$ionicActionSheet", "$window", "$state", "$rootScope
             // For example's sake, hide the sheet after two seconds
             /*$timeout(function () { hideSheet(); }, 2000);*/
         };
-        $rootScope.isLoggedIn = function (){
+        $rootScope.isLoggedIn = function () {
             return session.isLoggedIn();
         };
         $rootScope.logout = function () {
             session.clear(function (response) {
                 $rootScope.userProfile = session.getUserProfile();
                 console.log("logout: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
-                //$state.transitionTo("logout", null, {"reload":true});
-                $state.go("/");
-                //$state.go("logout", null, {reload: true});
-                //$state.reload();
+                $state.go("index");
             });
         };
     }]);
@@ -85,8 +82,9 @@ app.config(["$stateProvider", "$urlRouterProvider", "$locationProvider",
     function ($stateProvider, $urlRouterProvider, $locationProvider) {
         $stateProvider
                 // loads login page after the site loads
-                .state("/", {
-                    url: "/index.html",
+                .state("index", {
+                    cache: false,
+                    url: "/",
                     templateUrl: "partials/login.html",
                     controller: "HomeController"
                 })

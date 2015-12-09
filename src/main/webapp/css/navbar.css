@@ -15,7 +15,9 @@
     font-size: 3.5rem;
     cursor: default;
 }
-.navbar .navbar-brand, .navbar .navbar-text {
+.navbar .navbar-brand,
+.navbar .navbar-brand:not(:hover),
+.navbar .navbar-text {
     font-family: 'Lobster', cursive;
     color: #F0FFF0;
     text-shadow: 0px 0px 3px rgba(255, 0, 0, 1);

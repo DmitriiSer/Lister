@@ -189,7 +189,9 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ht
         };
         $scope.getList = function (listName, e) {
             //console.log("$scope.listButtonDisabled = %s", $scope.listButtonDisabled);
-            if (e.which == 1) {
+            console.log(e.which);
+            //alert(e.which);
+            if (e.which == 1 || e.which == undefined) {
                 $http.get(server.servletPath() + "/DataServlet?getList=" + listName).then(function (response) {
                     console.log("getList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                     session.setOpenedListName(listName);

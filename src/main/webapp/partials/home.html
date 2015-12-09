@@ -1,19 +1,51 @@
-<section id="home-view">
-    <!-- container that contains list tabs or thumbnails -->
-    <div id="list-title-container">
-        <!-- list title thumbnail or tab -->
-        <a href="#" class="btn list-title-btn" title="{{listname}}" role="button"
-           ng-mouseup="!listButtonDisabled ? getList(listname, $event) : ''"
-           ng-contextmenu="$event.preventDefault()"
-           ng-mouseenter="removeListButtonShow = true"
-           ng-mouseleave="removeListButtonShow = false"
-           ng-repeat="listname in userProfile.lists"
-           ng-show="userProfile.lists.length > 0">
-            <!-- list icon for phones and tablets representation -->
+<ion-content>
+    <section id="home-view">
+        <!-- container that contains list tabs or thumbnails -->
+        <div id="list-title-container">
+            <ion-list show-reorder="false" show-delete="false" can-swipe="true">
+                <a href="#" class="btn list-title-btn" title="{{listname}}" role="button"
+                   on-release="!listButtonDisabled ? getList(listname, $event) : ''"
+                   ng-contextmenu="$event.preventDefault()"
+                   ng-mouseenter="removeListButtonShow = true"
+                   ng-mouseleave="removeListButtonShow = false"
+                   ng-repeat="listname in userProfile.lists"
+                   ng-show="userProfile.lists.length > 0">
+                    <ion-item>
+                        <!-- list icon for phones and tablets representation -->
+                        <i class="fa fa-list-alt list-title-btn-icon"></i>
+                        <!-- list title representation -->
+                        <div class="list-title-btn-title">{{listname}}</div>
+                        <!-- list delete button -->
+                        <button class="animate-show x-fast list-title-btn-delete"
+                                title="Delete {{listname}}"
+                                ng-click="removeList(listname)"
+                                ng-mouseenter="removeListButtonMouseenter()"
+                                ng-mouseleave="removeListButtonMouseleave()"
+                                ng-show="removeListButtonShow"><i class="fa fa-times"></i></button>
+                        <confirmation-content></confirmation-content>
+                    </ion-item>
+                </a>
+                <!--
+                <ion-item>Hello<ion-option-button class="button-positive" ng-click="share(item)">Share</ion-option-button></ion-item>
+                <ion-item>It's me</ion-item>
+                <ion-item>I was wondering</ion-item>
+                <ion-item>if after all these years</ion-item>
+                <ion-item>you'd like to meet</ion-item>
+                -->
+            </ion-list>
+            <!-- list title thumbnail or tab -->
+            <!--<a href="#" class="btn list-title-btn" title="{{listname}}" role="button"
+               ng-mouseup="!listButtonDisabled ? getList(listname, $event) : ''"
+               ng-contextmenu="$event.preventDefault()"
+               ng-mouseenter="removeListButtonShow = true"
+               ng-mouseleave="removeListButtonShow = false"
+               ng-repeat="listname in userProfile.lists"
+               ng-show="userProfile.lists.length > 0">
+            <!-- list icon for phones and tablets representation
             <i class="fa fa-list-alt"></i>
-            <!-- list title representation -->
+            <!-- list title representation
             <div>{{listname}}</div>
-            <!-- list delete button -->
+            <!-- list delete button
             <button class="animate-show x-fast"
                     title="Delete {{listname}}"
                     ng-click="removeList(listname)"
@@ -21,13 +53,14 @@
                     ng-mouseleave="removeListButtonMouseleave()"
                     ng-show="removeListButtonShow"><i class="fa fa-times"></i></button>
             <confirmation-content></confirmation-content>
-        </a>
-        <!-- add new list button and the form to type a name for a new list -->
-        <a href class="" animate-show slow id="list-title-plus-btn"
-           ng-show="userProfile.lists.length == 0"
-           ng-mouseup="addList($event)">
-            <i class="fa" ng-class="(userProfile.lists.length > 0) ? 'fa-plus-circle' : 'fa-plus-square-o big'"></i>
-        </a>
-        <!-- ng-hide="hidden" ng-click="hidden = true" -->
-    </div>
-</section>
+        </a> -->
+            <!-- add new list button and the form to type a name for a new list -->
+            <a href class="" animate-show slow id="list-title-plus-btn"
+               ng-show="userProfile.lists.length == 0"
+               ng-mouseup="addList($event)">
+                <i class="fa" ng-class="(userProfile.lists.length > 0) ? 'fa-plus-circle' : 'fa - plus - square - o big'"></i>
+            </a>
+            <!-- ng-hide="hidden" ng-click="hidden = true" -->
+        </div>
+    </section>
+</ion-content>

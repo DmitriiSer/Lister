@@ -15,7 +15,30 @@
     position: relative;
     height: calc(100vh - 67px - 21px);
     overflow-y: auto;
+    z-index: 4;
 }
+#list-title-container .list-title-btn {
+    position: relative;
+    background: rgba(124, 205, 124, 0.5);
+    border-color: transparent;
+    color: #F0FFF0;
+    text-shadow: 0px 2px 5px red, 0px -2px 5px red;
+    font-family: 'Open Sans Condensed', cursive;
+    /*font-size: 18px;*/
+    line-height: 1.5;
+    border-radius: 8px;
+    -webkit-box-shadow: -1px 1px 15px 0px black;
+    -moz-box-shadow:    -1px 1px 15px 0px black;
+    box-shadow:         -1px 1px 15px 0px black;
+    z-index: auto;
+    /*overflow: hidden;*/
+    /* animation */
+    -webkit-transition: all 0.4s, font-size 0.8s;
+    -moz-transition:    all 0.4s, font-size 0.8s;
+    -o-transition:      all 0.4s, font-size 0.8s;
+    transition:         all 0.4s, font-size 0.8s;
+}
+#list-title-container .list-title-btn:first-child { margin-left: 15px; }
 .no-touchevents #list-title-container .list-title-btn:hover,
 .no-touchevents #list-title-container .list-title-btn:focus {
     background: rgba(144, 238, 144, 0.5);
@@ -25,47 +48,26 @@
     box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
 }
 .no-touchevents #list-title-container .list-title-btn:active { background: rgb(144, 238, 144); }
-#list-title-container .list-title-btn:first-child { margin-left: 15px; }
-#list-title-container .list-title-btn > div { overflow: hidden; }
-#list-title-container .list-title-btn {
-    position: relative;
-    background: rgba(124, 205, 124, 0.5);
-    border-color: transparent;
-    color: #F0FFF0;
-    text-shadow: 0px 2px 5px red, 0px -2px 5px red;
-    font-family: 'Open Sans Condensed', cursive;
-    font-size: 18px;
-    line-height: 1.5;
-    border-radius: 8px;
-    -webkit-box-shadow: -1px 1px 15px 0px black;
-    -moz-box-shadow:    -1px 1px 15px 0px black;
-    box-shadow:         -1px 1px 15px 0px black;
-    /*overflow: hidden;*/
-    /* animation */
-    -webkit-transition: all 0.4s, font-size 0.8s;
-    -moz-transition:    all 0.4s, font-size 0.8s;
-    -o-transition:      all 0.4s, font-size 0.8s;
-    transition:         all 0.4s, font-size 0.8s;
-}
-#list-title-container .list-title-btn > i {
+#list-title-container .list-title-btn-icon {
     display: inline-block;
     margin: 10px auto;
     color: rgb(144, 238, 144);
     color: rgb(124, 205, 124);
     color: #F0FFF0;
-    text-shadow: 0px 0px 15px black;
+    /*text-shadow: 0px 0px 15px black;*/
     text-shadow: 0px 0px 5px red;
     font-size: 6rem;
 }
-#list-title-container .list-title-btn > div {
+#list-title-container .list-title-btn-title {
     position: absolute;
     width: 100%;
     bottom: 0;
     background: rgba(0,0,0,0.2);
+    text-shadow: none;
+    overflow: hidden;
 }
-#list-title-container .list-title-btn > button {
+#list-title-container .list-title-btn-delete {
     position: absolute;
-    /*top: 0;*/
     right: 0;
     bottom: 0;
     padding: 0px 5px;
@@ -74,15 +76,15 @@
     border: none;
     outline: none;
 }
-#list-title-container .list-title-btn > button > i {
+#list-title-container .list-title-btn-delete > i {
     /* animation */
     -webkit-transition: -webkit-transform 0.8s;
     -moz-transition:    -moz-transform 0.8s;
     -o-transition:      -o-transform 0.6s;
     transition:         transform 0.4s;
 }
-.no-touchevents #list-title-container .list-title-btn > button > i:hover,
-.no-touchevents #list-title-container .list-title-btn > button > i:focus {
+.no-touchevents #list-title-container .list-title-btn-delete > i:hover,
+.no-touchevents #list-title-container .list-title-btn-delete > i:focus {
     -webkit-transform: scale(1.4);
     -moz-transform:    scale(1.4);
     -o-transform:      scale(1.4);
@@ -94,8 +96,6 @@
         height: 25vw;
         margin: 1%;
         padding: 0px;
-        font-size: 4vw;
-        font-weight: 700;
         border: none;
         border-radius: 2px;
         /* animation */
@@ -112,7 +112,11 @@
         -o-transform:      scale(1.1);
         transform:         scale(1.1);
     }
-    #list-title-container .list-title-btn > i { font-size: 15vmin; }
+    #list-title-container .list-title-btn-icon { font-size: 15vmin; }
+    #list-title-container .list-title-btn-title, #list-title-container .list-title-btn-delete {
+        font-size: 4vw;
+        font-weight: 700;
+    }
 }
 @media (min-width: 480px) and (max-width: 767px) {
     #list-title-container .list-title-btn {
@@ -120,7 +124,6 @@
         height: 100px;
         margin: 1%;
         padding: 0px;
-        font-size: 2rem;
         border: none;
         border-radius: 2px;
         /* animation */
@@ -137,6 +140,16 @@
         -o-transform:      scale(1.1);
         transform:         scale(1.1);
     }
+    #list-title-container .list-title-btn-icon {
+        font-size: 7rem;
+        margin-top: 5px;
+        /*line-height: 3rem;*/
+    }
+    #list-title-container .list-title-btn-title, #list-title-container .list-title-btn-delete {
+        font-size: 1.9rem;
+        font-weight: 400;
+        text-shadow: 0px 0px 2px black;
+    }
 }
 @media (min-width: 768px) {
     #list-title-container .list-title-btn {
@@ -144,17 +157,19 @@
         margin: 0 1px;
         padding: 1px 5px;
         text-shadow: 0px 0px 3px red;
-        font-size: 1.4rem;
-        font-weight: 700;
         border-radius: 0px 0px 2px 2px;
     }
     #list-title-container .list-title-btn:first-child { margin-left: 15px; }
-    #list-title-container .list-title-btn > i { display: none; }
-    #list-title-container .list-title-btn > div {
+    #list-title-container .list-title-btn-icon { display: none; }
+    #list-title-container .list-title-btn-title {
         position: relative;
         background: transparent;
     }
-    #list-title-container .list-title-btn > button { top: 0; }
+    #list-title-container .list-title-btn-title, #list-title-container .list-title-btn-delete {
+        font-size: 1.3rem;
+        font-weight: 700;
+    }
+    #list-title-container .list-title-btn-delete { top: 0; }
 }
 /************************************************************************/
 #list-title-plus-btn {
@@ -187,4 +202,13 @@
     -ms-transform: scale(1);
     -webkit-transform: scale(1);
     transform: scale(1);
+}
+#home-view ion-list ion-item, #home-view ion-list ion-item .item-content {
+    position: static;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    z-index: 10;
 }

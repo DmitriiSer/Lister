@@ -1,10 +1,10 @@
-<section>
+<section id="home-view">
     <!-- container that contains list tabs or thumbnails -->
     <div id="list-title-container">
         <!-- list title thumbnail or tab -->
-        <a href="#" class="btn" role="button"
-           title="{{listname}}"
-           ng-click="!listButtonDisabled ? getList(listname) : ''"
+        <a href="#" class="btn list-title-btn" title="{{listname}}" role="button"
+           ng-mouseup="!listButtonDisabled ? getList(listname, $event) : ''"
+           ng-contextmenu="$event.preventDefault()"
            ng-mouseenter="removeListButtonShow = true"
            ng-mouseleave="removeListButtonShow = false"
            ng-repeat="listname in userProfile.lists"
@@ -23,29 +23,11 @@
             <confirmation-content></confirmation-content>
         </a>
         <!-- add new list button and the form to type a name for a new list -->
-        <div id="list-title-plus-btn" role="button">
-            <!-- add new list button -->
-            <a href class="animate-show slow" id="list-title-plus-btn-toggle"
-               ng-init="hidden = false"
-               ng-hide="hidden"
-               ng-click="hidden = true">
-                <i class="fa" ng-class="(userProfile.lists.length > 0) ? 'fa-plus-circle' : 'fa-plus big'"></i>
-            </a>
-            <!-- the form to type a name for a new list -->
-            <form id="list-title-plus-btn-form" class="absolute-center"
-                  ng-show="hidden"
-                  ng-submit="hidden = false;
-                          addList()">
-                <label id="list-title-plus-btn-form-label" class="add-list-label">Enter list name</label>
-                <div>
-                    <input type="text" id="list-title-plus-btn-form-input"
-                           ng-keydown="($event.keyCode === 27) ? hidden = false : ''"
-                           ng-model="listName"
-                           ng-show="hidden"
-                           focus-on-show="200"/>
-                    <button id="list-title-plus-btn-form-btn" type="submit"><i class="fa fa-angle-right"></i></button>
-                </div>
-            </form>
-        </div>
+        <a href class="" animate-show slow id="list-title-plus-btn"
+           ng-show="userProfile.lists.length == 0"
+           ng-mouseup="addList($event)">
+            <i class="fa" ng-class="(userProfile.lists.length > 0) ? 'fa-plus-circle' : 'fa-plus-square-o big'"></i>
+        </a>
+        <!-- ng-hide="hidden" ng-click="hidden = true" -->
     </div>
 </section>

@@ -91,3 +91,10 @@ node_modules
 
 # Optional REPL history
 .node_repl_history
+/target1/
+
+# test files
+*test*
+/*test*
+/*/*test*
+/*/*/*test*

@@ -30,11 +30,11 @@
     -o-transform: scale(1.1);
     transform: scale(1.1);
 }
-.avatar-circle .avatars {
+.avatar-circle .avatars, .avatars.small {
     width: 32px;
     height: 40px;
 }
-.avatar-circle .avatar {
+.avatar-circle .avatar, .small .avatar {
     margin: 0;
     zoom: 0.5;
     -moz-transform:scale(0.5);

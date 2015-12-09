@@ -1,17 +1,22 @@
 <!-- new list widget -->
 <section class="no-select" id="list-editor-window-header"
-         ng-mouseenter="headerFocused = true"
-         ng-mouseleave="headerFocused = false">
-    <h3 ng-click="headerClicked = true"
+         ng-mouseenter="cursorIsAboveTheHeader = true"
+         ng-mouseleave="cursorIsAboveTheHeader = (heaaderInputIsActive) ? true : false">
+    <!--<h3 ng-click="headerClicked = true"
         ng-show="!headerClicked">
         {{listName}}
-        <!-- TODO: fix init animation -->
-        <a href class="animate-show fast" ng-show="headerFocused"><i class="fast fa fa-minus-circle" aria-hidden="true"></i></a>
-    </h3>
-    <input type="text" id="list-editor-window-header-input" value="Header"
-           ng-show="headerClicked"
+        <!-- TODO: fix init animation 
+    </h3>-->
+    <!--ng-show="headerClicked"-->
+    <input type="text" id="list-editor-window-header-input" value="Header" placeholder="List title:"
            ng-model="listName"
+           ng-focus="heaaderInputIsActive = true"
+           ng-blur="heaaderInputIsActive = false; cursorIsAboveTheHeader = false"
            ng-keypress="($event.which === 13) ? headerClicked = false : ''" autofocus/>
+    <a href class="animate-show fast" id="list-editor-window-header-delete-btn"
+       ng-show="cursorIsAboveTheHeader">
+        <i class="fast fa fa-minus-circle" aria-hidden="true"></i>
+    </a>
     <hr/>
 </section>
 <section id="list-editor-window-body">

@@ -23,6 +23,7 @@ import org.apache.logging.log4j.Logger;
 @WebServlet(name = "DataServlet", urlPatterns = {"/DataServlet"})
 public class DataServlet extends HttpServlet {
     private static final Logger logger = LogManager.getLogger(DataServlet.class);
+    private String currentDirectory = null;
     public DataServlet() {
         // load JDBC driver
         if (!DBUtils.loadDriver()) {
@@ -32,9 +33,11 @@ public class DataServlet extends HttpServlet {
         }
         // set FileUtils current directory
         //String currentDirectory = "C:\\Users\\dmitr\\workspace-nb";
-        String currentDirectory = System.getenv("OPENSHIFT_DATA_DIR");
+        currentDirectory = System.getenv("OPENSHIFT_DATA_DIR");
         FileUtils.setCurrentDirectory(currentDirectory);
-        logger.info("Current directory is \"" + currentDirectory + "\"");
+        if (currentDirectory != null) {
+            logger.info("Current directory is \"" + currentDirectory + "\"");
+        }
     }
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -133,6 +136,18 @@ public class DataServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
+            // chekc if currentDirectory is incorrect
+            if (currentDirectory == null) {
+                currentDirectory = request.getServletContext().getRealPath("/");
+                if (currentDirectory != null) {
+                    logger.info("Current directory is \"" + currentDirectory + "\"");
+                }
+            }
+            // chekc if currentDirectory is still incorrect
+            if (currentDirectory == null) {
+                response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error");
+                throw new IOException("DataServlet cannot find current directory");
+            }
             // set response type to JSON
             response.setContentType("application/json");
             // set FileUtils current directory
@@ -148,6 +163,7 @@ public class DataServlet extends HttpServlet {
                 if (DBUtils.connect()) {
                     // change list content
                     if (request.getParameter("changeList") != null) {
+                        logger.info("user [" + sessionRemoteIP + "] wants to change a list");
                         // get list content from request body
                         String listContent = (String) Utils.fromJson(DataServlet.class.getName(), request, String.class);
                         String paramListname = request.getParameter("changeList");
@@ -159,10 +175,12 @@ public class DataServlet extends HttpServlet {
                             //Utils.sendResponse(DataServlet.class.getName(), response, userList);
                         } // there is no a reference to a local file in database
                         else {
+                            response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error");
+                            throw new IOException("DataServlet cannot get data reference from the database");
                         }
                     }
                 } else {
-                    //response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error");
+                    response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error");
                     throw new IOException("DataServlet cannot connect to the database");
                 }
                 // close the connection

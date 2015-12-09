@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html ng-app="appIonicTest">
+    <head>
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <base href="/"/>
+        <!--styles-->
+        <link rel="stylesheet" type="text/css" href="lib/ionic/css/ionic.css">
+        <link rel="stylesheet" type="text/css" href="css/stylesTest.css">
+        <!--scripts-->
+        <script src="lib/ionic/js/ionic.bundle.js"></script>
+        <script type="application/javascript" src="js/appTest.js"></script>
+        <!--title-->
+        <title>Lister</title>
+    </head>
+    <body ng-controller="ionicTest">
+    <ion-side-menus enable-menu-with-back-views="false">
+        <ion-side-menu-content drag-content="true">
+            <ion-nav-bar class="bar-stable" ng-show="isLoggedIn()">
+                <ion-nav-buttons side="right">
+                    <button class="button button-icon button-clear ion-navicon" menu-toggle="right">
+                        <div class="avatar-circle">
+                            <div class="avatars absolute-center">                                            
+                                <div class="avatar {{userProfile.avatar}}"></div>
+                            </div>
+                        </div>
+                    </button>
+                </ion-nav-buttons>
+            </ion-nav-bar>
+            <ion-list show-delete="false" show-reorder="false"> 
+                <ion-item ng-repeat="item in items" 
+                          item="item"
+                          href="#/item/{{item}}" class="item-remove-animate">
+                    Item {{item}}
+                    <ion-delete-button class="ion-minus-circled"></ion-delete-button>
+                    <ion-option-button class="button-assertive">Edit</ion-option-button>
+                    <ion-option-button class="button-calm">Share</ion-option-button>
+                    <ion-reorder-button class="ion-navicon" on-reorder="moveItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
+                </ion-item>
+            </ion-list>
+        </ion-side-menu-content>
+        <!-- Side Menu -->
+        <ion-side-menu side="right" ng-show="isLoggedIn()">
+            <ion-header-bar class="bar-stable">
+                <div class="avatars small animate-show slow">
+                    <div class="avatar {{userProfile.avatar}}"></div>
+                </div>
+                <h1 class="title">{{userProfile.username}}</h1>
+            </ion-header-bar>
+            <ion-content>
+                <ion-list>
+                    <ion-item menu-close href="#" ng-click="addList($event)">Create a list</ion-item>
+                    <ion-item menu-close ng-click="logout()">Log Out</ion-item>
+                </ion-list>
+                <ion-list show-reorder="false" show-delete="false" can-swipe="true">
+                    <ion-item>
+                        Hello
+                        <ion-option-button class="button-positive" ng-click="share(item)">Share</ion-option-button>
+                    </ion-item>
+                    <ion-item>It's me</ion-item>
+                    <ion-item>I was wondering</ion-item>
+                    <ion-item>if after all these years</ion-item>
+                    <ion-item>you'd like to meet</ion-item>
+                </ion-list>
+            </ion-content>
+        </ion-side-menu>
+    </ion-side-menus>
+    <!--<ion-content>
+        <ion-list show-delete="false" show-reorder="false"> 
+            <ion-item ng-repeat="item in items" 
+                      item="item"
+                      href="#/item/{{item}}" class="item-remove-animate">
+                Item {{item}}
+                <ion-delete-button class="ion-minus-circled"></ion-delete-button>
+                <ion-option-button class="button-assertive">Edit</ion-option-button>
+                <ion-option-button class="button-calm">Share</ion-option-button>
+                <ion-reorder-button class="ion-navicon" on-reorder="moveItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
+            </ion-item>
+        </ion-list>
+    </ion-content>-->
+</body>
+</html>

@@ -1,0 +1,52 @@
+#home-view {
+}
+//TODO: change animation for 'home' state to something else or disable it at all
+#home-view.ng-enter, #home-view.ng-leave {
+    position: absolute;
+    left: 0;
+    right: 0;
+    -webkit-transition: all 5s ease-in-out;
+    -moz-transition:    all 5s ease-in-out;
+    -o-transition:      all 5s ease-in-out;
+    transition:         all 5s ease-in-out;
+}
+
+#home-view.ng-enter {
+    opacity: 0;
+    -webkit-transform:  none;/*scale3d(0.5, 0.5, 0.5);*/
+    -moz-transform:     none;/*scale3d(0.5, 0.5, 0.5);*/
+    transform:          none;/*scale3d(0.5, 0.5, 0.5);*/
+}
+
+#home-view.ng-enter-active {
+    opacity: 1;
+    -webkit-transform:  none;/*scale3d(1, 1, 1);*/
+    -moz-transform:     none;/*scale3d(1, 1, 1);*/
+    transform:          none;/*scale3d(1, 1, 1);*/
+}
+
+#home-view.ng-leave {
+    opacity: 1;
+    -webkit-transform:  none;/*translate3d(0, 0, 0);*/
+    -moz-transform:     none;/*translate3d(0, 0, 0);*/
+    transform:          none;/*translate3d(0, 0, 0);*/
+}
+#home-view.ng-leave-active {
+    opacity: 0;
+    -webkit-transform:  none;/*translate3d(100px, 0, 0);*/
+    -moz-transform:     none;/*translate3d(100px, 0, 0);*/
+    transform:          none;/*translate3d(100px, 0, 0);*/
+}
+
+.fade-in-out.ng-enter, .fade-in-out .ng-enter {
+    -webkit-animation: fadeIn 0.3s;
+    -moz-animation: fadeIn 0.3s;
+    animation: fadeIn 0.3s;
+    position: absolute;
+}
+.fade-in-out.ng-leave, .fade-in-out .ng-leave {
+    -webkit-animation: fadeOut 0.3s;
+    -moz-animation: fadeOut 0.3s;
+    animation: fadeOut 0.3s;
+    position: absolute;
+}

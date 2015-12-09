@@ -85,15 +85,31 @@
 }
 #list-editor-window-header, #list-editor-window-body, #list-editor-window-footer { background: snow; }
 /* list editor header styles */
-#list-editor-window-header { margin-bottom: -1px; padding: 10px 0 0 10px; }
+#list-editor-window-header {
+    margin-bottom: -1px;
+    padding: 5px 0 0 10px;
+    /*border: 1px solid black;*/
+}
 #list-editor-window-header hr {
     border-top: 2px solid whitesmoke;
     margin: 0;
 }
-#list-editor-window-header h3 {
+/*#list-editor-window-header h3, */
+#list-editor-window-header-input {    
     display: inline-block;
+    height: auto; /*35px;*/
     margin: 0;
-    cursor: pointer;
+    font-family: 'Lobster', cursive;
+    font-size: 1.7em;
+    /*line-height: 1em;*/
+    /*border: 1px solid black;*/
+}
+#list-editor-window-header-delete-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px 10px 0 10px;
+    font-size: 1.7em;
 }
 /*#list-editor-window-header a {
     opacity: 0;

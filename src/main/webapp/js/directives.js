@@ -1,7 +1,7 @@
 "use strict";
 (function () {
     var app = angular.module("app.directives", []);
-    /* template directives */
+    /* DOM template directives */
     app.directive("navbar", function () {
         return {
             "restrict": "E",
@@ -26,13 +26,27 @@
             "templateUrl": "partials/confirmationContent.html"
         };
     });
-    /* behavior directives */
-    app.directive('popoverClose', function () {
+    /* behavior and event directives */
+    app.directive("ngContextmenu", function ($parse) {
+        return {
+            compile: function (elem, attributes) {
+                var fn = $parse(attributes.ngContextmenu);
+                return function (scope, elem, attributes) {
+                    elem.on("contextmenu", function (e) {
+                        scope.$apply(function () {
+                            fn(scope, {$event: e});
+                        });
+                    });
+                };
+            }
+        };
+    });
+    app.directive("popoverClose", function () {
         return {
             "restrict": "A",
             link: function (scope, elem, attrs) {
 
-                element.on('click', function (event) {
+                element.on("click", function (event) {
                     alert("popoverClose");
                     console.log("popoverClose");
                 });
@@ -53,7 +67,7 @@
      });*/
     app.directive("focusOnShow", function ($timeout) {
         return {
-            restrict: 'A',
+            restrict: "A",
             link: function ($scope, $element, $attr) {
                 var timeout = ($attr["focusOnShow"] != "") ? $attr["focusOnShow"] : 0;
                 if ($attr.ngShow) {

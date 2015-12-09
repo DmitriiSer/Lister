@@ -3,29 +3,7 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand no-select" ng-click="clickTitle()">Lister</a>
-                <!--
-                data-toggle="collapse" 
-                    data-target="#navbar-collapse"
-                -->
-                <!--<ul class="nav navbar-nav navbar-toggle collapsed" role="menu_button">
-                    <li uib-dropdown uib-keyboard-nav ng-show="userProfile.loggedIn">
-                        <a href uib-dropdown-toggle
-                           role="button" 
-                           aria-expanded="false">
-                            <div class="avatar-circle">
-                                <div class="avatars absolute-center">                                            
-                                    <div class="avatar {{userProfile.avatar}}"></div>
-                                </div>
-                            </div>
-                        </a>
-                        <ul class="uib-dropdown-menu" role="menu">
-                            <li><a href="#">Create a list</a></li>
-                            <li><a href="#">Settings</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#" ng-click="logout()">Log Out</a></li>
-                        </ul>
-                    </li>
-                </ul>-->
+                <!--data-toggle="collapse" data-target="#navbar-collapse"-->
             </div>
             <ul class="nav navbar-nav navbar-right collapse navbar-collapse" role="menu_button">
                 <li uib-dropdown uib-keyboard-nav ng-show="$root.userProfile.loggedIn">
@@ -40,15 +18,15 @@
                         </div>
                     </a>
                     <ul class="uib-dropdown-menu" role="menu">
-                        <li><a href="#">Create a list</a></li>
-                        <li><a href="#">Settings</a></li>
+                        <li><a href="#" ng-click="addList($event)">Create a list</a></li>
+                        <!-- TODO: <li><a href="#">Settings</a></li> -->
                         <li class="divider"></li>
-                        <li><a href="#" ng-click="$root.logout()">Log Out</a></li>
+                        <li><a href="#" ng-click="logout()">Log Out</a></li>
                     </ul>
                 </li>
             </ul>
-            <div class="collapse navbar-collapse navbar-right" id="navbar-collapse">                        
-                <form class="nav navbar-form navbar-right" role="search">
+            <div class="collapse navbar-collapse navbar-right" id="navbar-collapse">
+                <form class="nav navbar-form navbar-right" role="search" ng-show="isLoggedIn()">
                     <input type="text" class="form-control input-xs" placeholder="Search">
                     <button type="submit" class="btn btn-default input-xs">Submit</button>
                 </form>

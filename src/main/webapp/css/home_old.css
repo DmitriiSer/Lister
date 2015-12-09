@@ -16,15 +16,15 @@
     height: calc(100vh - 67px - 21px);
     overflow-y: auto;
 }
-.no-touchevents #list-title-container .list-title-btn:hover,
-.no-touchevents #list-title-container .list-title-btn:focus {
+.no-touchevents #list-title-container > a:hover,
+.no-touchevents #list-title-container > a:focus {
     background: rgba(144, 238, 144, 0.5);
     border-color: darkgreen;
     -webkit-box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
     box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
 }
-.no-touchevents #list-title-container .list-title-btn:active { background: rgb(144, 238, 144); }
+.no-touchevents #list-title-container > a:active { background: rgb(144, 238, 144); }
 #list-title-container .list-title-btn:first-child { margin-left: 15px; }
 #list-title-container .list-title-btn > div { overflow: hidden; }
 #list-title-container .list-title-btn {
@@ -113,6 +113,12 @@
         transform:         scale(1.1);
     }
     #list-title-container .list-title-btn > i { font-size: 15vmin; }
+    #list-title-plus-btn {
+        display: block;
+        font-size: 15vmin;
+    }
+    #list-title-plus-btn-form { width: 70%; font-size: 10vw; }
+    #list-title-plus-btn-form-input { padding-right: 45px; }
 }
 @media (min-width: 480px) and (max-width: 767px) {
     #list-title-container .list-title-btn {
@@ -137,6 +143,12 @@
         -o-transform:      scale(1.1);
         transform:         scale(1.1);
     }
+    #list-title-plus-btn {
+        display: block;
+        font-size: 50px;
+    }
+    #list-title-plus-btn-form { width: 70%; font-size: 3vw; }
+    #list-title-plus-btn-form-input { padding-right: 45px; }
 }
 @media (min-width: 768px) {
     #list-title-container .list-title-btn {
@@ -155,36 +167,72 @@
         background: transparent;
     }
     #list-title-container .list-title-btn > button { top: 0; }
+    #list-title-plus-btn {
+        display: inline-block;
+        font-size: 1.4rem;
+        margin-left: 5px;
+    }
+    #list-title-plus-btn-form { width: 50%; font-size: 3vmin;/*24px;*/ }
+    #list-title-plus-btn-form-input { padding-right: 25px; }
 }
 /************************************************************************/
 #list-title-plus-btn {
-    position: absolute;
-    margin: 23vh 30vw;
-    width: 40%;
-    height: calc(54vh - 67px - 21px);
-    color: #F0FFF0;
+    padding: 0px;
+    background: transparent;
+    line-height: 1.5;
     text-align: center;
-    vertical-align: bottom;
+    border: none;
+    cursor: default;
+}
+#list-title-plus-btn-form { height: 20px; text-align: center; }
+#list-title-plus-btn-form > div { position: relative; }
+#list-title-plus-btn-form-label {
+    font-family: 'Lobster', cursive;
+    font-size: 3rem;
+    color: #F0FFF0;
     text-shadow: 0px 0px 3px red;
 }
-#list-title-plus-btn > i.big {
+#list-title-plus-btn-form-input {
+    width: 100%;
+    color: rgb(84, 139, 84);
+    text-align: center;
+    font-family: 'Lobster', cursive;
+    /*outline: none;*/
+    outline-color: rgb(84, 139, 84);
+    /*outline: 1px solid rgb(124, 205, 124);*/
+    border: none;
+    border-radius: 2px;
+    -webkit-box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow:    0px 0px 20px 10px rgba(0, 0, 0, 0.5);
+    box-shadow:         0px 0px 20px 10px rgba(0, 0, 0, 0.5);
+}
+#list-title-plus-btn-form-btn {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    padding: 0px 10px;
+    color: rgb(84, 139, 84);
+    background: transparent;
+    border: none;
+    outline: none;
+}
+#list-title-plus-btn-toggle {
+    position: absolute;
+    margin: 25vh 25vw;
+    width: 50%;
+    color: #F0FFF0;
+    text-shadow: 0px 0px 3px red;
+    text-align: center;
+    vertical-align: middle;
+}
+#list-title-plus-btn-toggle > i.big {
+    /*position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;*/
     color: rgba(255, 255, 255, 0.5);
-    font-size: 50vmin;
+    /*line-height: 50vmin;*/
+    font-size: calc(50vmin);
     text-shadow: none;
-    /* animation */
-    -webkit-transition: -webkit-transform 0.8s ease;
-    -moz-transition:    -moz-transform 0.8s ease;
-    -o-transition:      -o-transform 0.8s ease;
-    transition:         transform 0.8s ease;
-}
-.no-touchevents #list-title-plus-btn > i:hover,
-.no-touchevents #list-title-plus-btn > i:focus {
-    -ms-transform: scale(1.1);
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
-}
-.no-touchevents #list-title-plus-btn > i:not(:hover) {
-    -ms-transform: scale(1);
-    -webkit-transform: scale(1);
-    transform: scale(1);
 }

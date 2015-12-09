@@ -16,6 +16,7 @@
         <link rel="stylesheet" type="text/css" href="css/font-awesome.min.4.4.0.css">
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.3.3.5.css">
         <link rel="stylesheet" type="text/css" href="css/styles.css">
+        <link rel="stylesheet" type="text/css" href="css/animations.css">
         <link rel="stylesheet" type="text/css" href="css/avatars.css">
         <link rel="stylesheet" type="text/css" href="css/navbar.css">
         <link rel="stylesheet" type="text/css" href="css/login.css">
@@ -71,12 +72,11 @@
         <!--title-->
         <title>Lister</title>
     </head>
-    <body>
-    <ion-side-menus enable-menu-with-back-views="false">
+    <body ng-controller="RootController">
+    <ion-side-menus enable-menu-with-back-views="true">
         <ion-side-menu-content drag-content="true">
-            <ion-nav-bar class="bar-stable" ng-show="$root.isLoggedIn()">
+            <ion-nav-bar class="bar-stable" ng-show="isLoggedIn()">
                 <ion-nav-buttons side="right">
-                    <!--<button class="button button-icon button-clear ion-navicon" menu-toggle="right"></button>-->
                     <button class="button button-icon button-clear" menu-toggle="right">
                         <div class="avatar-circle">
                             <div class="avatars absolute-center">                                            
@@ -99,17 +99,35 @@
                 </footer>
             </div>
         </ion-side-menu-content>
-        <!-- Left Side Menu -->
-        <!-- Right Side Menu -->
-        <ion-side-menu side="right" ng-show="$root.isLoggedIn()">
+        <!-- Side Menu -->
+        <ion-side-menu side="right" ng-show="isLoggedIn()">
             <ion-header-bar class="bar-stable">
-                <h1 class="title">username</h1>
+                <!--<div class="avatar-circle">-->
+                <div class="avatars small animate-show slow">
+                    <div class="avatar {{userProfile.avatar}}"></div>
+                </div>
+                <!--</div>-->
+                <h1 class="title">{{userProfile.username}}</h1>
             </ion-header-bar>
             <ion-content>
                 <ion-list>
-                    <ion-item href="#/app/search" ng-click="login()">Create a list</ion-item>
-                    <ion-item href="#/app/browse">Settings</ion-item>
-                    <ion-item menu-close ng-click="$root.logout()">Log Out</ion-item>
+                    <ion-item menu-close href="#" ng-click="addList($event)">Create a list</ion-item>
+                    <!-- TODO: <ion-item href="#/app/browse">Settings</ion-item> -->
+                    <ion-item menu-close ng-click="logout()">Log Out</ion-item>
+                </ion-list>
+                <ion-list
+                    show-reorder="false"
+                    show-delete="false"
+                    can-swipe="true">
+                    <!--<ion-item ng-repeat="item in items">-->
+                    <ion-item>
+                        Hello
+                        <ion-option-button class="button-positive" ng-click="share(item)">Share</ion-option-button>
+                    </ion-item>
+                    <ion-item>It's me</ion-item>
+                    <ion-item>I was wondering</ion-item>
+                    <ion-item>if after all these years</ion-item>
+                    <ion-item>you'd like to meet</ion-item>
                 </ion-list>
             </ion-content>
         </ion-side-menu>

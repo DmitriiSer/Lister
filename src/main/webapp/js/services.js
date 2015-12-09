@@ -77,18 +77,31 @@ services.factory("session", ["$http", "server", function ($http, server) {
             isLoggedIn: function () {
                 return service.userProfile.loggedIn;
             },
-            // set opened list name
+            // set and get opened list isNew property
+            setOpenedListIsNew: function (isNew) {
+                service.openedList.isNew = isNew;
+            },
+            getOpenedListIsNew: function () {
+                return service.openedList.isNew;
+            },
+            // set and get opened list name
             setOpenedListName: function (listName) {
                 service.openedList.listName = listName;
             },
             getOpenedListName: function () {
                 return service.openedList.listName;
             },
+            // set and get opened list content
             setOpenedListContent: function (listContent) {
                 service.openedList.listContent = listContent;
             },
             getOpenedListContent: function () {
-                return JSON.parse(service.openedList.listContent);
+                var result = "{}";
+                try {
+                    result = JSON.parse(service.openedList.listContent);
+                } catch (e) {
+                }
+                return result;
             },
             // check if user already logged in
             checkIfLoggedIn: function (success, error) {

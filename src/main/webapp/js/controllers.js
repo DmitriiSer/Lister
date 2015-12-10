@@ -199,19 +199,13 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
         };
         $scope.thumbnailDropSuccess = function (index, data) {
             //console.log("thumbnailDropSuccess");
-            //alert("thumbnailDropSuccess");
+            // TODO: make the right list reordering
             if ($scope.dragList) {
                 $scope.dragList = false;
-                //alert("index = " + index + ", data = " + data);
-                //console.log("index = " + index + ", data = " + data);
-                console.log("thumbnailDropSuccess: currentObj != newObj");
-                //alert($scope.userProfile.lists);
-                //console.log($scope.userProfile.lists);
                 var currentObjIndex = $scope.userProfile.lists.indexOf(data);
                 var newObj = $scope.userProfile.lists[index];
                 $scope.userProfile.lists[index] = data;
                 $scope.userProfile.lists[currentObjIndex] = newObj;
-                //console.log($scope.userProfile.lists);
                 if(browser.isMobileOrTablet())
                     $state.reload();
             }

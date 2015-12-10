@@ -1,0 +1,29 @@
+{
+  "name": "angular-drop",
+  "version": "0.0.1",
+  "authors": [
+    "Caitlin Potter <snowball@defpixel.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "endpoint": "https://github.com/caitp/angular-drop-bower.git",
+  "main": "angular-drop.min.js",
+  "dependencies": {},
+  "homepage": "https://github.com/caitp/angular-drop-bower",
+  "_release": "0.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.1",
+    "commit": "9576629733179239554451659cc637fe3e00800f"
+  },
+  "_source": "git://github.com/caitp/angular-drop-bower.git",
+  "_target": "~0.0.1",
+  "_originalSource": "angular-drop",
+  "_direct": true
+}

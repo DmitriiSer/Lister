@@ -27,6 +27,27 @@
         };
     });
     /* behavior and event directives */
+    app.directive("ngWidth", ["$window", "$timeout", "$ionicSideMenuDelegate",
+        function ($window, $timeout, $ionicSideMenuDelegate) {
+            return function (scope, elem) {
+                scope.getWindowWidth = function () {
+                    return $window.innerWidth;
+                };
+                scope.$watch(scope.getWindowWidth, function (val) {
+                    scope.windowWidth = val;
+                });
+                angular.element($window).bind("resize", function () {
+                    if (scope.windowWidth < 768)
+                        $ionicSideMenuDelegate.canDragContent(true);
+                    else
+                        $ionicSideMenuDelegate.canDragContent(false);
+                    scope.$apply();
+                });
+                $timeout(function () {
+                    angular.element($window).triggerHandler("resize");
+                });
+            }
+        }]);
     app.directive("ngContextmenu", function ($parse) {
         return {
             compile: function (elem, attributes) {

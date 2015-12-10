@@ -6,14 +6,14 @@
                 <!--data-toggle="collapse" data-target="#navbar-collapse"-->
             </div>
             <ul class="nav navbar-nav navbar-right collapse navbar-collapse" role="menu_button">
-                <li uib-dropdown uib-keyboard-nav ng-show="$root.userProfile.loggedIn">
+                <li uib-dropdown uib-keyboard-nav ng-show="userProfile.loggedIn">
                     <a href uib-dropdown-toggle
                        role="button" 
                        aria-expanded="false">
-                        <h4 class="navbar-text">{{$root.userProfile.username}}</h4>
+                        <h4 class="navbar-text">{{userProfile.username}}</h4>
                         <div class="avatar-circle">
                             <div class="avatars absolute-center">                                            
-                                <div class="avatar {{$root.userProfile.avatar}}"></div>
+                                <div class="avatar {{userProfile.avatar}}"></div>
                             </div>
                         </div>
                     </a>

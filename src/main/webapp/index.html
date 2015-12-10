@@ -34,12 +34,13 @@
         <!-- Already inside the ionic.bundle
         <script type="application/javascript" src="lib/angular.1.4.7.js"></script>
         <script type="application/javascript" src="lib/angular-animate.min.1.4.7.js"></script>
+        <script type="application/javascript" src="lib/angular-ui-router.0.2.15.js"></script>
         <script type="application/javascript" src="lib/angular-sanitize.min.1.5.0.js"></script>
         -->
-        <!-- Using UI.router instead that is inside the ionic.bundle
-        <script type="application/javascript" src="lib/angular-ui-router.0.2.15.js"></script>-->
         <script type="application/javascript" src="lib/ui-bootstrap-tpls-0.14.0.min.js"></script>
         <script type="application/javascript" src="lib/velocity.min.1.2.3.js"></script>
+        <!-- <script type="application/javascript" src="lib/angular-drop/angular-drop.js"></script> -->
+        <script type="application/javascript" src="lib/ngDraggable/ngDraggable.js"></script>
         <script type="application/javascript" src="lib/textarea-caret-position.js"></script>
         <script type="application/javascript" src="lib/sha3.3.1.2.js"></script>
         <!-- fastclick and it's init script for smoother click events on mobile platforms
@@ -67,12 +68,12 @@
         <script type="text/ng-template" id="avatarPopoverHtml.html">
             <div ng-include="'partials/avatarPopoverHtml.html'" ng-mouseup="chooseAvatar($event)"></div>
         </script>
-        <!-- no enabled javascript-->
-        <noscript>Your browser does not support JavaScript!</noscript>
         <!--title-->
         <title>Lister</title>
+        <!-- no enabled javascript-->
+        <noscript>Your browser does not support JavaScript!</noscript>
     </head>
-    <body ng-controller="RootController">
+    <body ng-controller="RootController" ng-width>
     <ion-side-menus enable-menu-with-back-views="true">
         <ion-side-menu-content drag-content="true">
             <ion-nav-bar class="bar-stable" ng-show="isLoggedIn()">
@@ -102,7 +103,7 @@
         <!-- Side Menu -->
         <ion-side-menu side="right" ng-show="isLoggedIn()">
             <ion-header-bar class="bar-stable">
-                <!--<div class="avatar-circle">-->
+                <!--<div class="avatar-circle">
                 <div class="avatars small animate-show slow">
                     <div class="avatar {{userProfile.avatar}}"></div>
                 </div>

@@ -15,17 +15,17 @@
     position: relative;
     height: calc(100vh - 67px - 21px);
     overflow-y: auto;
-    z-index: 4;
+    z-index: auto;
 }
 #list-title-container .list-title-btn {
     position: relative;
     background: rgba(124, 205, 124, 0.5);
-    border-color: transparent;
     color: #F0FFF0;
     text-shadow: 0px 2px 5px red, 0px -2px 5px red;
     font-family: 'Open Sans Condensed', cursive;
     /*font-size: 18px;*/
     line-height: 1.5;
+    border-color: transparent;
     border-radius: 8px;
     -webkit-box-shadow: -1px 1px 15px 0px black;
     -moz-box-shadow:    -1px 1px 15px 0px black;
@@ -39,15 +39,14 @@
     transition:         all 0.4s, font-size 0.8s;
 }
 #list-title-container .list-title-btn:first-child { margin-left: 15px; }
-.no-touchevents #list-title-container .list-title-btn:hover,
-.no-touchevents #list-title-container .list-title-btn:focus {
-    background: rgba(144, 238, 144, 0.5);
-    border-color: darkgreen;
-    -webkit-box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
-    box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
+#list-title-container .list-title-btn:active {
+    /*background: rgb(144, 238, 144);*/
+    background: transparent;
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 }
-.no-touchevents #list-title-container .list-title-btn:active { background: rgb(144, 238, 144); }
 #list-title-container .list-title-btn-icon {
     display: inline-block;
     margin: 10px auto;
@@ -57,6 +56,7 @@
     /*text-shadow: 0px 0px 15px black;*/
     text-shadow: 0px 0px 5px red;
     font-size: 6rem;
+    z-index: auto;
 }
 #list-title-container .list-title-btn-title {
     position: absolute;
@@ -64,6 +64,7 @@
     bottom: 0;
     background: rgba(0,0,0,0.2);
     text-shadow: none;
+    z-index: auto;
     overflow: hidden;
 }
 #list-title-container .list-title-btn-delete {
@@ -74,7 +75,9 @@
     color: #F0FFF0;
     background: rgba(0,0,0,0.4);
     border: none;
+    border-bottom-right-radius: 3px;
     outline: none;
+    z-index: auto;
 }
 #list-title-container .list-title-btn-delete > i {
     /* animation */
@@ -169,7 +172,11 @@
         font-size: 1.3rem;
         font-weight: 700;
     }
-    #list-title-container .list-title-btn-delete { top: 0; }
+    #list-title-container .list-title-btn-delete {
+        top: 0;
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+    }
 }
 /************************************************************************/
 #list-title-plus-btn {
@@ -198,7 +205,7 @@
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
 }
-.no-touchevents #list-title-plus-btn > i:not(:hover) {
+#list-title-plus-btn > i:not(:hover) {
     -ms-transform: scale(1);
     -webkit-transform: scale(1);
     transform: scale(1);
@@ -210,5 +217,27 @@
     padding: 0;
     background: transparent;
     border: none;
-    z-index: 10;
+    z-index: auto;
+}
+.no-touchevents #home-view ion-list ion-item:hover,
+.no-touchevents #home-view ion-list ion-item:focus {
+    background: rgba(144, 238, 144, 0.5);
+    border-color: darkgreen;
+    -webkit-box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
+}
+#home-view ion-list ion-item:active {
+    padding: 0;
+    background: rgba(144, 238, 144, 0.5);
+    border-color: darkgreen;
+    border-radius: 2px;
+    -webkit-box-shadow: -1px 1px 15px 0px black;
+    -moz-box-shadow:    -1px 1px 15px 0px black;
+    box-shadow:         -1px 1px 15px 0px black;
+}
+#list-title-container .list-title-btn.drag-enter {
+    -webkit-box-shadow: inset -1px 1px 15px 0px black;
+    -moz-box-shadow:    inset -1px 1px 15px 0px black;
+    box-shadow:         inset -1px 1px 15px 0px black;
 }

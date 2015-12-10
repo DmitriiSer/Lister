@@ -1,6 +1,6 @@
 "use strict";
 /* Angular app */
-var app = angular.module("appLister", ["ionic", "ui.bootstrap",
+var app = angular.module("appLister", ["ionic", "ui.bootstrap", /*"ui.drop",*/"ngDraggable",
     /*"ngAnimate", "ngRoute", "ngSanitize", "ui.router", */
     "app.directives", "app.controllers"]);
 app.run(["$ionicHistory", "$ionicPlatform", "$ionicActionSheet", "$window", "$state", "$rootScope", "$http", "session",

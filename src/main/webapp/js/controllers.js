@@ -4,20 +4,24 @@ var controllers = angular.module("app.controllers", ["app.services"]);
 controllers.controller("RootController", ["$scope", "$state", "$ionicActionSheet", "session",
     function ($scope, $state, $ionicActionSheet, session) {
         console.debug("RootController was loaded");
+        $scope.userProfile = {username: ""};
+        $scope.updateUserProfile = function (userProfile) {
+            $scope.userProfile = userProfile;
+        };
+        $scope.listNameToRemove = "";
         $scope.clickTitle = function () {
             // Show the action sheet
             var hideSheet = $ionicActionSheet.show({
+                titleText: 'Lister Options',
                 buttons: [
-                    {text: '<b>Share</b> This'},
+                    {text: '<i>Share</i> This'},
                     {text: 'Move'}
                 ],
-                destructiveText: 'Delete',
-                titleText: 'Modify your album',
+                /*destructiveText: 'Delete',*/
                 cancelText: 'Cancel',
-                cancel: function () {
-                    // add cancel code..
-                },
+                /*cancel: function () {},*/
                 buttonClicked: function (index) {
+                    alert(index);
                     return true;
                 }
             });
@@ -61,8 +65,8 @@ controllers.controller("RootController", ["$scope", "$state", "$ionicActionSheet
             });
         };
     }]);
-controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$http", "$uibModal", "server", "browser", "session",
-    function ($rootScope, $scope, $state, $http, $uibModal, server, browser, session) {
+controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$timeout", "$http", "$uibModal", "$ionicScrollDelegate", "$ionicSideMenuDelegate", "server", "browser", "session",
+    function ($rootScope, $scope, $state, $timeout, $http, $uibModal, $ionicScrollDelegate, $ionicSideMenuDelegate, server, browser, session) {
         console.debug("HomeController was loaded");
         $scope.listButtonDisabled = false;
         // happens when ng-view loaded
@@ -115,7 +119,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ht
             });
         }
         //
-        $rootScope.userProfile = session.getUserProfile();
+        $scope.$parent.updateUserProfile(session.getUserProfile());
         //
         $scope.dataError = function (data) {
             var data = JSON.stringify(data);
@@ -126,32 +130,6 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ht
             data = data.split(/[<>-]/)[3].trim();
             console.error(data);
         };
-        /*$scope.addList = function (e) {
-         if ($scope.listName === undefined)
-         $scope.listName = "";
-         if (e.which == 1) {
-         if ($scope.listName != "") {
-         // create a list
-         console.log("addList: $scope.listName = \"%s\"", $scope.listName);
-         $scope.userProfile = session.getUserProfile();
-         // send information to the server
-         $http.get(server.servletPath() + "/DataServlet?addList=" + $scope.listName).then(function (response) {
-         console.log("addList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
-         $scope.userProfile.lists.push($scope.listName);
-         session.setOpenedListName($scope.listName);
-         session.setOpenedListContent("{}");
-         $state.go("listEditor");
-         }, function (response) {
-         $scope.dataError(response.data);
-         });
-         } else {
-         session.setOpenedListIsNew(true);
-         session.setOpenedListName($scope.listName);
-         session.setOpenedListContent("{}");
-         $state.go("listEditor");
-         }
-         }
-         };*/
         $scope.removeListButtonMouseenter = function () {
             $scope.listButtonDisabled = true;
         };
@@ -200,6 +178,42 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ht
                 }, function (response) {
                     $scope.dataError(response.data);
                 });
+            }
+        };
+        //
+        $scope.pullToRefreshDoRefresh = function () {
+            $state.go("index");
+            $scope.$broadcast("scroll.refreshComplete");
+        };
+        $scope.thumbnailDragStart = function () {
+            //console.log("thumbnailDragStart");
+            $scope.dragList = true;
+            $ionicScrollDelegate.freezeScroll(true);
+            $ionicSideMenuDelegate.canDragContent(false);
+        };
+        $scope.thumbnailDragStop = function () {
+            //console.log("thumbnailDragStop");
+            $ionicScrollDelegate.freezeScroll(false);
+            if ($scope.windowWidth < 768)
+                $ionicSideMenuDelegate.canDragContent(true);
+        };
+        $scope.thumbnailDropSuccess = function (index, data) {
+            //console.log("thumbnailDropSuccess");
+            //alert("thumbnailDropSuccess");
+            if ($scope.dragList) {
+                $scope.dragList = false;
+                //alert("index = " + index + ", data = " + data);
+                //console.log("index = " + index + ", data = " + data);
+                console.log("thumbnailDropSuccess: currentObj != newObj");
+                //alert($scope.userProfile.lists);
+                //console.log($scope.userProfile.lists);
+                var currentObjIndex = $scope.userProfile.lists.indexOf(data);
+                var newObj = $scope.userProfile.lists[index];
+                $scope.userProfile.lists[index] = data;
+                $scope.userProfile.lists[currentObjIndex] = newObj;
+                //console.log($scope.userProfile.lists);
+                if(browser.isMobileOrTablet())
+                    $state.reload();
             }
         };
     }]);

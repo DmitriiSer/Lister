@@ -24,6 +24,7 @@
 }
 .no-touchevents .navbar .navbar-brand:hover,
 .no-touchevents .navbar .navbar-brand:focus { color: #FFE0C0; }
+.navbar .navbar-brand:active { color: #F0FFF0; }
 /* navbar toggle button */
 .navbar-toggle {
     position: absolute;

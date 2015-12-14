@@ -182,7 +182,6 @@ angular.module("ngDraggable", [])
                             if (!_dragEnabled)
                                 return;
                             evt.preventDefault();
-
                             if (!element.hasClass('dragging')) {
                                 _data = getDragData(scope);
                                 element.addClass('dragging');
@@ -194,10 +193,37 @@ angular.module("ngDraggable", [])
                                     });
                                 }
                             }
-
                             _mx = ngDraggable.inputEvent(evt).pageX;//ngDraggable.getEventProp(evt, 'pageX');
                             _my = ngDraggable.inputEvent(evt).pageY;//ngDraggable.getEventProp(evt, 'pageY');
 
+
+                            //console.log(_dragOffset.left);
+                            //console.log("element.centerX = %s, _mx = %s, _tx = %s", element.centerX, _mx, _tx);
+                            /****************************************************/
+                            //console.log(element[0].getBoundingClientRect().right - element[0].getBoundingClientRect().left);
+                            var elementWidth = element[0].getBoundingClientRect().right - element[0].getBoundingClientRect().left;
+                            var offsetDifference = element[0].getBoundingClientRect().left - offset.left - _tx;
+                            console.log("offsetDifference = %s", offsetDifference.toFixed(2));
+                            if (Math.abs(offsetDifference) > 10) {
+                                console.log("YUCK happened");
+                                //console.log("%s - %s = %s", offset.left - element[0].getBoundingClientRect().left, Math.abs(_tx), Math.abs(offset.left - element[0].getBoundingClientRect().left) - Math.abs(_tx));
+                                offset = element[0].getBoundingClientRect();
+                                if (allowTransform)
+                                    _dragOffset = offset;
+                                else {
+                                    _dragOffset = {left: document.body.scrollLeft, top: document.body.scrollTop};
+                                }
+                                /*
+                                 element.centerX = element[0].offsetWidth / 2;
+                                 element.centerY = element[0].offsetHeight / 2;
+                                 */
+                                _mrx = _mx - offset.left;
+                                _mry = _my - offset.top;
+                                _dragOffset.left -= offsetDifference;
+                            }
+                            console.log("offsetDifference = %s, element[0].getBoundingClientRect().left = %s, offset.left = %s, _dragOffset.left = %s, _mx = %s, _tx = %s",
+                                    offsetDifference.toFixed(2), element[0].getBoundingClientRect().left.toFixed(2), offset.left.toFixed(2), _dragOffset.left.toFixed(2), _mx, _tx.toFixed(2));
+                            /****************************************************/
                             if (_centerAnchor) {
                                 _tx = _mx - element.centerX - _dragOffset.left;
                                 _ty = _my - element.centerY - _dragOffset.top;

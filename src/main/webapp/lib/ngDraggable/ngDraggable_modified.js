@@ -195,12 +195,17 @@ angular.module("ngDraggable", [])
                             }
                             _mx = ngDraggable.inputEvent(evt).pageX;//ngDraggable.getEventProp(evt, 'pageX');
                             _my = ngDraggable.inputEvent(evt).pageY;//ngDraggable.getEventProp(evt, 'pageY');
-
+                            if (_centerAnchor) {
+                                _tx = _mx - element.centerX - _dragOffset.left;
+                                _ty = _my - element.centerY - _dragOffset.top;
+                            } else {
+                                _tx = _mx - _mrx - _dragOffset.left;
+                                _ty = _my - _mry - _dragOffset.top;
+                            }
 
                             //console.log(_dragOffset.left);
                             //console.log("element.centerX = %s, _mx = %s, _tx = %s", element.centerX, _mx, _tx);
-                            /****************************************************/
-                            //console.log(element[0].getBoundingClientRect().right - element[0].getBoundingClientRect().left);
+                            /****************************************************
                             var elementWidth = element[0].getBoundingClientRect().right - element[0].getBoundingClientRect().left;
                             var offsetDifference = element[0].getBoundingClientRect().left - offset.left - _tx;
                             console.log("offsetDifference = %s", offsetDifference.toFixed(2));
@@ -213,27 +218,14 @@ angular.module("ngDraggable", [])
                                 else {
                                     _dragOffset = {left: document.body.scrollLeft, top: document.body.scrollTop};
                                 }
-                                /*
-                                 element.centerX = element[0].offsetWidth / 2;
-                                 element.centerY = element[0].offsetHeight / 2;
-                                 */
                                 _mrx = _mx - offset.left;
                                 _mry = _my - offset.top;
                                 _dragOffset.left -= offsetDifference;
                             }
                             console.log("offsetDifference = %s, element[0].getBoundingClientRect().left = %s, offset.left = %s, _dragOffset.left = %s, _mx = %s, _tx = %s",
                                     offsetDifference.toFixed(2), element[0].getBoundingClientRect().left.toFixed(2), offset.left.toFixed(2), _dragOffset.left.toFixed(2), _mx, _tx.toFixed(2));
-                            /****************************************************/
-                            if (_centerAnchor) {
-                                _tx = _mx - element.centerX - _dragOffset.left;
-                                _ty = _my - element.centerY - _dragOffset.top;
-                            } else {
-                                _tx = _mx - _mrx - _dragOffset.left;
-                                _ty = _my - _mry - _dragOffset.top;
-                            }
-
+                            ****************************************************/
                             moveElement(_tx, _ty);
-
                             $rootScope.$broadcast('draggable:move', {x: _mx, y: _my, tx: _tx, ty: _ty, event: evt, element: element, data: _data, uid: _myid, dragOffset: _dragOffset});
                         };
                         var onrelease = function (evt) {

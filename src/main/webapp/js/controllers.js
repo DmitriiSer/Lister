@@ -217,10 +217,10 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
             if (index != currentObjIndex) {
                 var newObj = $scope.userProfile.lists[index];
                 //console.log("data = %s, newObj = %s", data, newObj);
-                console.log("$scope.userProfile.lists before switching = %s", JSON.stringify($scope.userProfile.lists));
+                //console.log("$scope.userProfile.lists before switching = %s", JSON.stringify($scope.userProfile.lists));
                 $scope.userProfile.lists[index] = data;
                 $scope.userProfile.lists[currentObjIndex] = newObj;
-                console.log("$scope.userProfile.lists after switching = %s", JSON.stringify($scope.userProfile.lists));
+                //console.log("$scope.userProfile.lists after switching = %s", JSON.stringify($scope.userProfile.lists));
                 //console.log("thumbnailDropEnter: index = %s, currentObjIndex = %s", index, currentObjIndex);
             }
             //alert("thumbnailDragEnter");

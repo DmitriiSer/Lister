@@ -19,6 +19,7 @@
 }
 #list-title-container .list-title-btn {
     position: relative;
+    padding: 0px;
     background: rgba(124, 205, 124, 0.5);
     color: #F0FFF0;
     text-shadow: 0px 2px 5px red, 0px -2px 5px red;
@@ -98,7 +99,6 @@
         width: 30.66666%;
         height: 25vw;
         margin: 1%;
-        padding: 0px;
         border: none;
         border-radius: 2px;
         /* animation */
@@ -126,7 +126,6 @@
         width: 22.5%;        
         height: 100px;
         margin: 1%;
-        padding: 0px;
         border: none;
         border-radius: 2px;
         /* animation */
@@ -158,9 +157,11 @@
     #list-title-container .list-title-btn {
         width: 100px;
         margin: 0 1px;
-        padding: 1px 5px;
         text-shadow: 0px 0px 3px red;
         border-radius: 0px 0px 2px 2px;
+    }
+    #list-title-container ion-list ion-item {
+        padding: 1px 5px;
     }
     #list-title-container .list-title-btn:first-child { margin-left: 15px; }
     #list-title-container .list-title-btn-icon { display: none; }
@@ -177,6 +178,12 @@
         border-top-right-radius: 2px;
         border-bottom-right-radius: 2px;
     }
+}
+/************************************************************************/
+[pulling-text] * {
+    color: snow;
+    text-shadow:    2px 0px 3px rgba(84, 139, 84, 1), -2px 0px 3px rgba(84, 139, 84, 1),
+        0px -2px 3px rgba(84, 139, 84, 1), 0px 2px 3px rgba(84, 139, 84, 1);
 }
 /************************************************************************/
 #list-title-plus-btn {
@@ -210,7 +217,7 @@
     -webkit-transform: scale(1);
     transform: scale(1);
 }
-#home-view ion-list ion-item, #home-view ion-list ion-item .item-content {
+#list-title-container ion-list ion-item, #list-title-container ion-list ion-item .item-content {
     position: static;
     height: 100%;
     margin: 0;
@@ -219,15 +226,15 @@
     border: none;
     z-index: auto;
 }
-.no-touchevents #home-view ion-list ion-item:hover,
-.no-touchevents #home-view ion-list ion-item:focus {
+.no-touchevents #list-title-container ion-list ion-item:hover,
+.no-touchevents #list-title-container ion-list ion-item:focus {
     background: rgba(144, 238, 144, 0.5);
     border-color: darkgreen;
     -webkit-box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
     box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
 }
-#home-view ion-list ion-item:active {
+#list-title-container ion-list ion-item:active {
     padding: 0;
     background: rgba(144, 238, 144, 0.5);
     border-color: darkgreen;
@@ -240,4 +247,10 @@
     -webkit-box-shadow: inset -1px 1px 15px 0px black;
     -moz-box-shadow:    inset -1px 1px 15px 0px black;
     box-shadow:         inset -1px 1px 15px 0px black;
+    /* animation */
+    -webkit-transition: -webkit-transform 2s;
+    -moz-transition:    -moz-transform 2s;
+    -ms-transition:     -ms-transform 2s;
+    -o-transition:      -o-transform 2s;
+    transition:         transform 2s;
 }

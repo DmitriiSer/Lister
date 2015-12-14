@@ -5,15 +5,16 @@
         on-pulling="pullToRefreshDoPull()"
         on-refresh="pullToRefreshDoRefresh()">
     </ion-refresher>
-    <section id="home-view">
+    <section>
         <!-- container that contains list tabs or thumbnails -->
         <div id="list-title-container">            
             <ion-list show-reorder="false" show-delete="false" can-swipe="true">
                 <a href="#" class="btn list-title-btn" title="{{listname}}" role="button"
                    ng-drop="true"
                    ng-drag-start="thumbnailDragStart()"
+                   ng-drag-stop="thumbnailDragStop()"
                    ng-drop-success="thumbnailDropSuccess($index, $data)"
-                   ng-drag-stop="thumbnailDragStop()"                   
+                   ng-drag-enter="thumbnailDropEnter($index, $data)"
 
                    on-release="(!listButtonDisabled && !dragList) ? getList(listname, $event) : ''"
                    ng-contextmenu="$event.preventDefault1()"
@@ -22,6 +23,7 @@
                    ng-repeat="listname in userProfile.lists"
                    ng-show="userProfile.lists.length > 0">
                     <ion-item ng-drag="true"
+                              ng-drag-touch-timeout="200"
                               ng-drag-data="'{{listname}}'"
                               ng-center-anchor="true">
                         <!-- list icon for phones and tablets representation -->
@@ -72,7 +74,7 @@
             <a href class="" animate-show slow id="list-title-plus-btn"
                ng-show="userProfile.lists.length == 0"
                ng-mouseup="addList($event)">
-                <i class="fa" ng-class="(userProfile.lists.length > 0) ? 'fa-plus-circle' : 'fa - plus - square - o big'"></i>
+                <i class="fa fa-plus-square-o" ng-class="(userProfile.lists.length == 0) ? 'big' : ''"></i>
             </a>
             <!-- ng-hide="hidden" ng-click="hidden = true" -->
         </div>

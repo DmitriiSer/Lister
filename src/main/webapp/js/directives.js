@@ -48,20 +48,20 @@
                 });
             }
         }]);
-    app.directive("ngContextmenu", function ($parse) {
-        return {
-            compile: function (elem, attributes) {
-                var fn = $parse(attributes.ngContextmenu);
-                return function (scope, elem, attributes) {
-                    elem.on("contextmenu", function (e) {
-                        scope.$apply(function () {
-                            fn(scope, {$event: e});
+    app.directive("ngContextmenu", ["$parse", function ($parse) {
+            return {
+                compile: function (elem, attributes) {
+                    var fn = $parse(attributes.ngContextmenu);
+                    return function (scope, elem, attributes) {
+                        elem.on("contextmenu", function (e) {
+                            scope.$apply(function () {
+                                fn(scope, {$event: e});
+                            });
                         });
-                    });
-                };
-            }
-        };
-    });
+                    };
+                }
+            };
+        }]);
     app.directive("popoverClose", function () {
         return {
             "restrict": "A",
@@ -86,30 +86,30 @@
      });
      };
      });*/
-    app.directive("focusOnShow", function ($timeout) {
-        return {
-            restrict: "A",
-            link: function ($scope, $element, $attr) {
-                var timeout = ($attr["focusOnShow"] != "") ? $attr["focusOnShow"] : 0;
-                if ($attr.ngShow) {
-                    $scope.$watch($attr.ngShow, function (newValue) {
-                        if (newValue) {
-                            $timeout(function () {
-                                $element[0].focus();
-                            }, timeout);
-                        }
-                    })
+    app.directive("focusOnShow", ["$timeout", function ($timeout) {
+            return {
+                restrict: "A",
+                link: function ($scope, $element, $attr) {
+                    var timeout = ($attr["focusOnShow"] != "") ? $attr["focusOnShow"] : 0;
+                    if ($attr.ngShow) {
+                        $scope.$watch($attr.ngShow, function (newValue) {
+                            if (newValue) {
+                                $timeout(function () {
+                                    $element[0].focus();
+                                }, timeout);
+                            }
+                        })
+                    }
+                    if ($attr.ngHide) {
+                        $scope.$watch($attr.ngHide, function (newValue) {
+                            if (!newValue) {
+                                $timeout(function () {
+                                    $element[0].focus();
+                                }, timeout);
+                            }
+                        })
+                    }
                 }
-                if ($attr.ngHide) {
-                    $scope.$watch($attr.ngHide, function (newValue) {
-                        if (!newValue) {
-                            $timeout(function () {
-                                $element[0].focus();
-                            }, timeout);
-                        }
-                    })
-                }
-            }
-        };
-    })
+            };
+        }]);
 })();

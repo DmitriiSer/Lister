@@ -4,7 +4,7 @@ var controllers = angular.module("app.controllers", ["app.services"]);
 controllers.controller("RootController", ["$scope", "$state", "$ionicActionSheet", "session",
     function ($scope, $state, $ionicActionSheet, session) {
         console.debug("RootController was loaded");
-        $scope.userProfile = {username: ""};
+        $scope.userProfile = {};
         $scope.updateUserProfile = function (userProfile) {
             $scope.userProfile = userProfile;
         };
@@ -167,7 +167,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
         };
         $scope.getList = function (listName, e) {
             //console.log("$scope.listButtonDisabled = %s", $scope.listButtonDisabled);
-            console.log(e.which);
+            //console.log(e.which);
             //alert(e.which);
             if (e.which == 1 || e.which == undefined) {
                 $http.get(server.servletPath() + "/DataServlet?getList=" + listName).then(function (response) {
@@ -206,9 +206,24 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                 var newObj = $scope.userProfile.lists[index];
                 $scope.userProfile.lists[index] = data;
                 $scope.userProfile.lists[currentObjIndex] = newObj;
-                if(browser.isMobileOrTablet())
+                if (browser.isMobileOrTablet())
                     $state.reload();
             }
+        };
+        $scope.thumbnailDropEnter = function (index, data) {
+            //console.log("thumbnailDropEnter");
+            //console.log("index = %s, data = %s", index, data);
+            var currentObjIndex = $scope.userProfile.lists.indexOf(data);
+            if (index != currentObjIndex) {
+                var newObj = $scope.userProfile.lists[index];
+                //console.log("data = %s, newObj = %s", data, newObj);
+                console.log("$scope.userProfile.lists before switching = %s", JSON.stringify($scope.userProfile.lists));
+                $scope.userProfile.lists[index] = data;
+                $scope.userProfile.lists[currentObjIndex] = newObj;
+                console.log("$scope.userProfile.lists after switching = %s", JSON.stringify($scope.userProfile.lists));
+                //console.log("thumbnailDropEnter: index = %s, currentObjIndex = %s", index, currentObjIndex);
+            }
+            //alert("thumbnailDragEnter");
         };
     }]);
 controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$http", "server", "browser", "session",
@@ -217,7 +232,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$h
         // default variables
         $scope.loginWindow = true;
         //TODO: remove $scope.userProfile
-        $scope.userProfile = {username: "Ed", password: "Ed!23", avatar: ""};
+        $scope.userProfile = {username: "demo", password: "Qwerty!23", avatar: ""};
         $scope.passwordStrength = {
             minimumLength: false,
             recommendLength: false,
@@ -446,10 +461,14 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
          ]};*/
         // updating checkbox column data
         var updateCheckboxColumnData = function () {
-            var arr = new Array();
-            for (var i = 0; i < $scope.data.body.length; i++)
-                arr.push($scope.data.body[i].checked);
-            return arr;
+            console.log(JSON.stringify($scope.data));
+            if ($scope.data.body !== undefined) {
+                var arr = new Array();
+                for (var i = 0; i < $scope.data.body.length; i++)
+                    arr.push($scope.data.body[i].checked);
+                return arr;
+            }
+            return null;
         };
         // updating additional column data
         var updateAdditionalColumnsData = function () {

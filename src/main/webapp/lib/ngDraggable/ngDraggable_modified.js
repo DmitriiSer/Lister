@@ -168,7 +168,6 @@ angular.module("ngDraggable", [])
                                 _tx = _mx - _mrx - $window.pageXOffset;
                                 _ty = _my - _mry - $window.pageYOffset;
                             }
-                            console.log(_tx);
                             $document.on(_moveEvents, onmove);
                             $document.on(_releaseEvents, onrelease);
                             // This event is used to receive manually triggered mouse move events
@@ -321,7 +320,6 @@ angular.module("ngDraggable", [])
                         var onDragMove = function (evt, obj) {
                             if (!_dropEnabled)
                                 return;
-                            console.log(obj);
                             isTouching(obj.x, obj.y, obj.element, evt, obj);
 
                             if (attrs.ngDragMove) {

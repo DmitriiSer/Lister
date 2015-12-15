@@ -15,7 +15,7 @@ Lister uses a number of open source projects to work properly:
 * [Font Awesome Icons](https://fortawesome.github.io/Font-Awesome/icons/) - The complete set of 605 icons in Font Awesome 4.5.0
 * [UI Bootstrap](https://angular-ui.github.io/bootstrap/) - Bootstrap components written in pure [AngularJS] by the [AngularUI Team](http://angular-ui.github.io/)
 * [Velocity.js](http://julian.com/research/velocity/) - Accelerated JavaScript animation
-* [textarea-caret-position](https://github.com/component/textarea-caret-position) - Get the top and left coordinates of the caret in a <textarea> or <input type="text">, in pixels
+* [textarea-caret-position](https://github.com/component/textarea-caret-position) - Get the top and left coordinates of the caret in a [textarea] or [input type="text"], in pixels
 * [SHA-3](https://code.google.com/p/crypto-js/#SHA-3) - SHA-3 is the winner of a five-year competition to select a new cryptographic hash algorithm where 64 competing designs were evaluated
 
 And of course **Lister** itself is open source with a [public repository](https://github.com/DmitriiSer/Lister)

@@ -65,8 +65,8 @@ controllers.controller("RootController", ["$scope", "$state", "$ionicActionSheet
             });
         };
     }]);
-controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$timeout", "$http", "$uibModal", "$ionicScrollDelegate", "$ionicSideMenuDelegate", "server", "browser", "session",
-    function ($rootScope, $scope, $state, $timeout, $http, $uibModal, $ionicScrollDelegate, $ionicSideMenuDelegate, server, browser, session) {
+controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$timeout", "$http", "$uibModal", "$ionicScrollDelegate", "$ionicSideMenuDelegate", "$ionicActionSheet", "server", "browser", "session",
+    function ($rootScope, $scope, $state, $timeout, $http, $uibModal, $ionicScrollDelegate, $ionicSideMenuDelegate, $ionicActionSheet, server, browser, session) {
         console.debug("HomeController was loaded");
         $scope.listButtonDisabled = false;
         // happens when ng-view loaded
@@ -218,6 +218,37 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                 $scope.userProfile.lists[index] = data;
                 $scope.userProfile.lists[currentObjIndex] = newObj;
             }
+        };
+        $scope.thumbnailHold = function () {
+            //console.log("thumbnailHold");
+            $scope.listHold = true;
+            // Show the action sheet
+            var hideSheet = $ionicActionSheet.show({
+                buttons: [
+                    {text: '<b>Share</b>'},
+                    {text: 'Move'}
+                ],
+                destructiveText: 'Delete',
+                cancelText: 'Cancel',
+                /*cancel: function () {},*/
+                buttonClicked: function (index) {
+                    switch (index) {
+                        case 1:
+                            alert(index);
+                            break;
+                    }
+                    
+                    return true;
+                }
+            });
+            // For example's sake, hide the sheet after two seconds
+            /*$timeout(function () { hideSheet(); }, 2000);*/
+        };
+        $scope.thumbnailRelease = function (listname, e) {
+            //console.log("thumbnailRelease");
+            if (!$scope.listButtonDisabled && !$scope.dragList && !$scope.listHold)
+                $scope.getList(listname, e);
+            $scope.listHold = false;
         };
     }]);
 controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$http", "server", "browser", "session",

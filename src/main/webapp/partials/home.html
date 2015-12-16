@@ -15,15 +15,15 @@
                    ng-drag-stop="thumbnailDragStop()"
                    ng-drop-success="thumbnailDropSuccess($index, $data)"
                    ng-drag-enter="thumbnailDropEnter($index, $data)"
-
-                   on-release="(!listButtonDisabled && !dragList) ? getList(listname, $event) : ''"
-                   ng-contextmenu="$event.preventDefault1()"
+                   on-hold="thumbnailHold()"
+                   on-release="thumbnailRelease(listname, $event)"
+                   ng-contextmenu="$event.preventDefault()"
                    ng-mouseenter="removeListButtonShow = true"
                    ng-mouseleave="removeListButtonShow = false"
                    ng-repeat="listname in userProfile.lists"
                    ng-show="userProfile.lists.length > 0">
                     <ion-item ng-drag="true"
-                              ng-drag-touch-timeout="200"
+                              ng-drag-touch-timeout="300"
                               ng-drag-data="'{{listname}}'"
                               ng-center-anchor="true">
                         <!-- list icon for phones and tablets representation -->

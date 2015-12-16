@@ -39,6 +39,22 @@
     -o-transition:      all 0.4s, font-size 0.8s;
     transition:         all 0.4s, font-size 0.8s;
 }
+#list-title-container .list-title-btn.ng-move,
+#list-title-container .list-title-btn.ng-enter,
+#list-title-container .list-title-btn.ng-leave {
+    transition:         all linear 1s;
+}
+#list-title-container .list-title-btn.ng-move,
+#list-title-container .list-title-btn.ng-leave.ng-leave-active,
+#list-title-container .list-title-btn.ng-enter {
+    opacity: 0;
+}
+#list-title-container .list-title-btn.ng-leave,
+#list-title-container .list-title-btn.ng-move.ng-move-active,
+#list-title-container .list-title-btn.ng-enter.ng-enter-active {
+    opacity: 1;
+}
+
 #list-title-container .list-title-btn:first-child { margin-left: 15px; }
 #list-title-container .list-title-btn:active {
     /*background: rgb(144, 238, 144);*/

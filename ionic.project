@@ -1,6 +1,6 @@
 {
   "name": "lister",
-  "app_id": "",
+  "app_id": "7e6cf7d5",
   "documentRoot": "src/main/webapp",
   "gulpStartupTasks": [
     "sass",

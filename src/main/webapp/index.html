@@ -5,14 +5,14 @@
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
         <meta content="utf-8" http-equiv="encoding">
-        <base href="/"/>
+        <base href="/">
         <!--styles-->
         <!-- Ionic styles -->
         <link rel="stylesheet" type="text/css" href="lib/ionic/css/ionic.css">
         <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
         <!-------------------------------------------------------->
-        <link rel="shortcut icon" href="icons/supermarket35.png"/>
-        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lobster|Montserrat:400,700|Open+Sans+Condensed:300,700">
+        <link rel="shortcut icon" href="icons/supermarket35.png">
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lobster%7CMontserrat%3A400%2C700%7COpen%20Sans%20Condensed%3A300%2C700">
         <link rel="stylesheet" type="text/css" href="css/font-awesome.min.4.4.0.css">
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.3.3.5.css">
         <link rel="stylesheet" type="text/css" href="css/styles.css">
@@ -53,7 +53,7 @@
         </script>
         -->
         <!-- cordova script (this will be a 404 during development) -->
-        <!-- <script src="cordova.js"></script> -->
+        <script src="cordova.js"></script>
         <!--user scripts-->
         <script type="application/javascript" src="js/roulette.js"></script>
         <script type="application/javascript" src="js/directives.js"></script>
@@ -72,7 +72,7 @@
         <!-- no enabled javascript-->
         <noscript>Your browser does not support JavaScript!</noscript>
     </head>
-    <body ng-controller="RootController" ng-width>
+    <body ng-controller="RootController" ng-width="">
     <ion-side-menus enable-menu-with-back-views="true">
         <ion-side-menu-content drag-content="true">
             <ion-nav-bar class="bar-stable" ng-show="isLoggedIn()">
@@ -91,9 +91,9 @@
                 <header><navbar></navbar></header>
                 <ion-nav-view></ion-nav-view>
                 <footer>
-                    &copy;2015 Dmitrii Serikov
+                    &#xA9;2015 Dmitrii Serikov
                     <div class="pull-right">
-                        Avatars <a href='http://www.freepik.com/free-vector/user-avatars-pack_746488.htm'>designed by Freepik</a>.
+                        Avatars <a href="http://www.freepik.com/free-vector/user-avatars-pack_746488.htm">designed by Freepik</a>.
                         Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>
                     </div>
                 </footer>
@@ -111,9 +111,9 @@
             </ion-header-bar>
             <ion-content>
                 <ion-list>
-                    <ion-item menu-close href="#" ng-click="addList($event)">Create a list</ion-item>
+                    <ion-item menu-close="" href="#" ng-click="addList($event)">Create a list</ion-item>
                     <!-- TODO: <ion-item href="#/app/browse">Settings</ion-item> -->
-                    <ion-item menu-close ng-click="logout()">Log Out</ion-item>
+                    <ion-item menu-close="" ng-click="logout()">Log Out</ion-item>
                 </ion-list>
             </ion-content>
         </ion-side-menu>

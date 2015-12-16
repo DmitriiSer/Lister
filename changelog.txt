@@ -41,6 +41,12 @@ Fixed problem with side menu. It was impossible to drag it on mobile platforms
 0.1.6
 Added 'ngDraggable' - drag and drop module for Angular JS and made it work with list representation
 
+0.1.7
+Modifications in 'ngDraggable.js to resolve the issue with incorrect positioning of draggable element
+
+0.1.8
+Added action sheet menu (mobile devices) if user holds a list button
+
 TODO:
 - .no-touch and :hover
 - different list removing on mobile

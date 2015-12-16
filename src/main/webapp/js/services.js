@@ -1,16 +1,6 @@
 "use strict";
 /* services */
 var services = angular.module("app.services", []);
-/* server variables */
-services.service("server", ["$location", function ($location) {
-        return {
-            servletPath: function () {
-                /*if ($location.host() == "localhost")
-                 return "http://lister-advancedlists.rhcloud.com";*/
-                return "";
-            }
-        }
-    }]);
 /* browser detection service */
 services.service("browser", ["$window", function ($window) {
         return {
@@ -47,7 +37,7 @@ services.service("browser", ["$window", function ($window) {
         }
     }]);
 /* session factory */
-services.factory("session", ["$http", "server", function ($http, server) {
+services.factory("session", ["$http", function ($http) {
         var service = {
             openedList: {
                 listName: "",
@@ -57,7 +47,7 @@ services.factory("session", ["$http", "server", function ($http, server) {
                 loggedIn: false,
                 username: "",
                 avatar: "",
-                lists: ""
+                lists: []
             },
             getUserProfile: function () {
                 return service.userProfile;
@@ -76,6 +66,13 @@ services.factory("session", ["$http", "server", function ($http, server) {
             },
             isLoggedIn: function () {
                 return service.userProfile.loggedIn;
+            },
+            // get, remove user lists
+            getUserLists: function () {
+                return service.userProfile.lists;
+            },
+            removeList: function (listName) {
+                service.userProfile.lists.splice(service.userProfile.lists.indexOf(listName), 1);
             },
             // set and get opened list isNew property
             setOpenedListIsNew: function (isNew) {
@@ -105,7 +102,7 @@ services.factory("session", ["$http", "server", function ($http, server) {
             },
             // check if user already logged in
             checkIfLoggedIn: function (success, error) {
-                $http.get(server.servletPath() + "/LoginServlet?isLoggedIn").then(function (response) {
+                $http.get("/LoginServlet?isLoggedIn").then(function (response) {
                     if (response.data === null) {
                         service.loggedIn = false;
                     } else {

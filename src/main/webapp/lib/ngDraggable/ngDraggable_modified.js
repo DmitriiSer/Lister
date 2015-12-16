@@ -210,7 +210,7 @@ angular.module("ngDraggable", [])
                             //console.log("offsetDifference = %s", offsetDifference.toFixed(2));
                             //if (Math.abs(offsetDifference) > 10) {
                             if (Math.abs(_tx) > elementWidth / 2) {
-                                console.log("The draggable element just passed another droppable leement border");
+                                console.log("The draggable element just passed another droppable element's border");
                                 //console.log("%s - %s = %s", offset.left - element[0].getBoundingClientRect().left, Math.abs(_tx), Math.abs(offset.left - element[0].getBoundingClientRect().left) - Math.abs(_tx));
                                 if (allowTransform)
                                     _dragOffset = {left: offset.left + 2 * _tx, top: offset.top};

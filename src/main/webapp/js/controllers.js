@@ -220,6 +220,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                 console.log("$scope.userProfile.lists before switching = %s", JSON.stringify($scope.userProfile.lists));
                 $scope.userProfile.lists[index] = data;
                 $scope.userProfile.lists[currentObjIndex] = newObj;
+                $scope.$apply();
                 console.log("$scope.userProfile.lists after switching = %s", JSON.stringify($scope.userProfile.lists));
                 //console.log("thumbnailDropEnter: index = %s, currentObjIndex = %s", index, currentObjIndex);
             }

@@ -247,7 +247,6 @@ angular.module("ngDraggable", [])
 
                             _deregisterRootMoveListener();
                         };
-
                         var onDragComplete = function (evt) {
 
 
@@ -258,14 +257,12 @@ angular.module("ngDraggable", [])
                                 onDragSuccessCallback(scope, {$data: _data, $event: evt});
                             });
                         };
-
                         var reset = function () {
                             if (allowTransform)
                                 element.css({transform: '', 'z-index': '', '-webkit-transform': '', '-ms-transform': ''});
                             else
                                 element.css({'position': '', top: '', left: ''});
                         };
-
                         var moveElement = function (x, y) {
                             if (allowTransform) {
                                 element.css({
@@ -278,7 +275,6 @@ angular.module("ngDraggable", [])
                                 element.css({'left': x + 'px', 'top': y + 'px', 'position': 'fixed'});
                             }
                         };
-
                         initialize();
                     }
                 };
@@ -370,6 +366,7 @@ angular.module("ngDraggable", [])
 
                             if (attrs.ngDragStop) {
                                 $timeout(function () {
+                                    _dragStarted = false;
                                     onDragStopCallback(scope, {$data: obj.data, $event: obj});
                                 });
                             }

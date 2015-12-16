@@ -212,19 +212,12 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
         };
         $scope.thumbnailDropEnter = function (index, data) {
             //console.log("thumbnailDropEnter");
-            //console.log("index = %s, data = %s", index, data);
             var currentObjIndex = $scope.userProfile.lists.indexOf(data);
             if (index != currentObjIndex) {
                 var newObj = $scope.userProfile.lists[index];
-                //console.log("data = %s, newObj = %s", data, newObj);
-                console.log("$scope.userProfile.lists before switching = %s", JSON.stringify($scope.userProfile.lists));
                 $scope.userProfile.lists[index] = data;
                 $scope.userProfile.lists[currentObjIndex] = newObj;
-                $scope.$apply();
-                console.log("$scope.userProfile.lists after switching = %s", JSON.stringify($scope.userProfile.lists));
-                //console.log("thumbnailDropEnter: index = %s, currentObjIndex = %s", index, currentObjIndex);
             }
-            //alert("thumbnailDragEnter");
         };
     }]);
 controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$http", "server", "browser", "session",

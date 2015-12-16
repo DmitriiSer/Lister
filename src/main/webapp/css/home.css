@@ -234,7 +234,8 @@
     -moz-box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
     box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
 }
-#list-title-container ion-list ion-item:active {
+#list-title-container ion-list ion-item:active,
+#list-title-container ion-list ion-item.dragging {
     padding: 0;
     background: rgba(144, 238, 144, 0.5);
     border-color: darkgreen;

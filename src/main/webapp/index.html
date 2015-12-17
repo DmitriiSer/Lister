@@ -3,12 +3,12 @@
     <head>
         <!--TODO fix mobile devices support-->
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-        <meta content="utf-8" http-equiv="encoding">
-        <base href="/">
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <meta http-equiv="encoding" content="utf-8">
+        <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src 'self' 'unsafe-inline' *; media-src *">
         <!--styles-->
         <!-- Ionic styles -->
-        <link rel="stylesheet" type="text/css" href="lib/ionic/css/ionic.css">
+        <link rel="stylesheet" type="text/css" href="lib/ionic/css/ionic.min.css">
         <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
         <!-------------------------------------------------------->
         <link rel="shortcut icon" href="icons/supermarket35.png">
@@ -31,27 +31,11 @@
         <!-- ionic/angularjs js (already included angular.js) -->
         <script src="lib/ionic/js/ionic.bundle.js"></script>
         <!------------------------->
-        <!-- Already inside the ionic.bundle
-        <script type="application/javascript" src="lib/angular.1.4.7.js"></script>
-        <script type="application/javascript" src="lib/angular-animate.min.1.4.7.js"></script>
-        <script type="application/javascript" src="lib/angular-ui-router.0.2.15.js"></script>
-        <script type="application/javascript" src="lib/angular-sanitize.min.1.5.0.js"></script>
-        -->
         <script type="application/javascript" src="lib/ui-bootstrap-tpls-0.14.0.min.js"></script>
         <script type="application/javascript" src="lib/velocity.min.1.2.3.js"></script>
         <script type="application/javascript" src="lib/ngDraggable/ngDraggable_modified.js"></script>
         <script type="application/javascript" src="lib/textarea-caret-position.js"></script>
         <script type="application/javascript" src="lib/sha3.3.1.2.js"></script>
-        <!-- fastclick and it's init script for smoother click events on mobile platforms
-        <script type="application/javascript" src="lib/fastclick.min.js"></script>
-        <script>
-            if ('addEventListener' in document) {
-                document.addEventListener('DOMContentLoaded', function () {
-                    FastClick.attach(document.body);
-                }, false);
-            }
-        </script>
-        -->
         <!-- cordova script (this will be a 404 during development) -->
         <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
         <script src="cordova.js"></script>
@@ -67,6 +51,15 @@
         </script>
         <script type="text/ng-template" id="avatarPopoverHtml.html">
             <div ng-include="'partials/avatarPopoverHtml.html'" ng-mouseup="chooseAvatar($event)"></div>
+        </script>
+        <!--append base if platfor is not Android-->
+        <script>
+            if (ionic.Platform.platform() !== "android") {
+                var head = document.getElementsByTagName("head")[0];
+                var base = document.createElement("base");
+                base.href = "/";
+                head.appendChild(base);
+            }
         </script>
         <!--title-->
         <title>Lister</title>

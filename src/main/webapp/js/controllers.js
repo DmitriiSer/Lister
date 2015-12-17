@@ -1,10 +1,22 @@
 "use strict";
 /* controllers */
 var controllers = angular.module("app.controllers", ["app.services"]);
-controllers.controller("RootController", ["$scope", "$state", "$ionicActionSheet", "session",
-    function ($scope, $state, $ionicActionSheet, session) {
+controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$ionicActionSheet", "$http", "server", "session",
+    function ($rootScope, $scope, $state, $ionicActionSheet, $http, server, session) {
         console.debug("RootController was loaded");
         $scope.userProfile = {};
+        $rootScope.dataError = function (data) {
+            var data = JSON.stringify(data);
+            data = data.match(/<h1>.+<\/h1>/);
+            if (data !== null) {
+                data = data[0];
+                data = data.split(/[<>-]/)[3].trim();
+            } else {
+                data = "null";
+            }
+            $scope.alertMsg = String(data);
+            console.error(data);
+        };
         $scope.updateUserProfile = function (userProfile) {
             $scope.userProfile = userProfile;
         };
@@ -37,7 +49,7 @@ controllers.controller("RootController", ["$scope", "$state", "$ionicActionSheet
                     console.log("addList: $scope.listName = \"%s\"", $scope.listName);
                     $scope.userProfile = session.getUserProfile();
                     // send information to the server
-                    $http.get("/DataServlet?addList=" + $scope.listName).then(function (response) {
+                    $http.get(server.hostName() + "/DataServlet?addList=" + $scope.listName).then(function (response) {
                         console.log("addList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                         $scope.userProfile.lists.push($scope.listName);
                         session.setOpenedListName($scope.listName);
@@ -58,79 +70,86 @@ controllers.controller("RootController", ["$scope", "$state", "$ionicActionSheet
             return session.isLoggedIn();
         };
         $scope.logout = function () {
-            session.clear(function (response) {
-                $scope.userProfile = session.getUserProfile();
+            session.setUserProfile({});
+            $http.get(server.hostName() + "/LoginServlet?logout").then(function (response) {
+                $scope.userProfile = {};
                 console.log("logout: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                 $state.go("index");
+            }, function (response) {
+                error(response);
             });
         };
     }]);
-controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$timeout", "$http", "$uibModal", "$ionicScrollDelegate", "$ionicSideMenuDelegate", "$ionicActionSheet", "ngDraggableDelegate", "browser", "session",
-    function ($rootScope, $scope, $state, $timeout, $http, $uibModal, $ionicScrollDelegate, $ionicSideMenuDelegate, $ionicActionSheet, ngDraggableDelegate, browser, session) {
+controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$timeout", "$http", "$uibModal", "$ionicScrollDelegate", "$ionicSideMenuDelegate", "$ionicActionSheet", "ngDraggableDelegate", "server", "browser", "session",
+    function ($rootScope, $scope, $state, $timeout, $http, $uibModal, $ionicScrollDelegate, $ionicSideMenuDelegate, $ionicActionSheet, ngDraggableDelegate, server, browser, session) {
         console.debug("HomeController was loaded");
         $scope.listButtonDisabled = false;
         $scope.dragList = true;
-        // happens when ng-view loaded
-        // we need to check if user already been logged in
-        if ($state.current.name == "index") {
-            session.checkIfLoggedIn(function (response) {
-                //console.log("session.isLoggedIn() = %s", session.isLoggedIn());
-                // user needs to log in
-                if (!session.isLoggedIn()) {
-                    // show a modal window when page is loaded
-                    $rootScope.loginWindow = $uibModal.open({
-                        templateUrl: "loginWindow",
-                        controller: "LoginController",
-                        size: "sm",
-                        windowClass: "center-modal",
-                        animation: true,
-                        backdrop: "static",
-                        keyboard: false
-                    });
-                    $rootScope.loginWindow.rendered.then(function () {
-                        // transform login window title to roulette element
-                        var modalHeader = angular.element(document.getElementsByClassName("modal-header"));
-                        // TODO: [ISSUE] for some reason Chrome 'slide' animation effect lags. Because of that we are switching Chrome animation to 'fade'
-                        var rouletteOptions;
-                        if (browser.name() == "chrome") {
-                            // fade
-                            rouletteOptions = {
-                                rouletteAnimation: "fade",
-                                rouletteBackgroundOpacity: 0
-                            };
-                        } else {
-                            // slide
-                            rouletteOptions = {
-                                rouletteContentOffset: "{10,-10}",
-                                rouletteAnimation: "slide",
-                                rouletteMaskImage: "images/triangle_graph.png",
-                                rouletteBackgroundOpacity: 0.4
-                            };
-                        }
-                        uiRoulette.create(modalHeader, rouletteOptions);
-                    });
-                }
-                // user already logged in
-                else {
-                    // TODO: get lists in case if database was updated
-                    //session.updateLists();
-                    // redirect to 'home'
-                    $state.go("home");
-                }
-            });
-        }
+        $scope.checkIfLoggedIn = function () {
+            // happens when ng-view loaded
+            // we need to check if user already been logged in
+            if ($state.current.name == "index") {
+                $http.get(server.hostName() + "/LoginServlet?isLoggedIn").then(function (response) {
+                    if (response.data === null) {
+                        session.setLoggedIn(false);
+                    } else {
+                        session.setUserProfile(response.data);
+                    }
+                    console.log("checkIfLoggedIn: " + response.status + " " + response.statusText);
+                    console.log("isLoggedIn: %s", JSON.parse(response.data.loggedIn) ? "YES" : "NO");
+                    //console.log("session.isLoggedIn() = %s", session.isLoggedIn());
+                    // user needs to log in
+                    if (!session.isLoggedIn()) {
+                        // show a modal window when page is loaded
+                        $rootScope.loginWindow = $uibModal.open({
+                            templateUrl: "loginWindow",
+                            controller: "LoginController",
+                            size: "sm",
+                            windowClass: "center-modal",
+                            animation: true,
+                            backdrop: "static",
+                            keyboard: false
+                        });
+                        $rootScope.loginWindow.rendered.then(function () {
+                            // transform login window title to roulette element
+                            var modalHeader = angular.element(document.getElementsByClassName("modal-header"));
+                            // TODO: [ISSUE] for some reason Chrome 'slide' animation effect lags. Because of that we are switching Chrome animation to 'fade'
+                            var rouletteOptions;
+                            if (browser.name() == "chrome") {
+                                // fade
+                                rouletteOptions = {
+                                    rouletteAnimation: "fade",
+                                    rouletteBackgroundOpacity: 0
+                                };
+                            } else {
+                                // slide
+                                rouletteOptions = {
+                                    rouletteContentOffset: "{10,-10}",
+                                    rouletteAnimation: "slide",
+                                    rouletteMaskImage: "images/triangle_graph.png",
+                                    rouletteBackgroundOpacity: 0.4
+                                };
+                            }
+                            uiRoulette.create(modalHeader, rouletteOptions);
+                        });
+                    }
+                    // user already logged in
+                    else {
+                        // TODO: get lists in case if database was updated
+                        //session.updateLists();
+                        // redirect to 'home'
+                        $state.go("home");
+                    }
+                }, function (response) {
+                    $scope.dataError(response.data);
+                });
+            }
+        };
+        $scope.checkIfLoggedIn();
         //
         $scope.$parent.updateUserProfile(session.getUserProfile());
         //
-        $scope.dataError = function (data) {
-            var data = JSON.stringify(data);
-            data = data.match(/<h1>.+<\/h1>/);
-            if (data !== null) {
-                data = data[0];
-            }
-            data = data.split(/[<>-]/)[3].trim();
-            console.error(data);
-        };
+
         $scope.removeListButtonMouseenter = function () {
             $scope.listButtonDisabled = true;
         };
@@ -150,7 +169,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                         $rootScope.confirmationWindow.close();
                         if (listName !== un$cordovadefined && listName != "") {
                             // remove a list
-                            $http.get("/DataServlet?removeList=" + listName).then(function (response) {
+                            $http.get(server.hostName() + "/DataServlet?removeList=" + listName).then(function (response) {
                                 console.log("removeList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                                 if (lists.indexOf(listName) != -1)
                                     session.removeList(listName);
@@ -173,7 +192,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
             //console.log(e.which);
             //alert(e.which);
             if (e.which == 1 || e.which == undefined) {
-                $http.get("/DataServlet?getList=" + listName).then(function (response) {
+                $http.get(server.hostName() + "/DataServlet?getList=" + listName).then(function (response) {
                     console.log("getList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                     session.setOpenedListName(listName);
                     session.setOpenedListContent(response.data.content);
@@ -276,8 +295,8 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
             $scope.listHold = false;
         };
     }]);
-controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$http", "browser", "session",
-    function ($rootScope, $scope, $state, $http, browser, session) {
+controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$http", "server", "browser", "session",
+    function ($rootScope, $scope, $state, $http, server, browser, session) {
         console.debug("LoginController was loaded");
         // default variables
         $scope.loginWindow = true;
@@ -421,18 +440,8 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$h
             $rootScope.loginWindow.close();
             $state.go("home");
         };
-        $scope.authentificationError = function (data) {
-            var data = JSON.stringify(data);
-            data = data.match(/<h1>.+<\/h1>/);
-            if (data !== null) {
-                data = data[0];
-            }
-            data = data.split(/[<>-]/)[3].trim();
-            $scope.alertMsg = String(data);
-            console.error(data);
-        };
         $scope.login = function () {
-            $http.post("/LoginServlet", {
+            $http.post(server.hostName() + "/LoginServlet", {
                 username: $scope.userProfile.username,
                 password: $scope.encryptPassword($scope.userProfile.password)
             }).then(function (response) {
@@ -441,13 +450,13 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$h
                     $scope.grantAccess(response.data);
                 }
             }, function (response) {
-                $scope.authentificationError(response.data);
+                $rootScope.dataError(response.data);
             });
         };
         $scope.signUp = function () {
             // check if password meets all the requirements
             if ($scope.passwordStrength.progress >= 70) {
-                $http.post("/SignUpServlet",
+                $http.post(server.hostName() + "/SignUpServlet",
                         {
                             username: $scope.userProfile.username,
                             password: $scope.encryptPassword($scope.userProfile.password),
@@ -457,7 +466,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$h
                             console.log("sign up: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                             $scope.grantAccess(response.data);
                         }, function (response) {
-                            $scope.authentificationError(response.data);
+                            $scope.dataError(response.data);
                         });
             }
             // password does not meet all the requirements
@@ -483,8 +492,8 @@ controllers.controller("OpenListEditorController", ["$rootScope", "$uibModal", f
             animation: true
         });
     }]);
-controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state", "$timeout", "$http", "browser", "session",
-    function ($rootScope, $scope, $state, $timeout, $http, browser, session) {
+controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state", "$timeout", "$http", "server", "browser", "session",
+    function ($rootScope, $scope, $state, $timeout, $http, server, browser, session) {
         console.debug("ListEditorController was loaded");
         $scope.headerFocused = true;
         $scope.checkboxesColumnDisplay = "none";
@@ -782,15 +791,6 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             // make changes in $scope.data
             $scope.data.body[row]["ad" + col] = data;
         };
-        $scope.dataError = function (data) {
-            var data = JSON.stringify(data);
-            data = data.match(/<h1>.+<\/h1>/);
-            if (data !== null) {
-                data = data[0];
-            }
-            data = data.split(/[<>-]/)[3].trim();
-            console.error(data);
-        };
         $scope.submit = function () {
             // chack if there is correct list title
             if ($scope.listName != "") {
@@ -801,7 +801,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                     // create a list
                     $scope.userProfile = session.getUserProfile();
                     // send information to the server
-                    $http.get("/DataServlet?addList=" + $scope.listName).then(function (response) {
+                    $http.get(server.hostName() + "/DataServlet?addList=" + $scope.listName).then(function (response) {
                         console.log("addList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                         $scope.userProfile.lists.push($scope.listName);
                         //session.setOpenedListName($scope.listName);
@@ -814,7 +814,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                 else {
                     // transform list data to JSON
                     //console.log("JSON.stringify($scope.data) = %s", JSON.stringify($scope.data));
-                    $http.post("/DataServlet?changeList=" + $scope.listName, JSON.stringify($scope.data)).then(function (response) {
+                    $http.post(server.hostName() + "/DataServlet?changeList=" + $scope.listName, JSON.stringify($scope.data)).then(function (response) {
                         console.log("changeList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                         //$scope.userProfile.lists.push($scope.listName);
                         //$state.go("listEditor");

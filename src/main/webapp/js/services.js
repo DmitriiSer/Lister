@@ -1,6 +1,22 @@
 "use strict";
 /* services */
 var services = angular.module("app.services", [])
+        /*server factory*/
+        .factory("server", [function () {
+                return {
+                    hostName: function () {
+                        var platform = ionic.Platform;
+                        if (platform.isWebView() ||
+                                platform.isIPad() || platform.isIOS() ||
+                                platform.isAndroid() || platform.isWindowsPhone()) {
+                            return "http://lister-advancedlists.rhcloud.com";
+                        } else {
+                            return "";
+                        }
+
+                    }
+                };
+            }])
         /* browser detection service */
         .service("browser", ["$window", function ($window) {
                 return {
@@ -67,6 +83,9 @@ var services = angular.module("app.services", [])
                     isLoggedIn: function () {
                         return service.userProfile.loggedIn;
                     },
+                    setLoggedIn: function (loggedIn) {
+                        service.userProfile.loggedIn = loggedIn;
+                    },
                     // get, remove user lists
                     getUserLists: function () {
                         return service.userProfile.lists;
@@ -100,45 +119,19 @@ var services = angular.module("app.services", [])
                         }
                         return result;
                     },
-                    // check if user already logged in
-                    checkIfLoggedIn: function (success, error) {
-                        $http.get("/LoginServlet?isLoggedIn").then(function (response) {
-                            if (response.data === null) {
-                                service.loggedIn = false;
-                            } else {
-                                service.setUserProfile(response.data);
-                            }
-                            /*console.log("checkIfLoggedIn: " + response.status + " " + response.statusText);*/
-                            console.log("isLoggedIn: %s", JSON.parse(response.data.loggedIn) ? "YES" : "NO");
-                            if (success !== undefined)
-                                success(response);
-                        }, function (response) {
-                            if (error !== undefined)
-                                error(response);
-                        });
-                    },
-                    // clear the session
-                    clear: function (success, error) {
-                        this.userProfile = {};
-                        $http.get("/LoginServlet?logout").then(function (response) {
-                            success(response);
-                        }, function (response) {
-                            error(response);
-                        });
-                    }
                 };
                 return service;
-            }])
-        .factory("$cordova", ["$cordovaTouchID", function ($cordovaTouchID) {
-                return {
-                    $touchID: {
-                        checkSupport: function () {
-                            $cordovaTouchID.checkSupport().then(function () {
-                                return true;
-                            }, function (error) {
-                                return false;
-                            });
-                        }
-                    }
-                }
             }]);
+/*.factory("$cordova", ["$cordovaTouchID", function ($cordovaTouchID) {
+ return {
+ $touchID: {
+ checkSupport: function () {
+ $cordovaTouchID.checkSupport().then(function () {
+ return true;
+ }, function (error) {
+ return false;
+ });
+ }
+ }
+ }
+ }]);*/

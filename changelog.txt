@@ -47,6 +47,9 @@ Modifications in 'ngDraggable.js to resolve the issue with incorrect positioning
 0.1.8
 Added action sheet menu (mobile devices) if user holds a list button
 
+0.2.0
+Made it work on Android emulator
+
 TODO:
 - .no-touch and :hover
 - different list removing on mobile

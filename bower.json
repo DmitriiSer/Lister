@@ -3,8 +3,5 @@
   "private": "true",
   "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.1.1"
-  },
-  "dependencies": {
-    "angular-drop": "~0.0.1"
   }
 }

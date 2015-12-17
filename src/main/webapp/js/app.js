@@ -48,8 +48,10 @@ app.run(["$ionicHistory", "$ionicPlatform", "$ionicActionSheet", "$cordovaTouchI
         }
     }]);
 /* configure routing */
-app.config(["$stateProvider", "$urlRouterProvider", "$locationProvider",
-    function ($stateProvider, $urlRouterProvider, $locationProvider) {
+app.config(["$httpProvider", "$stateProvider", "$urlRouterProvider", "$locationProvider",
+    function ($httpProvider, $stateProvider, $urlRouterProvider, $locationProvider) {
+        //
+        $httpProvider.defaults.useXDomain = true;
         //
         $stateProvider
                 // loads login page after the site loads
@@ -75,5 +77,6 @@ app.config(["$stateProvider", "$urlRouterProvider", "$locationProvider",
                 });
         $urlRouterProvider.otherwise('/');
         // use the HTML5 History API
-        $locationProvider.html5Mode(true);
+        if (ionic.Platform.platform() !== "android")
+            $locationProvider.html5Mode(true);
     }]);

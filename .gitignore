@@ -98,7 +98,9 @@ node_modules
 /platforms/
 /plugins/
 /resources/
-/www/
+# Ignore symbolic link 'www'
+www
+!*/www
 
 # test files
 *test*

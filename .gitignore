@@ -93,6 +93,13 @@ node_modules
 .node_repl_history
 /target1/
 
+# Ionic and Cordova
+/hooks/
+/platforms/
+/plugins/
+/resources/
+/www/
+
 # test files
 *test*
 /*test*

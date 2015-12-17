@@ -65,10 +65,11 @@ controllers.controller("RootController", ["$scope", "$state", "$ionicActionSheet
             });
         };
     }]);
-controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$timeout", "$http", "$uibModal", "$ionicScrollDelegate", "$ionicSideMenuDelegate", "$ionicActionSheet", "browser", "session",
-    function ($rootScope, $scope, $state, $timeout, $http, $uibModal, $ionicScrollDelegate, $ionicSideMenuDelegate, $ionicActionSheet, browser, session) {
+controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$timeout", "$http", "$uibModal", "$ionicScrollDelegate", "$ionicSideMenuDelegate", "$ionicActionSheet", "ngDraggableDelegate", "browser", "session",
+    function ($rootScope, $scope, $state, $timeout, $http, $uibModal, $ionicScrollDelegate, $ionicSideMenuDelegate, $ionicActionSheet, ngDraggableDelegate, browser, session) {
         console.debug("HomeController was loaded");
         $scope.listButtonDisabled = false;
+        $scope.dragList = true;
         // happens when ng-view loaded
         // we need to check if user already been logged in
         if ($state.current.name == "index") {
@@ -147,7 +148,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                         var listName = $rootScope.listNameToRemove;
                         var lists = session.getUserLists();
                         $rootScope.confirmationWindow.close();
-                        if (listName !== undefined && listName != "") {
+                        if (listName !== un$cordovadefined && listName != "") {
                             // remove a list
                             $http.get("/DataServlet?removeList=" + listName).then(function (response) {
                                 console.log("removeList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
@@ -183,7 +184,20 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
             }
         };
         //
+        $scope.contentScroll = function () {
+            $scope.scrolling = true;
+        };
+        $scope.contentScrollComplete = function () {
+            $scope.scrolling = false;
+        };
+        $scope.contentDragList = function () {
+            $scope.dragList = true;
+        };
+        $scope.contentRelease = function () {
+            //$scope.dragList = false;
+        };
         $scope.pullToRefreshDoRefresh = function () {
+            console.log("pullToRefreshDoRefresh");
             $state.go("index");
             $scope.$broadcast("scroll.refreshComplete");
         };
@@ -222,9 +236,12 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
             }
         };
         $scope.thumbnailHold = function (listname) {
-            //console.log("thumbnailHold");
+            console.log("thumbnailHold");
             if (browser.isMobileOrTablet()) {
                 $scope.listHold = true;
+                $ionicScrollDelegate.freezeScroll(true);
+                $ionicSideMenuDelegate.canDragContent(false);
+                ngDraggableDelegate.canDragContent(false);
                 // Show the action sheet
                 var hideSheet = $ionicActionSheet.show({
                     titleText: listname + " options",
@@ -247,10 +264,13 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                         return true;
                     }
                 });
+                $scope.dragList = false;
             }
         };
         $scope.thumbnailRelease = function (listname, e) {
             //console.log("thumbnailRelease");
+            if ($scope.scrolling)
+                return;
             if (!$scope.listButtonDisabled && !$scope.dragList && !$scope.listHold)
                 $scope.getList(listname, e);
             $scope.listHold = false;

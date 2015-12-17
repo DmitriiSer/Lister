@@ -1,14 +1,15 @@
-<ion-content on-drag="dragList = true"
-             on-release="dragList = false">
+<ion-content on-scroll="contentScroll()"
+             on-scroll-complete="contentScrollComplete()"
+             on-drag="contentDragList()"
+             on-release="contentRelease()">
     <ion-refresher
         pulling-text="Pull to refresh..."
-        on-pulling="pullToRefreshDoPull()"
         on-refresh="pullToRefreshDoRefresh()">
     </ion-refresher>
     <confirmation-content></confirmation-content>
     <section>
         <!-- container that contains list tabs or thumbnails -->
-        <div id="list-title-container">            
+        <div id="list-title-container" ng-style="{'overflow-y': (userProfile.lists.length == 0) ? 'hidden' : 'auto'}">            
             <ion-list show-reorder="false" show-delete="false" can-swipe="true">
                 <a href="#" class="btn list-title-btn" title="{{listname}}" role="button"
                    ng-drop="true"
@@ -16,15 +17,16 @@
                    ng-drag-stop="thumbnailDragStop()"
                    ng-drop-success="thumbnailDropSuccess($index, $data)"
                    ng-drag-enter="thumbnailDropEnter($index, $data)"
+                   ng-prevent-drag="{{dragList}}"
                    on-hold="thumbnailHold(listname)"
                    on-release="thumbnailRelease(listname, $event)"
                    ng-contextmenu="$event.preventDefault()"
                    ng-mouseenter="removeListButtonShow = true"
                    ng-mouseleave="removeListButtonShow = false"
-                   ng-repeat="listname in userProfile.lists | filter:searchFilter"
+                   ng-repeat="listname in userProfile.lists| filter:searchFilter"
                    ng-show="userProfile.lists.length > 0">
                     <ion-item ng-drag="true"
-                              ng-drag-touch-timeout="300"
+                              ng-drag-touch-timeout="200"
                               ng-drag-data="'{{listname}}'"
                               ng-center-anchor="true">
                         <!-- list icon for phones and tablets representation -->

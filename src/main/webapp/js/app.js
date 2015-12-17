@@ -1,10 +1,10 @@
 "use strict";
 /* Angular app */
-var app = angular.module("appLister", ["ionic", "ui.bootstrap", /*"ui.drop",*/"ngDraggable",
+var app = angular.module("appLister", ["ionic", "ngCordova", "ui.bootstrap", "ngDraggable",
     /*"ngAnimate", "ngRoute", "ngSanitize", "ui.router", */
     "app.directives", "app.controllers"]);
-app.run(["$ionicHistory", "$ionicPlatform", "$ionicActionSheet", "$window", "$state", "$rootScope", "$http", "session",
-    function ($ionicHistory, $ionicPlatform, $ionicActionSheet, $window, $state, $rootScope, $http, session) {
+app.run(["$ionicHistory", "$ionicPlatform", "$ionicActionSheet", "$cordovaTouchID", "$window", "$state", "$rootScope", "$http", "session",
+    function ($ionicHistory, $ionicPlatform, $ionicActionSheet, $cordovaTouchID, $window, $state, $rootScope, $http, session) {
         /* load ionic plugins */
         $ionicHistory.clearCache();
         $ionicPlatform.ready(function () {

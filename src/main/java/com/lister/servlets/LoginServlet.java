@@ -56,7 +56,7 @@ public class LoginServlet extends HttpServlet {
                         // close the connection
                         DBUtils.disconnect();
                     } else {
-                        response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error");
+                        response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: LoginServlet cannot connect to the database");
                         throw new IOException("LoginServlet cannot connect to the database");
                     }
                     UserProfile sessionData = (UserProfile) session.getAttribute("Data");
@@ -114,17 +114,17 @@ public class LoginServlet extends HttpServlet {
                     //Utils.sendRepsonse(LoginServlet.class.getName(), response, "");
                 } // wrong credentials
                 else {
-                    response.sendError(422, "Validation Failed: Username or password is incorrect");
+                    response.sendError(422, "ServerError: Username or password is incorrect");
                 }
                 // close the connection
                 DBUtils.disconnect();
             } else {
-                response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error");
+                response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: LoginServlet cannot connect to the database");
                 throw new IOException("LoginServlet cannot connect to the database");
             }
         } catch (Exception e) {
             try {
-                response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error");
+                response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: " + e.getMessage());
             } catch (IOException ie) {
                 logger.error(Utils.errorMesage(ie));
             }

@@ -2,19 +2,16 @@
 /* services */
 var services = angular.module("app.services", [])
         /*server factory*/
-        .factory("server", [function () {
+        .factory("server", ["browser", function (browser) {
                 return {
                     hostName: function () {
                         var platform = ionic.Platform;
+                        var hostName = "";
                         if (platform.isWebView() ||
-                                platform.isIPad() || platform.isIOS() ||
-                                platform.isAndroid() || platform.isWindowsPhone() ||
                                 (location.host === "localhost:8100" || location.host === "127.0.0.1:8100")) {
-                            return "http://lister-advancedlists.rhcloud.com";
-                        } else {
-                            return "";
+                            hostName = "http://lister-advancedlists.rhcloud.com";
                         }
-
+                        return hostName;
                     }
                 };
             }])

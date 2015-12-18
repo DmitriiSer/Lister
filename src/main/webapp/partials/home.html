@@ -26,7 +26,7 @@
                    ng-repeat="listname in userProfile.lists| filter:searchFilter"
                    ng-show="userProfile.lists.length > 0">
                     <ion-item ng-drag="true"
-                              ng-drag-touch-timeout="200"
+                              ng-drag-touch-timeout="100"
                               ng-drag-data="'{{listname}}'"
                               ng-center-anchor="true">
                         <!-- list icon for phones and tablets representation -->

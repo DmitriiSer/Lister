@@ -105,7 +105,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                             templateUrl: "loginWindow",
                             controller: "LoginController",
                             size: "sm",
-                            windowClass: "center-modal",
+                            windowClass: "center-modal no-border-radius",
                             animation: true,
                             backdrop: "static",
                             keyboard: false

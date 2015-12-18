@@ -38,7 +38,7 @@ body, .ionic-body {
     -o-user-select: none;
     user-select: none;
 }
-.no-border-radius, .no-border-radius * { border-radius: 0px; }
+.no-border-radius, .no-border-radius * { border-radius: 0px !important; }
 .animate-show { opacity: 1; }
 .animate-show.ng-hide { opacity: 0; }
 .animate-show.ng-hide-add, .animate-show.ng-hide-remove { transition-property: opacity; transition-timing-function: linear; }
@@ -187,7 +187,8 @@ footer {
     padding-bottom: 6px !important;
     padding-left: 12px !important;
     border: 1px solid #ccc  !important;
-    border-radius: 4px  !important;
+    /*border-radius: 4px !important;*/
+    border-radius: 0px;
 }
 .row {
     display: block;

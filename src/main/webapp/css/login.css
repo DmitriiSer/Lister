@@ -71,9 +71,9 @@
 }
 /* Mozilla Firefox hack */
 @-moz-document url-prefix() { 
-  #row-avatar-controls .popover-content .avatar {
-     margin: -18px -16px;
-  }
+    #row-avatar-controls .popover-content .avatar {
+        margin: -18px -16px;
+    }
 }
 #row-avatar-controls .popover-content .avatar:active {
     background-image: url("../icons/social_media_03.png");

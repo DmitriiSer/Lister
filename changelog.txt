@@ -50,6 +50,9 @@ Added action sheet menu (mobile devices) if user holds a list button
 0.2.0
 Made it work on Android emulator
 
+0.2.1
+Minimum changes in servlets
+
 TODO:
 - .no-touch and :hover
 - different list removing on mobile

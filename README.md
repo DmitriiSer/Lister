@@ -1,5 +1,5 @@
 # Lister
-### Version: 0.1.4
+### Version: 0.2.1
 Lister is a mobile-ready, natively looking, AngularJS and Ionic powered HTML5 todo organizer.
 
 ##### Main specifications:

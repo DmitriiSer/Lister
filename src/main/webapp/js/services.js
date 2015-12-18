@@ -8,7 +8,8 @@ var services = angular.module("app.services", [])
                         var platform = ionic.Platform;
                         if (platform.isWebView() ||
                                 platform.isIPad() || platform.isIOS() ||
-                                platform.isAndroid() || platform.isWindowsPhone()) {
+                                platform.isAndroid() || platform.isWindowsPhone() ||
+                                (location.host === "localhost:8100" || location.host === "127.0.0.1:8100")) {
                             return "http://lister-advancedlists.rhcloud.com";
                         } else {
                             return "";

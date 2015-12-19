@@ -77,6 +77,7 @@ app.config(["$httpProvider", "$stateProvider", "$urlRouterProvider", "$locationP
                 });
         $urlRouterProvider.otherwise('/');
         // use the HTML5 History API
-        if (ionic.Platform.platform() !== "android")
+        //if (ionic.Platform.platform() !== "android")
+        if (!ionic.Platform.isWebView())
             $locationProvider.html5Mode(true);
     }]);

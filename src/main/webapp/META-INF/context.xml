@@ -1,3 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--<Context antiJARLocking="true" path="/lister"/>-->
-<Context antiJARLocking="true" path="" docBase="lister-1.0.war" debug="0" reloadable="true"></Context>
+<Context antiJARLocking="true" debug="0" docBase="lister-1.0.war" path="" reloadable="true"/>

@@ -4,7 +4,7 @@
     <groupId>lister</groupId>
     <artifactId>lister</artifactId>
     <packaging>war</packaging>
-    <version>0.1.4</version>
+    <version>0.2.1</version>
     <name>lister</name>
     <repositories>
         <repository>

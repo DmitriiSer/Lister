@@ -1,7 +1,4 @@
-<ion-content on-scroll="contentScroll()"
-             on-scroll-complete="contentScrollComplete()"
-             on-drag="contentDragList()"
-             on-release="contentRelease()">
+<ion-content on-scroll="contentScroll()" on-scroll-complete="contentScrollComplete()">
     <ion-refresher
         pulling-text="Pull to refresh..."
         on-refresh="pullToRefreshDoRefresh()">
@@ -17,9 +14,9 @@
                    ng-drag-stop="thumbnailDragStop()"
                    ng-drop-success="thumbnailDropSuccess($index, $data)"
                    ng-drag-enter="thumbnailDropEnter($index, $data)"
-                   ng-prevent-drag="{{dragList}}"
-                   on-hold="thumbnailHold(listname)"
+                   on-tap="thumbnailTap(listname, $event)"
                    on-release="thumbnailRelease(listname, $event)"
+                   on-hold="thumbnailHold(listname, $event)"
                    ng-contextmenu="$event.preventDefault()"
                    ng-mouseenter="removeListButtonShow = true"
                    ng-mouseleave="removeListButtonShow = false"

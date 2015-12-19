@@ -84,7 +84,9 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
     function ($rootScope, $scope, $state, $timeout, $http, $uibModal, $ionicScrollDelegate, $ionicSideMenuDelegate, $ionicActionSheet, ngDraggableDelegate, server, browser, session) {
         console.debug("HomeController was loaded");
         $scope.listButtonDisabled = false;
-        $scope.dragList = true;
+        //$scope.dragList = true;
+        $scope.listTap = false;
+        $scope.listHold = false;
         $scope.checkIfLoggedIn = function () {
             // happens when ng-view loaded
             // we need to check if user already been logged in
@@ -95,7 +97,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                     } else {
                         session.setUserProfile(response.data);
                     }
-                    console.log("checkIfLoggedIn: " + response.status + " " + response.statusText);
+                    console.log("checkIfLoggedIn: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                     console.log("isLoggedIn: %s", JSON.parse(response.data.loggedIn) ? "YES" : "NO");
                     //console.log("session.isLoggedIn() = %s", session.isLoggedIn());
                     // user needs to log in
@@ -149,7 +151,6 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
         //
         $scope.$parent.updateUserProfile(session.getUserProfile());
         //
-
         $scope.removeListButtonMouseenter = function () {
             $scope.listButtonDisabled = true;
         };
@@ -167,7 +168,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                         var listName = $rootScope.listNameToRemove;
                         var lists = session.getUserLists();
                         $rootScope.confirmationWindow.close();
-                        if (listName !== un$cordovadefined && listName != "") {
+                        if (listName !== undefined && listName != "") {
                             // remove a list
                             $http.get(server.hostName() + "/DataServlet?removeList=" + listName).then(function (response) {
                                 console.log("removeList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
@@ -209,41 +210,22 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
         $scope.contentScrollComplete = function () {
             $scope.scrolling = false;
         };
-        $scope.contentDragList = function () {
-            $scope.dragList = true;
-        };
-        $scope.contentRelease = function () {
-            //$scope.dragList = false;
-        };
+        /*$scope.contentDragList = function () {
+         $scope.dragList = true;
+         };
+         $scope.contentRelease = function () {
+         $scope.dragList = false;
+         };*/
         $scope.pullToRefreshDoRefresh = function () {
             console.log("pullToRefreshDoRefresh");
             $state.go("index");
             $scope.$broadcast("scroll.refreshComplete");
         };
         $scope.thumbnailDragStart = function () {
-            //console.log("thumbnailDragStart");
+            console.log("thumbnailDragStart");
             $scope.dragList = true;
             $ionicScrollDelegate.freezeScroll(true);
             $ionicSideMenuDelegate.canDragContent(false);
-        };
-        $scope.thumbnailDragStop = function () {
-            //console.log("thumbnailDragStop");
-            $ionicScrollDelegate.freezeScroll(false);
-            if ($scope.windowWidth < 768)
-                $ionicSideMenuDelegate.canDragContent(true);
-        };
-        $scope.thumbnailDropSuccess = function (index, data) {
-            //console.log("thumbnailDropSuccess");
-            // TODO: make the right list reordering
-            if ($scope.dragList) {
-                $scope.dragList = false;
-                var currentObjIndex = $scope.userProfile.lists.indexOf(data);
-                var newObj = $scope.userProfile.lists[index];
-                $scope.userProfile.lists[index] = data;
-                $scope.userProfile.lists[currentObjIndex] = newObj;
-                if (browser.isMobileOrTablet())
-                    $state.reload();
-            }
         };
         $scope.thumbnailDropEnter = function (index, data) {
             //console.log("thumbnailDropEnter");
@@ -254,9 +236,51 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                 $scope.userProfile.lists[currentObjIndex] = newObj;
             }
         };
-        $scope.thumbnailHold = function (listname) {
+        $scope.thumbnailDragStop = function () {
+            //console.log("thumbnailDragStop");
+            $scope.dragList = false;
+            $ionicScrollDelegate.freezeScroll(false);
+            if ($scope.windowWidth < 768) {
+                //$state.reload();
+                $ionicSideMenuDelegate.canDragContent(true);
+            }
+        };
+        $scope.thumbnailDropSuccess = function (index, data) {
+            //console.log("thumbnailDropSuccess");
+            if ($scope.dragList) {
+                $scope.dragList = false;
+                var currentObjIndex = $scope.userProfile.lists.indexOf(data);
+                var newObj = $scope.userProfile.lists[index];
+                $scope.userProfile.lists[index] = data;
+                $scope.userProfile.lists[currentObjIndex] = newObj;
+                if (browser.isMobileOrTablet())
+                    $state.reload();
+            }
+        };
+        $scope.thumbnailTap = function (listname, e) {
+            //console.log("thumbnailTap");
+            $scope.listTap = true;
+        };
+        $scope.thumbnailRelease = function (listname, e) {
+            console.log("thumbnailRelease");
+            if ($scope.scrolling)
+                return;
+            //console.log("!$scope.listButtonDisabled = %s, $scope.dragList = %s, $scope.listHold = %s", $scope.listButtonDisabled, $scope.dragList, $scope.listHold);
+            if (!$scope.listButtonDisabled && $scope.listTap && !$scope.dragList && !$scope.listHold)
+                $scope.getList(listname, e);
+            $scope.listTap = false;
+            $scope.listHold = false;
+            ngDraggableDelegate.canDragContent(true);
+            $ionicSideMenuDelegate.canDragContent(true);
+            $ionicScrollDelegate.freezeScroll(false);
+        };
+        $scope.thumbnailHold = function (listname, e) {
             console.log("thumbnailHold");
-            if (browser.isMobileOrTablet()) {
+            if ($scope.dragList)
+                return;
+            $scope.dragList = false;
+            //if (browser.isMobileOrTablet()) {
+            if (true) {
                 $scope.listHold = true;
                 $ionicScrollDelegate.freezeScroll(true);
                 $ionicSideMenuDelegate.canDragContent(false);
@@ -265,34 +289,35 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                 var hideSheet = $ionicActionSheet.show({
                     titleText: listname + " options",
                     buttons: [
-                        {text: "<b>Share</b>"},
+                        {text: "Share"},
+                        {text: "Edit"},
                     ],
                     destructiveText: "Delete",
                     destructiveButtonClicked: function () {
                         hideSheet();
                         $scope.removeList(listname);
                     },
-                    cancelText: "Cancel",
                     buttonClicked: function (index) {
                         switch (index) {
+                            case 0:
+                                break;
+                            case 1:
+                                $scope.getList(listname, e);
+                                break;
                             default:
-                                alert(index);
                                 break;
                         }
-
                         return true;
-                    }
+                    },
+                    cancelText: "Cancel",
+                    cancel: function () {
+                        $scope.listHold = false;
+                        $ionicScrollDelegate.freezeScroll(false);
+                        $ionicSideMenuDelegate.canDragContent(true);
+                        ngDraggableDelegate.canDragContent(true);
+                    },
                 });
-                $scope.dragList = false;
             }
-        };
-        $scope.thumbnailRelease = function (listname, e) {
-            //console.log("thumbnailRelease");
-            if ($scope.scrolling)
-                return;
-            if (!$scope.listButtonDisabled && !$scope.dragList && !$scope.listHold)
-                $scope.getList(listname, e);
-            $scope.listHold = false;
         };
     }]);
 controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$http", "server", "browser", "session",

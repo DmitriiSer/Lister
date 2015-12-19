@@ -5,6 +5,7 @@ import com.lister.utils.DBUtils;
 import com.lister.utils.Utils;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServlet;
@@ -56,7 +57,6 @@ public class LoginServlet extends HttpServlet {
                         // close the connection
                         DBUtils.disconnect();
                     } else {
-                        response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: LoginServlet cannot connect to the database");
                         throw new IOException("LoginServlet cannot connect to the database");
                     }
                     UserProfile sessionData = (UserProfile) session.getAttribute("Data");
@@ -73,6 +73,11 @@ public class LoginServlet extends HttpServlet {
             }
         } catch (Exception e) {
             logger.error(Utils.errorMesage(e));
+            try {
+                response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: " + e.getMessage());
+            } catch (IOException ex) {
+                logger.error(Utils.errorMesage(ex));
+            }
         }
     }
     /**

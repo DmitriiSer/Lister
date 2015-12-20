@@ -45,7 +45,9 @@ public class SignUpServlet extends HttpServlet {
             String password = userProfile.getPassword();
             String avatar = userProfile.getAvatar();
             // connect to database
+            logger.info("Attempting to get database connection");
             if (DBUtils.connect()) {
+                logger.info("Connection to the database was established");
                 //ResponseJsonObject responseJsonObject = new ResponseJsonObject();
                 // check if user exists in DB
                 if (DBUtils.checkUserExistance(username)) {
@@ -78,6 +80,7 @@ public class SignUpServlet extends HttpServlet {
                 // close the connection
                 DBUtils.disconnect();
             } else {
+                logger.error("Connection to the database was not established");
                 response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error");
                 throw new IOException("SignUpServlet cannot connect to the database");
             }

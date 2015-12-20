@@ -52,11 +52,15 @@ public class LoginServlet extends HttpServlet {
                     // update list titles
                     // connect to database
                     List<String> lists = null;
+                    logger.info("Attempting to get database connection");
                     if (DBUtils.connect()) {
+                        logger.info("Connection to the database was established");
                         lists = DBUtils.getLists(sessionUsername);
+                        logger.info("Retrieving user lists: [" + lists + "]");
                         // close the connection
                         DBUtils.disconnect();
                     } else {
+                        logger.error("Connection to the database was not established");
                         throw new IOException("LoginServlet cannot connect to the database");
                     }
                     UserProfile sessionData = (UserProfile) session.getAttribute("Data");
@@ -96,7 +100,9 @@ public class LoginServlet extends HttpServlet {
             String username = userProfile.getUsername();
             String password = userProfile.getPassword();
             // connect to database
+            logger.info("Attempting to get database connection");
             if (DBUtils.connect()) {
+                logger.info("Connection to the database was established");
                 // check if user with the right credentials from the request exists
                 if (DBUtils.checkCreds(username, password)) {
                     // credentials are correct
@@ -109,12 +115,11 @@ public class LoginServlet extends HttpServlet {
                     if (session == null) {
                         session = request.getSession(true);
                     }
-                    logger.info("session = [" + session.getId() + "](" + request.getRemoteAddr() + "");
                     session.setAttribute("RemoteIP", new String(request.getRemoteAddr()));
                     session.setAttribute("Username", new String(username));
                     session.setAttribute("Data", userProfile);
                     // send user profile back to client
-                    logger.info("user [" + request.getRemoteAddr() + "] is logged in in session [" + session.getId() + "]");
+                    logger.info("User [" + request.getRemoteAddr() + "] is logged in in session [" + session.getId() + "]");
                     Utils.sendResponse(LoginServlet.class.getName(), response, userProfile);
                     //Utils.sendRepsonse(LoginServlet.class.getName(), response, "");
                 } // wrong credentials
@@ -124,6 +129,7 @@ public class LoginServlet extends HttpServlet {
                 // close the connection
                 DBUtils.disconnect();
             } else {
+                logger.error("Connection to the database was not established");
                 response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: LoginServlet cannot connect to the database");
                 throw new IOException("LoginServlet cannot connect to the database");
             }

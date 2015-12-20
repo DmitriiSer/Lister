@@ -2,11 +2,6 @@
 <section class="no-select" id="list-editor-window-header"
          ng-mouseenter="cursorIsAboveTheHeader = true"
          ng-mouseleave="cursorIsAboveTheHeader = (heaaderInputIsActive) ? true : false">
-    <!--<h3 ng-click="headerClicked = true"
-        ng-show="!headerClicked">
-        {{listName}}
-        <!-- TODO: fix init animation 
-    </h3>-->
     <!--ng-show="headerClicked"-->
     <input type="text" id="list-editor-window-header-input" value="Header" placeholder="List title:"
            ng-model="listName"

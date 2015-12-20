@@ -61,7 +61,9 @@ public class DataServlet extends HttpServlet {
             if (sessionRemoteIP != null && sessionRemoteIP.equals(request.getRemoteAddr())
                     && sessionUsername != null) {
                 // connect to database
+                logger.info("Attempting to get database connection");
                 if (DBUtils.connect()) {
+                    logger.info("Connection to the database was established");
                     // add a new list
                     if (request.getParameter("addList") != null) {
                         String paramListname = request.getParameter("addList");
@@ -117,6 +119,7 @@ public class DataServlet extends HttpServlet {
                         }
                     }
                 } else {
+                    logger.error("Connection to the database was not established");
                     response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error");
                     throw new IOException("DataServlet cannot connect to the database");
                 }
@@ -160,7 +163,9 @@ public class DataServlet extends HttpServlet {
             if (sessionRemoteIP != null && sessionRemoteIP.equals(request.getRemoteAddr())
                     && sessionUsername != null) {
                 // connect to database
+                logger.info("Attempting to get database connection");
                 if (DBUtils.connect()) {
+                    logger.info("Connection to the database was established");
                     // change list content
                     if (request.getParameter("changeList") != null) {
                         logger.info("user [" + sessionRemoteIP + "] wants to change a list");
@@ -180,6 +185,7 @@ public class DataServlet extends HttpServlet {
                         }
                     }
                 } else {
+                    logger.error("Connection to the database was not established");
                     response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error");
                     throw new IOException("DataServlet cannot connect to the database");
                 }

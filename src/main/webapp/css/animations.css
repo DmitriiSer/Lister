@@ -36,12 +36,12 @@
 }
 
 .list-title-btn.ng-enter {
-    -webkit-animation:  fadeInRight 400ms;
-    animation:          fadeInRight 400ms;
+    -webkit-animation:  fadeInRight 300ms;
+    animation:          fadeInRight 300ms;
 }
 .list-title-btn.ng-enter-stagger {
-    -webkit-animation-delay:    200ms;
-    animation-delay:            200ms;
+    -webkit-animation-delay:    100ms;
+    animation-delay:            100ms;
     -webkit-animation-duration: 0;
     animation-duration:         0;
 }

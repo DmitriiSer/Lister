@@ -35,7 +35,6 @@ public class DBUtils {
     }
     public static boolean connect() {
         try {
-            logger.info("Attempting to get database connection");
             // trying to connect to local database
             try {
                 // Localhost database connection
@@ -49,10 +48,8 @@ public class DBUtils {
                     throw ex2;
                 }
             }
-            logger.info("Connection to the database was established");
             return true;
         } catch (Exception e) {
-            logger.error("Connection to the database was not established", e);
             //logger.error(errorMesage(e));
             return false;
         }
@@ -168,7 +165,7 @@ public class DBUtils {
             while (rs.next()) {
                 // check if 'username' equalsIgnoreCase to 'UserName' in 'users' table
                 if (username.equalsIgnoreCase(rs.getString("UserName"))) {
-                    logger.info(rs.getString("UserName") + ", " + rs.getString("ListName"));
+                    //logger.info(rs.getString("UserName") + ", " + rs.getString("ListName"));
                     lists.add(rs.getString("ListName"));
                 }
             }

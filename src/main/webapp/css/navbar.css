@@ -2,6 +2,9 @@
     Created on : Sep 23, 2015, 8:16:43 AM
     Author     : dmitr
 */
+nav > * {
+    height: 67px;
+}
 .navbar {
     margin: 0;
     height: 67px;
@@ -55,7 +58,10 @@
     padding-top: 10px;
 }
 /* navbar menu */
-ul.collapse { padding: 0; }
+.navbar-collapse.collapse, .navbar-collapse.collapse {
+    height: 67px !important;
+    padding: 0;
+}
 .navbar [role="menu_button"] > li > a {
     margin: 0;
     padding: 5px;
@@ -66,5 +72,6 @@ ul.collapse { padding: 0; }
     background: rgba(255, 255, 255, 0.3);
 }
 .uib-dropdown-menu.dropdown-menu {
+    top: 67px;
     background: rgba(255, 255, 255, 0.5);
 }

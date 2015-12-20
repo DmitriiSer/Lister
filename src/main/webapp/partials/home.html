@@ -8,7 +8,8 @@
         <!-- container that contains list tabs or thumbnails -->
         <div id="list-title-container" ng-style="{'overflow-y': (userProfile.lists.length == 0) ? 'hidden' : 'auto'}">            
             <ion-list show-reorder="false" show-delete="false" can-swipe="true">
-                <a href="#" class="btn list-title-btn" title="{{listname}}" role="button"
+                <!-- list title thumbnail or tab -->
+                <a href class="btn list-title-btn" title="{{listname}}" role="button"
                    ng-drop="true"
                    ng-drag-start="thumbnailDragStart()"
                    ng-drag-stop="thumbnailDragStop()"
@@ -18,8 +19,8 @@
                    on-release="thumbnailRelease(listname, $event)"
                    on-hold="thumbnailHold(listname, $event)"
                    ng-contextmenu="$event.preventDefault()"
-                   ng-mouseenter="removeListButtonShow = true"
-                   ng-mouseleave="removeListButtonShow = false"
+                   ng-mouseenter="(browser.isMobileOrTablet()) ? showRemoveListButton = false : showRemoveListButton = true"
+                   ng-mouseleave="showRemoveListButton = false"
                    ng-repeat="listname in userProfile.lists| filter:searchFilter"
                    ng-show="userProfile.lists.length > 0">
                     <ion-item ng-drag="true"
@@ -36,46 +37,17 @@
                                 ng-click="removeList(listname)"
                                 ng-mouseenter="removeListButtonMouseenter()"
                                 ng-mouseleave="removeListButtonMouseleave()"
-                                ng-show="removeListButtonShow"><i class="fa fa-times"></i>
+                                ng-show="showRemoveListButton"><i class="fa fa-times"></i>
                         </button>
                     </ion-item>
                 </a>
-                <!--
-                <ion-item>Hello<ion-option-button class="button-positive" ng-click="share(item)">Share</ion-option-button></ion-item>
-                <ion-item>It's me</ion-item>
-                <ion-item>I was wondering</ion-item>
-                <ion-item>if after all these years</ion-item>
-                <ion-item>you'd like to meet</ion-item>
-                -->
             </ion-list>
-            <!-- list title thumbnail or tab -->
-            <!--<a href="#" class="btn list-title-btn" title="{{listname}}" role="button"
-               ng-mouseup="!listButtonDisabled ? getList(listname, $event) : ''"
-               ng-contextmenu="$event.preventDefault()"
-               ng-mouseenter="removeListButtonShow = true"
-               ng-mouseleave="removeListButtonShow = false"
-               ng-repeat="listname in userProfile.lists"
-               ng-show="userProfile.lists.length > 0">
-            <!-- list icon for phones and tablets representation
-            <i class="fa fa-list-alt"></i>
-            <!-- list title representation
-            <div>{{listname}}</div>
-            <!-- list delete button
-            <button class="animate-show x-fast"
-                    title="Delete {{listname}}"
-                    ng-click="removeList(listname)"
-                    ng-mouseenter="removeListButtonMouseenter()"
-                    ng-mouseleave="removeListButtonMouseleave()"
-                    ng-show="removeListButtonShow"><i class="fa fa-times"></i></button>
-            <confirmation-content></confirmation-content>
-        </a> -->
             <!-- add new list button and the form to type a name for a new list -->
             <a href class="" animate-show slow id="list-title-plus-btn"
                ng-show="userProfile.lists.length == 0"
                ng-mouseup="addList($event)">
                 <i class="fa fa-plus-square-o" ng-class="(userProfile.lists.length == 0) ? 'big' : ''"></i>
             </a>
-            <!-- ng-hide="hidden" ng-click="hidden = true" -->
         </div>
     </section>
 </ion-content>

@@ -227,7 +227,7 @@ public class DBUtils {
             rs = stmt.executeQuery("SELECT DataRef FROM list_contents WHERE ListID='" + listID + "'");
             while (rs.next()) {
                 DataRef = rs.getString("DataRef");
-                logger.info(DataRef);
+                //logger.info(DataRef);
             }
         } catch (SQLException e) {
             logger.error(errorMesage(e));

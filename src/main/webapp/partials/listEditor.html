@@ -1,11 +1,6 @@
 <script type="text/ng-template" id="listEditorWindow">
-    <ion-content id="list-editor">
-        <ion-refresher
-            pulling-icon=""
-            disable-pulling-rotation="true"
-            pulling-text="Pull to close..."
-            on-refresh="pullToClose()">
-        </ion-refresher>    
+    <ion-content id="list-editor" ng-keydown="keydownShortcut($event)" ng-enter-as-tab>
+        <ion-refresher pulling-icon="ion-close-round" on-refresh="pullToClose()"></ion-refresher>
         <list-editor-content></list-editor-content>
     </ion-content>
 </script>

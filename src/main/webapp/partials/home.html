@@ -12,7 +12,7 @@
                 <a href class="btn list-title-btn" title="{{listname}}" role="button"
                    ng-drop="true"
                    ng-drag-start="thumbnailDragStart()"
-                   ng-drag-stop="thumbnailDragStop()"
+                   ng-drag-stop="thumbnailDragStop($event.event)"
                    ng-drop-success="thumbnailDropSuccess($index, $data)"
                    ng-drag-enter="thumbnailDropEnter($index, $data)"
                    on-tap="thumbnailTap(listname, $event)"
@@ -21,8 +21,8 @@
                    ng-contextmenu="$event.preventDefault()"
                    ng-mouseenter="(browser.isMobileOrTablet()) ? showRemoveListButton = false : showRemoveListButton = true"
                    ng-mouseleave="showRemoveListButton = false"
-                   ng-repeat="listname in userProfile.lists| filter:searchFilter"
-                   ng-show="userProfile.lists.length > 0">
+                   ng-repeat="listname in userProfile.lists | filter:searchFilter"
+                   ng-show="showListButton">
                     <ion-item ng-drag="true"
                               ng-drag-touch-timeout="100"
                               ng-drag-data="'{{listname}}'"

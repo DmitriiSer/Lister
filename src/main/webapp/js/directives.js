@@ -65,8 +65,7 @@
     app.directive("popoverClose", function () {
         return {
             "restrict": "A",
-            link: function (scope, elem, attrs) {
-
+            link: function ($scope, $element, $attr) {
                 element.on("click", function (event) {
                     alert("popoverClose");
                     console.log("popoverClose");
@@ -86,6 +85,31 @@
      });
      };
      });*/
+    app.directive("ngEnterAsTab", [function () {
+            return {
+                "restrict": "A",
+                link: function (scope, element, attrs) {
+                    element.on("keydown", function (event) {
+                        if (!event.altKey && !event.shiftKey && !event.ctrlKey && event.which === 13) {
+                            var allChildElements = element[0].getElementsByTagName("*");
+                            var nextElemGetsFocus = false, prevElemGetsFocus = false;
+                            for (var i = 0; i < allChildElements.length; i++) {
+                                if (allChildElements[i].getAttribute("ng-focus-on-enter") !== null) {
+                                    if (nextElemGetsFocus) {
+                                        event.preventDefault();
+                                        allChildElements[i].focus();
+                                        return;
+                                    }
+                                    if ((allChildElements[i].tagName === "INPUT") && (allChildElements[i] == document.activeElement)) {
+                                        nextElemGetsFocus = true;
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            };
+        }]);
     app.directive("focusOnShow", ["$timeout", function ($timeout) {
             return {
                 restrict: "A",
@@ -110,6 +134,7 @@
                         })
                     }
                 }
-            };
+            }
+            ;
         }]);
 })();

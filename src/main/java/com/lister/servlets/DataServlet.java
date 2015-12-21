@@ -99,7 +99,7 @@ public class DataServlet extends HttpServlet {
                             String listContent = FileUtils.getFileContent(DataRef);
                             UserList userList = new UserList(paramListname, listContent, UserList.CREATED_BY_USER);
                             Utils.sendResponse(DataServlet.class.getName(), response, userList);
-                            logger.info("user [" + sessionRemoteIP + "] requested list content for the list with name \"" + paramListname + "\"");
+                            logger.info("User [" + sessionRemoteIP + "] requested list content for the list with name \"" + paramListname + "\"");
                         } // there is no a reference to a local file in database
                         else {
                         }
@@ -168,7 +168,7 @@ public class DataServlet extends HttpServlet {
                     logger.info("Connection to the database was established");
                     // change list content
                     if (request.getParameter("changeList") != null) {
-                        logger.info("user [" + sessionRemoteIP + "] wants to change a list");
+                        logger.info("User [" + sessionRemoteIP + "] wants to change a list");
                         // get list content from request body
                         String listContent = (String) Utils.fromJson(DataServlet.class.getName(), request, String.class);
                         String paramListname = request.getParameter("changeList");

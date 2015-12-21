@@ -85,7 +85,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
         console.debug("HomeController was loaded");
         $scope.listNameToRemove = null;
         $scope.listButtonDisabled = false;
-        //$scope.dragList = true;
+        $scope.showRemoveListButton = false;
         $scope.listHold = false;
         $scope.checkIfLoggedIn = function () {
             // happens when ng-view loaded
@@ -149,7 +149,8 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
         };
         $scope.checkIfLoggedIn();
         $scope.$parent.updateUserProfile(session.getUserProfile());
-        $scope.showRemoveListButton = false;
+        //
+        $scope.showListButton = ($scope.userProfile.lists.length > 0) ? true : false;
         $scope.removeListButtonMouseenter = function () {
             $scope.listButtonDisabled = true;
         };
@@ -188,13 +189,12 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
         };
         $scope.getList = function (listName, e) {
             //console.log("$scope.listButtonDisabled = %s", $scope.listButtonDisabled);
-            //console.log(e.which);
-            //alert(e.which);
             if (e.which == 1 || e.which == undefined) {
                 $http.get(server.hostName() + "/DataServlet?getList=" + listName).then(function (response) {
                     console.log("getList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                     session.setOpenedListName(listName);
                     session.setOpenedListContent(response.data.content);
+                    $scope.showListButton = false;
                     $state.go("listEditor");
                 }, function (response) {
                     $scope.dataError(response.data);
@@ -228,20 +228,31 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                 $scope.userProfile.lists[currentObjIndex] = newObj;
             }
         };
-        $scope.thumbnailDragStop = function () {
+        var forceThumbnailRedraw = function (element) {
+            if (!element)
+                return;
+            var display = display = window.getComputedStyle(element)["display"];//element.style.display;
+            if (display === undefined || display === "")
+                display = "block";
+            element.style.display = "none";
+            var trick = element.offsetHeight;
+            element.style.display = display;
+        };
+        $scope.thumbnailDragStop = function (e) {
             //console.log("thumbnailDragStop");
             $scope.dragList = false;
             $ionicScrollDelegate.freezeScroll(false);
             if ($scope.windowWidth < 768) {
-                $state.reload();
                 $ionicSideMenuDelegate.canDragContent(true);
             }
+            forceThumbnailRedraw(e.target);
+            forceThumbnailRedraw(e.target.parentElement);
         };
         $scope.thumbnailDropSuccess = function (index, data) {
             //console.log("thumbnailDropSuccess");
-            if (browser.isMobileOrTablet()) {
-                $state.reload();
-            }
+            /*if (browser.isMobileOrTablet()) {
+             $state.reload();
+             }*/
         };
         $scope.thumbnailTap = function (listname, e) {
             //console.log("thumbnailTap");
@@ -600,6 +611,12 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             // return the selected text
             return elem.value.substring(start, finish);
         };
+        $scope.keydownShortcut = function (e) {
+            // Ctrl + Enter keyboard combination was pressed
+            if (e.which == 13 && e.ctrlKey) {
+                $scope.submit();
+            }
+        };
         $scope.textareaMousemove = function ($event) {
             // TODO: fix toolbar showing if textarea was scrolled
             if (browser.isMobileOrTablet()) {
@@ -671,14 +688,14 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             $state.go("home");
             $scope.$broadcast("scroll.refreshComplete");
         };
-        $scope.headingChange = function (headingTitle, index) {
+        $scope.changeHeading = function (headingTitle, index) {
             $scope.data.headings[index] = headingTitle;
         };
-        $scope.checkboxChange = function (index) {
+        $scope.changeCheckbox = function (index) {
             console.log("YAY " + index);
             $scope.data.body[index].checked = !$scope.data.body[index].checked;
         };
-        $scope.textareaChange = function () {
+        $scope.changeTextarea = function () {
             // make changes in $scope.data
             var split = $scope.listBody.split("\n");
             //console.debug("  split          = [%s]\n  data.body.text = [%s]", JSON.stringify(split), JSON.stringify(getDataBodyText()));
@@ -802,13 +819,14 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             }
             $scope.additionalColumnsData = updateAdditionalColumnsData();
         };
-        $scope.additionalChange = function (data, row, col) {
+        $scope.changeAdditional = function (data, row, col) {
             col = col.replace(/ad/, "");
             // make changes in $scope.data
             $scope.data.body[row]["ad" + col] = data;
         };
         $scope.submit = function () {
             // chack if there is correct list title
+            console.log("$scope.listName = %s", $scope.listName);
             if ($scope.listName != "") {
                 // check if it's a new list
                 if (session.getOpenedListIsNew()) {

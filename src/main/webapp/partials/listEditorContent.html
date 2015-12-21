@@ -7,7 +7,10 @@
            ng-model="listName"
            ng-focus="heaaderInputIsActive = true"
            ng-blur="heaaderInputIsActive = false; cursorIsAboveTheHeader = false"
-           ng-keypress="($event.which === 13) ? headerClicked = false : ''" autofocus/>
+           ng-keypress="($event.which === 13) ? headerClicked = false : ''"
+           ng-focus-on-enter
+           focus-on-show
+           autofocus/>
     <a href class="animate-show fast" id="list-editor-window-header-delete-btn"
        ng-show="cursorIsAboveTheHeader">
         <i class="fast fa fa-minus-circle" aria-hidden="true"></i>
@@ -27,7 +30,7 @@
                     <span ng-hide="editHeadings">{{headingTitle}}</span>
                     <input ng-keydown="$event.keyCode == 13 ? editHeadings = !editHeadings : ''"
                            ng-model="headingTitle"
-                           ng-change="headingChange(headingTitle, $index)"
+                           ng-change="changeHeading(headingTitle, $index)"
                            ng-show="editHeadings"
                            focus-on-show/>
                 </th>
@@ -38,7 +41,7 @@
                 ng-style="{display: checkboxesColumnDisplay}">
                 <div class="list-editor-window-checkbox"
                      ng-repeat="checked in checkboxColumnData track by $index">
-                    <a ng-click="checked = !checked; checkboxChange($index)"><i class="fa fa-{{checked ? checkboxIcon : checkboxIconUnchecked}}" aria-label="Checkbox"></i></a>
+                    <a ng-click="checked = !checked; changeCheckbox($index)"><i class="fa fa-{{checked ? checkboxIcon : checkboxIconUnchecked}}" aria-label="Checkbox"></i></a>
                     <hr class="strikethrough" 
                         ng-style="{ display: checked ? 'block' : 'none', width: '10000px'}">
                 </div>
@@ -50,9 +53,11 @@
                           ng-click="textareaMouseleave()"
                           ng-mousemove="textareaMousemove($event)"
                           ng-mouseleave="textareaMouseleave()"
-                          ng-change="textareaChange()"
+                          ng-change="changeTextarea()"
                           ng-model="listBody"
-                          ng-show="true" focus-on-show></textarea>
+                          ng-show="true"
+                          ng-focus-on-enter
+                          focus-on-show></textarea>
             </td>
             <td class="list-editor-window-additional-column"
                 ng-class="currentColumn = 'ad' + $index"
@@ -60,7 +65,7 @@
                 <div class="list-editor-window-additional-item"
                      ng-repeat="item in column track by $index">
                     <input 
-                        ng-change="additionalChange(item, $index, currentColumn)"
+                        ng-change="changeAdditional(item, $index, currentColumn)"
                         ng-model="item"/>
                 </div>
             </td>
@@ -88,6 +93,8 @@
 <section class="no-select" id="list-editor-window-footer">
     <hr/>
     <div id="list-editor-window-submit-container">
-        <button id="list-editor-window-submit" ng-click="submit()" autofocus><i class="fa fa-check"></i></button>
+        <button type="button" id="list-editor-window-submit" title="123" ng-click="submit()">
+            <i class="fa fa-check"></i>
+        </button>
     </div>
 </section>

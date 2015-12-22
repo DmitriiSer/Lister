@@ -158,6 +158,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
             $scope.listButtonDisabled = false;
         };
         $scope.removeList = function (listName) {
+            console.log("removeList");
             $rootScope.listNameToRemove = listName;
             // ask if user really wants to delete list
             $rootScope.confirmationWindow = $uibModal.open({
@@ -286,8 +287,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                 var hideSheet = $ionicActionSheet.show({
                     titleText: listname + " options",
                     buttons: [
-                        {text: "Share"},
-                        {text: "Edit"},
+                        {text: "Edit"}
                     ],
                     destructiveText: "Delete",
                     destructiveButtonClicked: function () {

@@ -3,14 +3,13 @@
          ng-mouseenter="cursorIsAboveTheHeader = true"
          ng-mouseleave="cursorIsAboveTheHeader = (heaaderInputIsActive) ? true : false">
     <!--ng-show="headerClicked"-->
-    <input type="text" id="list-editor-window-header-input" value="Header" placeholder="List title:"
-           ng-model="listName"
+    <input type="text" id="list-editor-window-header-input" placeholder="List title:"
+           ng-model="currentList.name"
            ng-focus="heaaderInputIsActive = true"
            ng-blur="heaaderInputIsActive = false; cursorIsAboveTheHeader = false"
            ng-keypress="($event.which === 13) ? headerClicked = false : ''"
            ng-focus-on-enter
-           focus-on-show
-           autofocus/>
+           ng-focus-on-show="3000"/>
     <a href class="animate-show fast" id="list-editor-window-header-delete-btn"
        ng-click="removeList(listname)"
        ng-show="cursorIsAboveTheHeader">
@@ -32,8 +31,7 @@
                     <input ng-keydown="$event.keyCode == 13 ? editHeadings = !editHeadings : ''"
                            ng-model="headingTitle"
                            ng-change="changeHeading(headingTitle, $index)"
-                           ng-show="editHeadings"
-                           focus-on-show/>
+                           ng-show="editHeadings"/>
                 </th>
             </tr>
         </thead>
@@ -57,8 +55,7 @@
                           ng-change="changeTextarea()"
                           ng-model="listBody"
                           ng-show="true"
-                          ng-focus-on-enter
-                          focus-on-show></textarea>
+                          ng-focus-on-enter></textarea>
             </td>
             <td class="list-editor-window-additional-column"
                 ng-class="currentColumn = 'ad' + $index"

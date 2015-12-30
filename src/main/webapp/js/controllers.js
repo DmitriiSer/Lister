@@ -1,8 +1,8 @@
 "use strict";
 /* controllers */
 var controllers = angular.module("app.controllers", ["app.services"]);
-controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$ionicActionSheet", "$http", "server", "session",
-    function ($rootScope, $scope, $state, $ionicActionSheet, $http, server, session) {
+controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$ionicScrollDelegate", "$ionicActionSheet", "$http", "server", "session",
+    function ($rootScope, $scope, $state, $ionicScrollDelegate, $ionicActionSheet, $http, server, session) {
         console.debug("RootController was loaded");
         $scope.userProfile = {};
         $rootScope.dataError = function (data) {
@@ -40,27 +40,46 @@ controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$io
             // For example's sake, hide the sheet after two seconds
             /*$timeout(function () { hideSheet(); }, 2000);*/
         };
-        $scope.addList = function (e) {
-            if ($scope.listName === undefined)
-                $scope.listName = "";
-            if (e.which == 1) {
-                if ($scope.listName != "") {
+        // in the root scope because of availability for side menu
+        $rootScope.showListButton = false;
+        $rootScope.showPlusButton = false;
+        $rootScope.addList = function (param) {
+            //console.log("addList");
+            var e = null;
+            if (param && typeof (param) === "string")
+                $scope.listName = param;
+            if (param && param.target)
+                e = param;
+            if (!e)
+                e = {which: 1};
+            if (e.which == 1 || e.which == undefined) {
+                //
+                // if there is a name for created list ($scope.listName) then create a list on the server
+                if ($scope.listName !== "" && $scope.listName !== undefined) {
                     // create a list
-                    console.log("addList: $scope.listName = \"%s\"", $scope.listName);
                     $scope.userProfile = session.getUserProfile();
                     // send information to the server
                     $http.get(server.hostName() + "/DataServlet?addList=" + $scope.listName).then(function (response) {
                         console.log("addList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                         $scope.userProfile.lists.push($scope.listName);
-                        session.setOpenedListName($scope.listName);
-                        session.setOpenedListContent("{}");
-                        $state.go("listEditor");
+                        $rootScope.showListButton = true;
+                        $rootScope.showPlusButton = false;
+                        $scope.listName = "";
+                        // call $ionicScrollDelegate.resize() to expand scrollable area
+                        $ionicScrollDelegate.resize();
                     }, function (response) {
                         $scope.dataError(response.data);
+                        $rootScope.showListButton = true;
+                        $rootScope.showPlusButton = false;
+                        $scope.listName = "";
                     });
-                } else {
+                }
+                // the name of a list ($scope.listName) is not yet determined
+                else {
+                    // open an empty list editor
+                    $rootScope.showPlusButton = false;
                     session.setOpenedListIsNew(true);
-                    session.setOpenedListName($scope.listName);
+                    session.setOpenedListName("");
                     session.setOpenedListContent("{}");
                     $state.go("listEditor");
                 }
@@ -150,7 +169,8 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
         $scope.checkIfLoggedIn();
         $scope.$parent.updateUserProfile(session.getUserProfile());
         //
-        $scope.showListButton = ($scope.userProfile.lists.length > 0) ? true : false;
+        $rootScope.showListButton = ($scope.userProfile.lists.length > 0) ? true : false;
+        $rootScope.showPlusButton = ($scope.userProfile.lists.length == 0) ? true : false;
         $scope.removeListButtonMouseenter = function () {
             $scope.listButtonDisabled = true;
         };
@@ -158,7 +178,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
             $scope.listButtonDisabled = false;
         };
         $scope.removeList = function (listName) {
-            console.log("removeList");
+            //console.log("removeList");
             $rootScope.listNameToRemove = listName;
             // ask if user really wants to delete list
             $rootScope.confirmationWindow = $uibModal.open({
@@ -174,6 +194,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                                 console.log("removeList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                                 if (lists.indexOf(listName) != -1)
                                     session.removeList(listName);
+                                $rootScope.showPlusButton = (session.getUserLists().length == 0) ? true : false;
                             }, function (response) {
                                 $scope.dataError(response.data);
                             });
@@ -189,13 +210,14 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
             });
         };
         $scope.getList = function (listName, e) {
+            //console.log("listName = %s", listName);
             //console.log("$scope.listButtonDisabled = %s", $scope.listButtonDisabled);
             if (e.which == 1 || e.which == undefined) {
                 $http.get(server.hostName() + "/DataServlet?getList=" + listName).then(function (response) {
                     console.log("getList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                     session.setOpenedListName(listName);
                     session.setOpenedListContent(response.data.content);
-                    $scope.showListButton = false;
+                    $rootScope.showListButton = false;
                     $state.go("listEditor");
                 }, function (response) {
                     $scope.dataError(response.data);
@@ -503,7 +525,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$h
         };
     }]);
 controllers.controller("OpenListEditorController", ["$rootScope", "$uibModal", function ($rootScope, $uibModal) {
-        console.debug("OpenListEditorController was loaded");
+        //console.debug("OpenListEditorController was loaded");
         $rootScope.listEditorWindow = $uibModal.open({
             templateUrl: "listEditorWindow",
             controller: "ListEditorController",
@@ -519,7 +541,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
         console.debug("ListEditorController was loaded");
         $scope.headerFocused = true;
         $scope.checkboxesColumnDisplay = "none";
-        $scope.listName = session.getOpenedListName();
+        $scope.currentList = {name: session.getOpenedListName()};
         $scope.checkboxIcon = "check-circle-o";
         $scope.checkboxIconUnchecked = "circle-thin";
         $scope.columnHeadingTitle = "";
@@ -542,7 +564,6 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
          ]};*/
         // updating checkbox column data
         var updateCheckboxColumnData = function () {
-            console.log(JSON.stringify($scope.data));
             if ($scope.data.body !== undefined) {
                 var arr = new Array();
                 for (var i = 0; i < $scope.data.body.length; i++)
@@ -578,7 +599,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
         // check if data is a checklist and make arangements about it        
         if ($scope.data.type === "checklist")
             $scope.checkboxesColumnDisplay = "table-cell";
-        //
+        //<editor-fold defaultstate="collapsed" desc="var toolboxTextIcons, toolboxElementIcons">
         var toolboxTextIcons = [
             {icon: "check-square-o", title: "Create a checklist", state: ""},
             {icon: "align-left", title: "Left Align"},
@@ -599,6 +620,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             {icon: "align-right", title: "Right Align"},
             {icon: "align-justify", title: "Justify Align"}
         ];
+        //</editor-fold>
         $rootScope.listEditorWindow.result.then(function () {
         }, function () {
             $state.go("home");
@@ -825,33 +847,24 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             $scope.data.body[row]["ad" + col] = data;
         };
         $scope.submit = function () {
-            // chack if there is correct list title
-            console.log("$scope.listName = %s", $scope.listName);
-            if ($scope.listName != "") {
-                // check if it's a new list
-                if (session.getOpenedListIsNew()) {
-                    // changing list status
-                    session.setOpenedListIsNew(false);
-                    // create a list
-                    $scope.userProfile = session.getUserProfile();
-                    // send information to the server
-                    $http.get(server.hostName() + "/DataServlet?addList=" + $scope.listName).then(function (response) {
-                        console.log("addList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
-                        $scope.userProfile.lists.push($scope.listName);
-                        //session.setOpenedListName($scope.listName);
-                        //session.setOpenedListContent("{}");
-                        //$state.go("listEditor");
-                    }, function (response) {
-                        $scope.dataError(response.data);
-                    });
-                } // otherwise we send changes
-                else {
-                    // transform list data to JSON
-                    //console.log("JSON.stringify($scope.data) = %s", JSON.stringify($scope.data));
-                    $http.post(server.hostName() + "/DataServlet?changeList=" + $scope.listName, JSON.stringify($scope.data)).then(function (response) {
+            console.log("$scope.submit");
+            // check if it's a new list
+            if (session.getOpenedListIsNew()) {
+                // changing list status
+                session.setOpenedListIsNew(false);
+                // check if the list title is not empty
+                if ($scope.currentList.name != "") {
+                    // create a list and send information to the server
+                    $rootScope.addList($scope.currentList.name);
+                }
+            }
+            // otherwise we send changes
+            else {
+                // check if the list title is not empty
+                if ($scope.currentList.name != "") {
+                    // send changes to the server
+                    $http.post(server.hostName() + "/DataServlet?changeList=" + $scope.currentList.name, JSON.stringify($scope.data)).then(function (response) {
                         console.log("changeList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
-                        //$scope.userProfile.lists.push($scope.listName);
-                        //$state.go("listEditor");
                     }, function (response) {
                         $scope.dataError(response.data);
                     });

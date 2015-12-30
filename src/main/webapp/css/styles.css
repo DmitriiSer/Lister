@@ -42,11 +42,11 @@ body, .ionic-body {
 .animate-show { opacity: 1; }
 .animate-show.ng-hide { opacity: 0; }
 .animate-show.ng-hide-add, .animate-show.ng-hide-remove { transition-property: opacity; transition-timing-function: linear; }
-.animate-show.x-fast { transition-duration: 0.1s; }
-.animate-show.fast { transition-duration: 0.2s; }
-.animate-show.slow { transition-duration: 0.6s; }
-.animate-show.x-slow { transition-duration: 1s; }
-.animate-show.xx-slow { transition-duration: 2s; }
+.animate-show.x-fast { transition-duration: 0.1s !important; }
+.animate-show.fast { transition-duration: 0.2s !important; }
+.animate-show.slow { transition-duration: 0.6s !important; }
+.animate-show.x-slow { transition-duration: 1s !important; }
+.animate-show.xx-slow { transition-duration: 2s !important; }
 .animate-hide {
     line-height: 20px;
     opacity: 1;

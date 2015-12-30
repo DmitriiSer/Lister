@@ -197,6 +197,10 @@
 /************************************************************************/
 #list-title-plus-btn {
     position: absolute;
+    top: 0;
+    right: 0;    
+    bottom: 0;
+    left: 0;
     margin: 23vh 30vw;
     width: 40%;
     height: calc(54vh - 67px - 21px);

@@ -1,5 +1,5 @@
 # Lister
-### Version: 0.2.1
+### Version: 0.2.7
 Lister is a mobile-ready, natively looking, AngularJS and Ionic powered HTML5 todo organizer.
 
 ##### Main specifications:
@@ -22,11 +22,13 @@ And of course **Lister** itself is open source with a [public repository](https:
 ##### TODO:
 - [x] Pull to close list editor
 - [ ] Make minus button in list editor show remove list dialog
+- [ ] Vertical list reordering causes wrong reordering
 - [ ] List reordering causes database table rows reordering
 - [ ] Save list order on the server after reordering
 - [ ] Create an useful list editor toolbar
 
 ##### Changelog:
+- v0.2.7 Redesigned list container to scroll all the visible lists
 - v0.2.6 Redesigned list editor pull to close. Now it sticks to the outer border of the modal window
 - v0.2.5 Fixed list title disappearing after drag'n'drop on mobile devices. Made list editor closing on pulling it down. Now on pressing Enter/Return in list editor's header makes text area in focus. Added the shortcut (Ctrl+Enter) for 'Submit' button in list editor
 - v0.2.1 Minimum changes in servlets

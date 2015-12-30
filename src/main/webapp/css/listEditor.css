@@ -37,6 +37,16 @@
     border: none;
     outline: none;
 }
+#list-editor-window-body {
+        /*height: -webkit-calc(100% - 90px);
+        height: -moz-calc(100% - 90px);
+        height: -o-calc(100% - 90px);
+        height: calc(100% - 90px);*/
+        height: -webkit-calc(100vh - 100px);
+        height: -moz-calc(100vh - 100px);
+        height: -o-calc(100vh - 100px);
+        height: calc(100vh - 100px);
+    }
 @media (max-width: 767px) {
     .list-editor-window .modal-dialog, .list-editor-window .modal-content {
         position: fixed;
@@ -53,13 +63,6 @@
         border-bottom-right-radius: 28px;
     }
     #list-editor-window-header { height: 40px; }
-    #list-editor-window-body {
-        height: -webkit-calc(100% - 90px);
-        height: -moz-calc(100% - 90px);
-        height: -o-calc(100% - 90px);
-        height: calc(100% - 90px);
-        height: calc(100% - 90px);
-    }
     /*#list-editor-window-textarea {height: 100%;min-height: 100%;max-height: 100%;}*/
     #list-editor-window-footer { height: 60px; }
 }
@@ -82,12 +85,6 @@
     }
     /*#list-editor-window-textarea {min-height: 20vh;max-height: 70vh;height: 70vh;}*/
     #list-editor-window-header { height: 40px; }
-    #list-editor-window-body {
-        height: -webkit-calc(100% - 90px);
-        height: -moz-calc(100% - 90px);
-        height: -o-calc(100% - 90px);
-        height: calc(100% - 90px);
-    }
     #list-editor-window-footer { height: 60px; }
 }
 #list-editor-window-header, #list-editor-window-body, #list-editor-window-footer { background: snow; }

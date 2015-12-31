@@ -244,13 +244,15 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
             $ionicScrollDelegate.freezeScroll(true);
             $ionicSideMenuDelegate.canDragContent(false);
         };
-        $scope.thumbnailDropEnter = function (index, data) {
+        $scope.thumbnailDropEnter = function (newObjIndex, curObjTitle) {
             //console.log("thumbnailDropEnter");
-            var currentObjIndex = $scope.userProfile.lists.indexOf(data);
-            if (index != currentObjIndex) {
-                var newObj = $scope.userProfile.lists[index];
-                $scope.userProfile.lists[index] = data;
-                $scope.userProfile.lists[currentObjIndex] = newObj;
+            var curObjIndex = $scope.userProfile.lists.indexOf(curObjTitle);
+            if (newObjIndex != curObjIndex) {
+                var newObjTitle = $scope.userProfile.lists[newObjIndex];
+                // remove draggable object from the '$scope.userProfile.lists'
+                $scope.userProfile.lists.splice(curObjIndex, 1);
+                // insert draggable object in a new position in the '$scope.userProfile.lists'
+                $scope.userProfile.lists.splice(newObjIndex, 0, curObjTitle);
             }
         };
         var forceThumbnailRedraw = function (element) {
@@ -339,7 +341,8 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                     },
                 });
             }
-        };
+        }
+        ;
     }]);
 controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$http", "server", "browser", "session",
     function ($rootScope, $scope, $state, $http, server, browser, session) {

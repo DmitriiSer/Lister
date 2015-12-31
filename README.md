@@ -20,15 +20,16 @@ Lister uses a number of open source projects to work properly:
 And of course **Lister** itself is open source with a [public repository](https://github.com/DmitriiSer/Lister)
  on GitHub.
 ##### TODO:
-- [ ] ISSUE: Vertical list reordering causes wrong reordering
 - [ ] ISSUE: Login window does not show error messages anymore
 - [ ] Make minus button in list editor show remove list dialog
 - [ ] IMPROVEMENT: Save list order on the server after reordering
 - [ ] Create a toolbar in the list editor 
 - [x] Pull to close list editor
 - [x] ISSUE: Renaming a list does not rename it on the server
+- [x] ISSUE: Vertical list reordering causes wrong reordering
 
 ##### Changelog:
+- v0.2.9 Fixed an issue with vertical list reordering which caused the wrong list reordering
 - v0.2.8 Fixed an issue with renaming lists that would not rename it on the server
 - v0.2.7 Redesigned list container to scroll all the visible lists
 - v0.2.6 Redesigned list editor pull to close. Now it sticks to the outer border of the modal window

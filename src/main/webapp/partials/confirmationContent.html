@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="confirmationWindow">
     <div class="modal-body no-select">
-        <h5>Do you really want to delete list with name &quot;{{listNameToRemove}}&quot;</h5>
+        <h5>{{message}}</h5>
     </div>
     <div class="modal-footer" ng-enter-key="confirmationYes()">
         <button class="btn btn-danger" type="button" ng-click="confirmationYes()" autofocus>Yes</button>

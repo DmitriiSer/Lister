@@ -20,10 +20,16 @@
             "templateUrl": "partials/listEditorContent.html"
         };
     });
-    app.directive("confirmationContent", function () {
+    app.directive("confirmationWindow", function () {
         return {
             "restrict": "E",
             "templateUrl": "partials/confirmationContent.html"
+        };
+    });
+    app.directive("alertWindow", function () {
+        return {
+            restrict: "E",
+            templateUrl: "partials/alertContent.html"
         };
     });
     /* behavior and event directives */

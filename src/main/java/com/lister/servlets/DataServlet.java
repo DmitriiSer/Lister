@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  *
- * @author dmitr
+ * @author Dmitrii Serikov
  */
 @WebServlet(name = "DataServlet", urlPatterns = {"/DataServlet"})
 public class DataServlet extends HttpServlet {
@@ -131,10 +131,11 @@ public class DataServlet extends HttpServlet {
                             response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error. File cannot be removed from the database");
                             throw new IOException("DataServlet cannot remove list " + paramListname + " from the database");
                         }
+                    } // wrong request
+                    else {
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     }
                 } else {
-                    logger.error("Connection to the database was not established");
-                    response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error");
                     throw new IOException("DataServlet cannot connect to the database");
                 }
                 // close the connection
@@ -142,6 +143,11 @@ public class DataServlet extends HttpServlet {
             }
         } catch (Exception e) {
             logger.error(Utils.errorMesage(e));
+            try {
+                response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: " + e.getMessage());
+            } catch (IOException ex) {
+                logger.error(Utils.errorMesage(ex));
+            }
         }
     }
     /**
@@ -193,6 +199,9 @@ public class DataServlet extends HttpServlet {
                         else {
                             throw new IOException("DataServlet cannot get data reference from the database");
                         }
+                    } // wrong request
+                    else {
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     }
                 } else {
                     logger.error("Connection to the database was not established");

@@ -64,6 +64,9 @@ public class LoginServlet extends HttpServlet {
                         throw new IOException("LoginServlet cannot connect to the database");
                     }
                     UserProfile sessionData = (UserProfile) session.getAttribute("Data");
+                    if (sessionData == null) {
+                        throw new IOException("LoginServlet cannot obtain session data");
+                    }
                     sessionData.setListTitles(lists);
                     session.setAttribute("Data", sessionData);
                     Utils.sendResponse(LoginServlet.class.getName(), response, (UserProfile) session.getAttribute("Data"));
@@ -74,6 +77,9 @@ public class LoginServlet extends HttpServlet {
                 logger.info("user [" + request.getRemoteAddr() + "] sent 'logout' and session [" + session.getId() + "] was invalidated");
                 Utils.sendResponse(LoginServlet.class.getName(), response, new UserProfile());
                 //response.sendRedirect("/Lister/index.html");
+            } // wrong request
+            else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Wrong request");
             }
         } catch (Exception e) {
             logger.error(Utils.errorMesage(e));

@@ -501,7 +501,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$h
             $state.go("home");
         };
         $scope.login = function () {
-            console.log("$scope.login");
+            //console.log("$scope.login");
             $http.post(server.hostName() + "/LoginServlet", {
                 username: $scope.userProfile.username,
                 password: $scope.encryptPassword($scope.userProfile.password)

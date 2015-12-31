@@ -1,5 +1,5 @@
 # Lister
-### Version: 0.2.13
+### Version: 0.2.14
 Lister is a mobile-ready, natively looking, AngularJS and Ionic powered HTML5 todo organizer.
 
 ##### Main specifications:
@@ -27,7 +27,7 @@ And of course **Lister** itself is open source with a [public repository](https:
 - [ ] IMPROVEMENT: Reordering on mobile devices turns on only if user picked the "Reorder" menu item in list item pop-up menu
 - [ ] IMPROVEMENT: Create an UI message showing online/offline status
 - [ ] IMPROVEMENT: Create a task stack for offline mode that would be responsible for uploading and syncing all the missed request to the server
-- [x] ~~Pull to close list editor~~
+- [x] ~~IMPROVEMENT: Pull to close list editor~~
 - [x] ~~ISSUE: Renaming a list does not rename it on the server~~
 - [x] ~~ISSUE: Vertical list reordering causes wrong reordering~~
 - [x] ~~ISSUE: Login window does not show the error messages anymore~~
@@ -36,6 +36,7 @@ And of course **Lister** itself is open source with a [public repository](https:
 - [x] ~~IMPROVEMENT: Show alert and confirmation messages~~
 
 ##### Changelog:
+- v0.2.14 Removed a bottom border line on ion-header-bar side menu
 - v0.2.13 Improved displaying the alert and confirmation messages
 - v0.2.12 Turned off the poop-up list item menu for the desktop platform
 - v0.2.11 Made the minus button in the list editor show removing confirmation dialog

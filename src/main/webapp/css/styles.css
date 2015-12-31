@@ -225,13 +225,15 @@ ion-side-menu-content .bar.bar-stable {
     padding: 5px 20px 5px 0px;
     width: 72px;
     min-height: 67px !important;
-    /*border: 1px solid black;*/
+    border: 1px solid black;
+    border: none;
 }
 ion-nav-bar.nav-bar-container {
     position: absolute;
     right: 72px;
 }
 ion-header-bar.bar, ion-header-bar.bar .title {
+    background-image: none !important;
     height: 67px;
 }
 ion-header-bar.bar .title {

@@ -14,8 +14,7 @@ controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$io
             } else {
                 data = "null";
             }
-            $scope.alertMsg = String(data);
-            console.error(data);
+            return String(data);
         };
         $scope.updateUserProfile = function (userProfile) {
             $scope.userProfile = userProfile;
@@ -453,6 +452,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$h
             return hash.toString();
         };
         $scope.submit = function () {
+            //console.log("$scope.submit");
             // hide alert
             if ($scope.alertMsg !== "")
                 $scope.alertMsg = "";
@@ -490,16 +490,22 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$h
             $state.go("home");
         };
         $scope.login = function () {
+            //console.log("$scope.login");
             $http.post(server.hostName() + "/LoginServlet", {
                 username: $scope.userProfile.username,
                 password: $scope.encryptPassword($scope.userProfile.password)
             }).then(function (response) {
                 console.log("login: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
-                if (JSON.parse(response.data.loggedIn) === true) {
+                // check if server returned correct data    
+                if ((typeof (response.data) === "object") && (JSON.parse(response.data.loggedIn) === true)) {
                     $scope.grantAccess(response.data);
                 }
+                // check if server returned an error
+                else if (typeof (response.data) === "string") {
+                    $scope.alertMsg = response.data;
+                }
             }, function (response) {
-                $rootScope.dataError(response.data);
+                $scope.alertMsg = $rootScope.dataError(response.data);
             });
         };
         $scope.signUp = function () {

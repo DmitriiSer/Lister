@@ -121,10 +121,9 @@ public class LoginServlet extends HttpServlet {
                     // send user profile back to client
                     logger.info("User [" + request.getRemoteAddr() + "] is logged in in session [" + session.getId() + "]");
                     Utils.sendResponse(LoginServlet.class.getName(), response, userProfile);
-                    //Utils.sendRepsonse(LoginServlet.class.getName(), response, "");
                 } // wrong credentials
                 else {
-                    response.sendError(422, "ServerError: Username or password is incorrect");
+                    Utils.sendResponse(LoginServlet.class.getName(), response, "Username or password is incorrect");
                 }
                 // close the connection
                 DBUtils.disconnect();

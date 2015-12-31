@@ -1,5 +1,5 @@
 # Lister
-### Version: 0.2.10
+### Version: 0.2.11
 Lister is a mobile-ready, natively looking, AngularJS and Ionic powered HTML5 todo organizer.
 
 ##### Main specifications:
@@ -20,15 +20,17 @@ Lister uses a number of open source projects to work properly:
 And of course **Lister** itself is open source with a [public repository](https://github.com/DmitriiSer/Lister)
  on GitHub.
 ##### TODO:
-- [ ] Make minus button in list editor show remove list dialog
 - [ ] IMPROVEMENT: Save list order on the server after reordering
-- [ ] Create a toolbar in the list editor 
+- [ ] IMPROVEMENT: Create a toolbar in the list editor 
+- [ ] IMPROVEMENT: Fix "I forgot my password" link in the login window
 - [x] ~~Pull to close list editor~~
 - [x] ~~ISSUE: Renaming a list does not rename it on the server~~
 - [x] ~~ISSUE: Vertical list reordering causes wrong reordering~~
 - [x] ~~ISSUE: Login window does not show the error messages anymore~~
+- [x] IMPROVEMENT: Make the minus button in the list editor show remove list dialog
 
 ##### Changelog:
+- v0.2.11 Made the minus button in the list editor show removing confirmation dialog
 - v0.2.10 Fixed an issue with the login window which was not showing the error messages
 - v0.2.9 Fixed an issue with vertical list reordering which caused the wrong list reordering
 - v0.2.8 Fixed an issue with renaming lists that would not rename it on the server

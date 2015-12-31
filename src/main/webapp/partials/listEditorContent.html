@@ -11,7 +11,7 @@
            ng-focus-on-enter
            ng-focus-on-show="500"/>
     <a href class="animate-show fast" id="list-editor-window-header-delete-btn"
-       ng-click="removeList(listname)"
+       on-tap="$root.removeList(listname)"
        ng-show="cursorIsAboveTheHeader">
         <i class="fast fa fa-minus-circle" aria-hidden="true"></i>
     </a>

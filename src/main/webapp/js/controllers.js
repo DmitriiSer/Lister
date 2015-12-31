@@ -1,8 +1,8 @@
 "use strict";
 /* controllers */
 var controllers = angular.module("app.controllers", ["app.services"]);
-controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$ionicScrollDelegate", "$ionicActionSheet", "$http", "server", "session",
-    function ($rootScope, $scope, $state, $ionicScrollDelegate, $ionicActionSheet, $http, server, session) {
+controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$ionicScrollDelegate", "$ionicActionSheet", "$http", "$uibModal", "server", "session",
+    function ($rootScope, $scope, $state, $ionicScrollDelegate, $ionicActionSheet, $http, $uibModal, server, session) {
         console.debug("RootController was loaded");
         $scope.userProfile = {};
         $rootScope.dataError = function (data) {
@@ -83,6 +83,47 @@ controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$io
                     $state.go("listEditor");
                 }
             }
+        };
+        $rootScope.removeList = function (listName) {
+            //console.log("$rootScope.removeList");
+            if (listName !== undefined) {
+                $rootScope.listNameToRemove = listName;
+            } else {
+                $rootScope.listNameToRemove = session.getOpenedListName();
+            }
+            // ask if user really wants to delete list
+            $rootScope.confirmationWindow = $uibModal.open({
+                templateUrl: "confirmationWindow",
+                controller: function ($scope) {
+                    $scope.confirmationYes = function () {
+                        // check if the list editor is open and close it if it is
+                        if ($rootScope.listEditorWindow !== undefined) {
+                            $rootScope.listEditorWindow.dismiss("cancel");
+                        }
+                        //
+                        var listName = $rootScope.listNameToRemove;
+                        var lists = session.getUserLists();
+                        $rootScope.confirmationWindow.close();
+                        if (listName !== undefined && listName != "") {
+                            // remove a list
+                            $http.get(server.hostName() + "/DataServlet?removeList=" + listName).then(function (response) {
+                                console.log("removeList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
+                                if (lists.indexOf(listName) != -1)
+                                    session.removeList(listName);
+                                $rootScope.showPlusButton = (session.getUserLists().length == 0) ? true : false;
+                            }, function (response) {
+                                $scope.dataError(response.data);
+                            });
+                        }
+                    }
+                    $scope.confirmationNo = function () {
+                        $rootScope.confirmationWindow.dismiss("cancel");
+                    }
+                },
+                windowClass: "center-modal no-border-radius",
+                size: "md",
+                animation: true
+            });
         };
         $scope.isLoggedIn = function () {
             return session.isLoggedIn();
@@ -177,38 +218,6 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
         };
         $scope.removeListButtonMouseleave = function () {
             $scope.listButtonDisabled = false;
-        };
-        $scope.removeList = function (listName) {
-            //console.log("removeList");
-            $rootScope.listNameToRemove = listName;
-            // ask if user really wants to delete list
-            $rootScope.confirmationWindow = $uibModal.open({
-                templateUrl: "confirmationWindow",
-                controller: function ($scope) {
-                    $scope.confirmationYes = function () {
-                        var listName = $rootScope.listNameToRemove;
-                        var lists = session.getUserLists();
-                        $rootScope.confirmationWindow.close();
-                        if (listName !== undefined && listName != "") {
-                            // remove a list
-                            $http.get(server.hostName() + "/DataServlet?removeList=" + listName).then(function (response) {
-                                console.log("removeList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
-                                if (lists.indexOf(listName) != -1)
-                                    session.removeList(listName);
-                                $rootScope.showPlusButton = (session.getUserLists().length == 0) ? true : false;
-                            }, function (response) {
-                                $scope.dataError(response.data);
-                            });
-                        }
-                    }
-                    $scope.confirmationNo = function () {
-                        $rootScope.confirmationWindow.dismiss("cancel");
-                    }
-                },
-                windowClass: "center-modal no-border-radius",
-                size: "md",
-                animation: true
-            });
         };
         $scope.getList = function (listName, e) {
             //console.log("listName = %s", listName);
@@ -340,8 +349,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                     },
                 });
             }
-        }
-        ;
+        };
     }]);
 controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$http", "server", "browser", "session",
     function ($rootScope, $scope, $state, $http, server, browser, session) {

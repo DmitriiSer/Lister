@@ -116,11 +116,7 @@
     app.directive("ngFocusOnShow", ["$compile", "$timeout", function ($compile, $timeout) {
             return {
                 restrict: "A",
-                /*compile: function (scope, element) {
-                 console.log("ngFocusOnShow::compile");
-                 },*/
                 link: function (scope, element, attrs) {
-                    //console.log("ngFocusOnShow::link");
                     var timeout = (attrs["ngFocusOnShow"] != "") ? attrs["ngFocusOnShow"] : 0;
                     // check if there is ng-show attribute
                     if (attrs.ngShow) {
@@ -137,11 +133,16 @@
                         scope.$watch(attrs.ngHide, function (newValue) {
                             if (!newValue) {
                                 $timeout(function () {
-                                    //alert("focusOnShow::ngHide, element = %s", element);
                                     element[0].focus();
                                 }, timeout);
                             }
                         })
+                    }
+                    // there is no ng-show and ng-hide
+                    else {
+                        $timeout(function () {
+                            element[0].focus();
+                        }, timeout);
                     }
                 }
             }

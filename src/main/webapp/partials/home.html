@@ -2,8 +2,8 @@
     <confirmation-content></confirmation-content>
     <!-- container that contains list tabs or thumbnails -->
     <!-- ng-style="{'overflow-y': (userProfile.lists.length == 0) ? 'hidden' : 'auto'}" -->
-    <ion-scroll id="list-title-container" style="border1: 2px solid black"
-                ng-style="{'overflow-y': ($root.showListButton) ? 'hidden' : 'auto'}">
+    <!-- ng-style="{'overflow-y': ($root.showListButton) ? 'hidden' : 'auto'}" -->
+    <ion-scroll id="list-title-container" style="overflow-y: hidden">
         <ion-refresher
             pulling-text="Pull to refresh..."
             on-refresh="pullToRefreshDoRefresh()">

@@ -88,6 +88,13 @@ var services = angular.module("app.services", [])
                     getUserLists: function () {
                         return service.userProfile.lists;
                     },
+                    renameList: function (oldListName, newListName) {
+                        service.userProfile.lists.forEach(function (elem, index) {
+                            if (angular.equals(oldListName, elem)) {
+                                service.userProfile.lists[index] = newListName;
+                            }
+                        });
+                    },
                     removeList: function (listName) {
                         service.userProfile.lists.splice(service.userProfile.lists.indexOf(listName), 1);
                     },

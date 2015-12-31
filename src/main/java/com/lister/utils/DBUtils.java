@@ -2,6 +2,7 @@ package com.lister.utils;
 
 import com.lister.servlets.UserProfile;
 import static com.lister.utils.Utils.errorMesage;
+import java.math.BigDecimal;
 import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,7 +21,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class DBUtils {
     private static final Logger logger = LogManager.getLogger(DBUtils.class);
-
     private static Connection con = null;
     public static boolean loadDriver() {
         // The newInstance() call is a work around for some
@@ -198,6 +198,22 @@ public class DBUtils {
             return false;
         }
     }
+    public static String renameList(String username, String oldListname, String listname) {
+        try {
+            Statement stmt = con.createStatement();
+            int result = stmt.executeUpdate("UPDATE lists SET ListName='" + listname + "' WHERE UserName='" + username + "' AND ListName='" + oldListname + "'");
+            if (result != 1) {
+                throw new SQLException("There is no rows to modify in table 'lists'");
+            }
+            updateListContentRef(username, listname);
+            stmt.close();
+            logger.info("The list with name '" + oldListname + "' was renamed to '" + listname + "'");
+            return "/data/" + username + "_" + listname + ".dt";
+        } catch (SQLException e) {
+            logger.error(errorMesage(e));
+            return null;
+        }
+    }
     public static boolean removeList(String username, String listname) {
         try {
             Statement stmt = con.createStatement();
@@ -218,7 +234,7 @@ public class DBUtils {
         try {
             Statement stmt = con.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery("SELECT ListId FROM lists WHERE UserName='" + username + "' AND ListName='" + listname + "'");
+            rs = stmt.executeQuery("SELECT ListID FROM lists WHERE UserName='" + username + "' AND ListName='" + listname + "'");
             String listID = null;
             while (rs.next()) {
                 listID = rs.getString("ListID");
@@ -229,9 +245,26 @@ public class DBUtils {
                 DataRef = rs.getString("DataRef");
                 //logger.info(DataRef);
             }
+            stmt.close();
         } catch (SQLException e) {
             logger.error(errorMesage(e));
         }
         return DataRef;
+    }
+    private static void updateListContentRef(String username, String listname) throws SQLException {
+        String DataRef = null;
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT ListID FROM lists WHERE UserName='" + username + "' AND ListName='" + listname + "'");
+        String listID = null;
+        while (rs.next()) {
+            listID = rs.getString("ListID");
+        }
+        rs.close();
+        stmt = con.createStatement();
+        int result = stmt.executeUpdate("UPDATE list_contents SET DataRef='/data/" + username + "_" + listname + ".dt' WHERE ListID='" + listID + "'");
+        if (result != 1) {
+            throw new SQLException("There is no rows to modify in table 'list_contents'");
+        }
+        stmt.close();
     }
 }

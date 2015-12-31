@@ -169,8 +169,10 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
         $scope.checkIfLoggedIn();
         $scope.$parent.updateUserProfile(session.getUserProfile());
         //
-        $rootScope.showListButton = ($scope.userProfile.lists.length > 0) ? true : false;
-        $rootScope.showPlusButton = ($scope.userProfile.lists.length == 0) ? true : false;
+        if ($scope.userProfile.lists) {
+            $rootScope.showListButton = ($scope.userProfile.lists.length > 0) ? true : false;
+            $rootScope.showPlusButton = ($scope.userProfile.lists.length == 0) ? true : false;
+        }
         $scope.removeListButtonMouseenter = function () {
             $scope.listButtonDisabled = true;
         };
@@ -254,7 +256,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
         var forceThumbnailRedraw = function (element) {
             if (!element)
                 return;
-            var display = display = window.getComputedStyle(element)["display"];//element.style.display;
+            var display = display = window.getComputedStyle(element)["display"]; //element.style.display;
             if (display === undefined || display === "")
                 display = "block";
             element.style.display = "none";
@@ -272,7 +274,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
             forceThumbnailRedraw(e.target.parentElement);
         };
         $scope.thumbnailDropSuccess = function (index, data) {
-            //console.log("thumbnailDropSuccess");
+            console.log("thumbnailDropSuccess");
             /*if (browser.isMobileOrTablet()) {
              $state.reload();
              }*/
@@ -541,17 +543,21 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
         console.debug("ListEditorController was loaded");
         $scope.headerFocused = true;
         $scope.checkboxesColumnDisplay = "none";
-        $scope.currentList = {name: session.getOpenedListName()};
+        $scope.currentList = {
+            name: session.getOpenedListName(),
+            nameBeforeChanges: session.getOpenedListName()
+        };
         $scope.checkboxIcon = "check-circle-o";
         $scope.checkboxIconUnchecked = "circle-thin";
         $scope.columnHeadingTitle = "";
         $scope.data = session.getOpenedListContent();
-        if (angular.equals({}, $scope.data))
+        if (angular.equals("{}", $scope.data) || angular.equals({}, $scope.data)) {
             $scope.data = {
                 type: "",
                 headings: [""],
                 body: [{text: "", checked: false}]
             };
+        }
         /*$scope.data = {
          type: "checklist",
          headings: ["Ingredients", "Quantity", "Measurements"],
@@ -590,7 +596,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
         $scope.additionalColumnsData = updateAdditionalColumnsData();
         // setting up initial textarea text
         $scope.listBody = "";
-        $scope.data.body.forEach(function (item, index) {
+        $scope.data.body && $scope.data.body.forEach(function (item, index) {
             if (index == $scope.data.body.length - 1)
                 $scope.listBody = $scope.listBody + item.text;
             else
@@ -847,7 +853,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             $scope.data.body[row]["ad" + col] = data;
         };
         $scope.submit = function () {
-            console.log("$scope.submit");
+            //console.log("$scope.submit");
             // check if it's a new list
             if (session.getOpenedListIsNew()) {
                 // changing list status
@@ -863,9 +869,17 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                 // check if the list title is not empty
                 if ($scope.currentList.name != "") {
                     // send changes to the server
-                    $http.post(server.hostName() + "/DataServlet?changeList=" + $scope.currentList.name, JSON.stringify($scope.data)).then(function (response) {
+                    var paramRow = "?changeList=";
+                    if (angular.equals($scope.currentList.name, $scope.currentList.nameBeforeChanges)) {
+                        paramRow += $scope.currentList.name;
+                    } else {
+                        paramRow += $scope.currentList.nameBeforeChanges + "&title=" + $scope.currentList.name;
+                        session.renameList($scope.currentList.nameBeforeChanges, $scope.currentList.name);
+                    }
+                    $http.post(server.hostName() + "/DataServlet" + paramRow, JSON.stringify($scope.data)).then(function (response) {
                         console.log("changeList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                     }, function (response) {
+                        console.log("changeList: " + response.status + " " + response.statusText);
                         $scope.dataError(response.data);
                     });
                 }

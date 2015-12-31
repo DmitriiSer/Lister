@@ -29,7 +29,6 @@ public class FileUtils {
     }
     public static boolean createListFile(String filePath) {
         try {
-            //File f = new File(currentDirectory + File.separator + filePath);
             Path path = Paths.get(currentDirectory + File.separator + filePath);
             if (!Files.exists(path)) {
                 Path parentDir = path.getParent();
@@ -50,9 +49,24 @@ public class FileUtils {
         }
         return false;
     }
+    public static void renameListFile(String username, String oldListTitle, String newListTitle) throws IOException {
+        try {
+            Path oldFilePath = Paths.get(currentDirectory + File.separator + "data" + File.separator + username + "_" + oldListTitle + ".dt");
+            Path newFilePath = Paths.get(currentDirectory + File.separator + "data" + File.separator + username + "_" + newListTitle + ".dt");
+            if (Files.exists(oldFilePath)) {
+                // rename file
+                Files.move(oldFilePath, newFilePath);
+            } else {
+                throw new IOException("File with name '" + oldFilePath.getFileName() + "' was not found");
+            }
+            logger.info("The file with name '" + oldFilePath.getFileName() + "' was renamed to '" + newFilePath.getFileName() + "'");
+        } catch (IOException e) {
+            logger.error(errorMesage(e));
+            throw new IOException(e.getMessage());
+        }
+    }
     public static boolean removeListFile(String filePath) {
         try {
-            //File f = new File(currentDirectory + File.separator + filePath);
             Path path = Paths.get(currentDirectory + File.separator + filePath);
             if (Files.exists(path)) {
                 Files.delete(path);
@@ -66,9 +80,8 @@ public class FileUtils {
     }
     public static String getFileContent(String filePath) {
         try {
-            File f = new File(currentDirectory + File.separator + filePath);
             Path path = Paths.get(currentDirectory + File.separator + filePath);
-            if (f.exists()) {
+            if (Files.exists(path)) {
                 try (BufferedReader reader = Files.newBufferedReader(path, charset)) {
                     String line = null;
                     StringBuilder sb = new StringBuilder();
@@ -95,9 +108,8 @@ public class FileUtils {
     }
     public static void setFileContent(String filePath, String listContent) {
         try {
-            File f = new File(currentDirectory + File.separator + filePath);
             Path path = Paths.get(currentDirectory + File.separator + filePath);
-            if (f.exists()) {
+            if (Files.exists(path)) {
                 try (BufferedWriter writer = Files.newBufferedWriter(path, charset)) {
                     writer.append(listContent);
                 } catch (IOException e) {

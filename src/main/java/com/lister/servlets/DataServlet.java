@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.logging.Level;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,13 +32,24 @@ public class DataServlet extends HttpServlet {
         } else {
             logger.info("JDBC driver was loaded correctly");
         }
+    }
+    private void checkCurrentDirectory(HttpServletRequest request) throws IOException {
         // set FileUtils current directory
         //String currentDirectory = "C:\\Users\\dmitr\\workspace-nb";
         currentDirectory = System.getenv("OPENSHIFT_DATA_DIR");
-        FileUtils.setCurrentDirectory(currentDirectory);
+        // chekc if currentDirectory is incorrect
+        if (currentDirectory == null) {
+            currentDirectory = "C:\\OpenShift";
+            //currentDirectory = request.getServletContext().getRealPath("/");
+        }
+        // chekc if currentDirectory is still incorrect
+        if (currentDirectory == null) {
+            throw new IOException("DataServlet cannot find current directory");
+        }
         if (currentDirectory != null) {
             logger.info("Current directory is \"" + currentDirectory + "\"");
         }
+        FileUtils.setCurrentDirectory(currentDirectory);
     }
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -48,11 +60,12 @@ public class DataServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
+            checkCurrentDirectory(request);
             // set response type to JSON
             response.setContentType("application/json");
             // set FileUtils current directory
             // FileUtils.setCurrentDirectory(getServletContext().getRealPath("/"));
-            //FileUtils.setCurrentDirectory("C:\\Users\\dmitr\\workspace-nb");
+            // FileUtils.setCurrentDirectory("C:\\Users\\dmitr\\workspace-nb");
             //
             HttpSession session = request.getSession(false);
             String sessionRemoteIP = (String) session.getAttribute("RemoteIP");
@@ -93,15 +106,16 @@ public class DataServlet extends HttpServlet {
                     } // get a list content
                     else if (request.getParameter("getList") != null) {
                         String paramListname = request.getParameter("getList");
-                        String DataRef;
+                        String DataRef = DBUtils.getListContentRef(sessionUsername, paramListname);
                         // if there is a reference to a local file with list content
-                        if ((DataRef = DBUtils.getListContentRef(sessionUsername, paramListname)) != null) {
+                        if (DataRef != null) {
                             String listContent = FileUtils.getFileContent(DataRef);
                             UserList userList = new UserList(paramListname, listContent, UserList.CREATED_BY_USER);
                             Utils.sendResponse(DataServlet.class.getName(), response, userList);
                             logger.info("User [" + sessionRemoteIP + "] requested list content for the list with name \"" + paramListname + "\"");
                         } // there is no a reference to a local file in database
                         else {
+                            throw new IOException("DataServlet cannot get data reference from the database");
                         }
                     } // remove a list
                     else if (request.getParameter("removeList") != null) {
@@ -139,18 +153,7 @@ public class DataServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
-            // chekc if currentDirectory is incorrect
-            if (currentDirectory == null) {
-                currentDirectory = request.getServletContext().getRealPath("/");
-                if (currentDirectory != null) {
-                    logger.info("Current directory is \"" + currentDirectory + "\"");
-                }
-            }
-            // chekc if currentDirectory is still incorrect
-            if (currentDirectory == null) {
-                response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error");
-                throw new IOException("DataServlet cannot find current directory");
-            }
+            checkCurrentDirectory(request);
             // set response type to JSON
             response.setContentType("application/json");
             // set FileUtils current directory
@@ -167,26 +170,32 @@ public class DataServlet extends HttpServlet {
                 if (DBUtils.connect()) {
                     logger.info("Connection to the database was established");
                     // change list content
-                    if (request.getParameter("changeList") != null) {
-                        logger.info("User [" + sessionRemoteIP + "] wants to change a list");
+                    String paramListname = request.getParameter("changeList");
+                    if (paramListname != null) {
+                        logger.info("User [" + sessionRemoteIP + "] wants to change a list with name \"" + paramListname + "\"");
                         // get list content from request body
                         String listContent = (String) Utils.fromJson(DataServlet.class.getName(), request, String.class);
-                        String paramListname = request.getParameter("changeList");
-                        String DataRef;
                         // if there is a reference to a local file with list content
-                        if ((DataRef = DBUtils.getListContentRef(sessionUsername, paramListname)) != null) {
+                        String DataRef = DBUtils.getListContentRef(sessionUsername, paramListname);
+                        if (DataRef != null) {
+                            // check if list was renamed
+                            String paramTitle = request.getParameter("title");
+                            if (!paramTitle.isEmpty()) {
+                                // rename the list
+                                DataRef = DBUtils.renameList(sessionUsername, paramListname, paramTitle);
+                                FileUtils.renameListFile(sessionUsername, paramListname, paramTitle);
+                            }
+                            // set list content
                             FileUtils.setFileContent(DataRef, listContent);
                             //UserList userList = new UserList(paramListname, listContent, UserList.CREATED_BY_USER);
                             //Utils.sendResponse(DataServlet.class.getName(), response, userList);
                         } // there is no a reference to a local file in database
                         else {
-                            response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error");
                             throw new IOException("DataServlet cannot get data reference from the database");
                         }
                     }
                 } else {
                     logger.error("Connection to the database was not established");
-                    response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error");
                     throw new IOException("DataServlet cannot connect to the database");
                 }
                 // close the connection
@@ -194,6 +203,11 @@ public class DataServlet extends HttpServlet {
             }
         } catch (Exception e) {
             logger.error(Utils.errorMesage(e));
+            try {
+                response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: " + e.getMessage());
+            } catch (IOException ex) {
+                logger.error(Utils.errorMesage(ex));
+            }
         }
     }
     /**

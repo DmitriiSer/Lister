@@ -9,7 +9,7 @@
            ng-blur="heaaderInputIsActive = false; cursorIsAboveTheHeader = false"
            ng-keypress="($event.which === 13) ? headerClicked = false : ''"
            ng-focus-on-enter
-           ng-focus-on-show="3000"/>
+           ng-focus-on-show="500"/>
     <a href class="animate-show fast" id="list-editor-window-header-delete-btn"
        ng-click="removeList(listname)"
        ng-show="cursorIsAboveTheHeader">

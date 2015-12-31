@@ -77,34 +77,8 @@ public class DataServlet extends HttpServlet {
                 logger.info("Attempting to get database connection");
                 if (DBUtils.connect()) {
                     logger.info("Connection to the database was established");
-                    // add a new list
-                    if (request.getParameter("addList") != null) {
-                        String paramListname = request.getParameter("addList");
-                        // check if there is no a list with the same name                        
-                        if (DBUtils.checkListExistance(sessionUsername, paramListname)) {
-                            // list already exists in database
-                            response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: The list with name[" + paramListname + "] already exists in database");
-                            throw new IOException("DataServlet cannot create a list in database");
-                        } else {
-                            // list does not exists in database
-                            // create a list in database
-                            logger.info("Attempt to create a record in the database and a file referenced to that record with list[" + paramListname + "] data");
-                            if (DBUtils.createList(sessionUsername, paramListname)
-                                    && FileUtils.createListFile("/data/" + sessionUsername + "_" + paramListname + ".dt")) {
-                                logger.info("The record in the database and the file were created");
-                                UserProfile sessionData = (UserProfile) session.getAttribute("Data");
-                                sessionData.lists.add(paramListname);
-                                UserList userList = new UserList(paramListname, "{}", UserList.CREATED_BY_SERVER);
-                                Utils.sendResponse(DataServlet.class.getName(), response, userList);
-                                logger.info("List with name \"" + paramListname + "\" was created in user [" + sessionRemoteIP + "] profile");
-                            } else {
-                                logger.error("The record in the database and the file were not created");
-                                response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: The list with name[" + paramListname + "] cannot be created in database");
-                                throw new IOException("DataServlet cannot create a list in database");
-                            }
-                        }
-                    } // get a list content
-                    else if (request.getParameter("getList") != null) {
+                    // get a list content
+                    if (request.getParameter("getList") != null) {
                         String paramListname = request.getParameter("getList");
                         String DataRef = DBUtils.getListContentRef(sessionUsername, paramListname);
                         // if there is a reference to a local file with list content
@@ -175,9 +149,47 @@ public class DataServlet extends HttpServlet {
                 logger.info("Attempting to get database connection");
                 if (DBUtils.connect()) {
                     logger.info("Connection to the database was established");
-                    // change list content
-                    String paramListname = request.getParameter("changeList");
-                    if (paramListname != null) {
+                    // add a new list
+                    if (request.getParameter("addList") != null) {
+                        String paramListname = request.getParameter("addList");
+                        // get list content from request body
+                        String listContent = (String) Utils.fromJson(DataServlet.class.getName(), request, String.class);
+                        // check if there is no a list with the same name                        
+                        if (DBUtils.checkListExistance(sessionUsername, paramListname)) {
+                            // list already exists in database
+                            response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: The list with name[" + paramListname + "] already exists in database");
+                            throw new IOException("DataServlet cannot create a list in database");
+                        } else {
+                            // list does not exists in database
+                            // create a list in database
+                            logger.info("Attempt to create a record in the database and a file referenced to that record with list[" + paramListname + "] data");
+                            if (DBUtils.createList(sessionUsername, paramListname)
+                                    && FileUtils.createListFile("/data/" + sessionUsername + "_" + paramListname + ".dt")) {
+                                logger.info("The record in the database and the file were created");
+                                String DataRef = DBUtils.getListContentRef(sessionUsername, paramListname);
+                                if (DataRef != null) {
+                                    // set list content
+                                    FileUtils.setFileContent(DataRef, listContent);
+                                    //
+                                    UserProfile sessionData = (UserProfile) session.getAttribute("Data");
+                                    sessionData.lists.add(paramListname);
+                                    //UserList userList = new UserList(paramListname, "{}", UserList.CREATED_BY_SERVER);
+                                    UserList userList = new UserList(paramListname, listContent, UserList.CREATED_BY_SERVER);
+                                    Utils.sendResponse(DataServlet.class.getName(), response, userList);
+                                    logger.info("List with name \"" + paramListname + "\" was created in user [" + sessionRemoteIP + "] profile");
+                                } // there is no a reference to a local file in database
+                                else {
+                                    throw new IOException("DataServlet cannot get data reference from the database");
+                                }
+                            } else {
+                                logger.error("The record in the database and the file were not created");
+                                response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: The list with name[" + paramListname + "] cannot be created in database");
+                                throw new IOException("DataServlet cannot create a list in database");
+                            }
+                        }
+                    } // change list content
+                    else if (request.getParameter("changeList") != null) {
+                        String paramListname = request.getParameter("changeList");
                         logger.info("User [" + sessionRemoteIP + "] wants to change a list with name \"" + paramListname + "\"");
                         // get list content from request body
                         String listContent = (String) Utils.fromJson(DataServlet.class.getName(), request, String.class);
@@ -186,7 +198,7 @@ public class DataServlet extends HttpServlet {
                         if (DataRef != null) {
                             // check if list was renamed
                             String paramTitle = request.getParameter("title");
-                            if (!paramTitle.isEmpty()) {
+                            if (paramTitle != null) {
                                 // rename the list
                                 DataRef = DBUtils.renameList(sessionUsername, paramListname, paramTitle);
                                 FileUtils.renameListFile(sessionUsername, paramListname, paramTitle);

@@ -70,7 +70,7 @@ controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$io
         // in the root scope because of availability for side menu
         $rootScope.showListButton = false;
         $rootScope.showPlusButton = false;
-        $rootScope.addList = function (param) {
+        $rootScope.addList = function (param, data) {
             //console.log("addList");
             var e = null;
             if (param && typeof (param) === "string")
@@ -86,7 +86,11 @@ controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$io
                     // create a list
                     $scope.userProfile = session.getUserProfile();
                     // send information to the server
-                    $http.get(server.hostName() + "/DataServlet?addList=" + $scope.listName).then(function (response) {
+                    console.log(JSON.stringify($scope.userProfile));
+                    if (data === undefined)
+                        data = "";
+                    console.debug(data);
+                    $http.post(server.hostName() + "/DataServlet?addList=" + $scope.listName, JSON.stringify(data)).then(function (response) {
                         console.log("addList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                         $scope.userProfile.lists.push($scope.listName);
                         $rootScope.showListButton = true;
@@ -565,7 +569,8 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
         $scope.checkboxesColumnDisplay = "none";
         $scope.currentList = {
             name: session.getOpenedListName(),
-            nameBeforeChanges: session.getOpenedListName()
+            nameBeforeChanges: session.getOpenedListName(),
+            listBody: ""
         };
         $scope.checkboxIcon = "check-circle-o";
         $scope.checkboxIconUnchecked = "circle-thin";
@@ -615,12 +620,11 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
         $scope.checkboxColumnData = updateCheckboxColumnData();
         $scope.additionalColumnsData = updateAdditionalColumnsData();
         // setting up initial textarea text
-        $scope.listBody = "";
         $scope.data.body && $scope.data.body.forEach(function (item, index) {
             if (index == $scope.data.body.length - 1)
-                $scope.listBody = $scope.listBody + item.text;
+                $scope.currentList.listBody = $scope.currentList.listBody + item.text;
             else
-                $scope.listBody = $scope.listBody + item.text + "\n";
+                $scope.currentList.listBody = $scope.currentList.listBody + item.text + "\n";
         });
         // check if data is a checklist and make arangements about it        
         if ($scope.data.type === "checklist")
@@ -745,7 +749,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
         };
         $scope.changeTextarea = function () {
             // make changes in $scope.data
-            var split = $scope.listBody.split("\n");
+            var split = $scope.currentList.listBody.split("\n");
             //console.debug("  split          = [%s]\n  data.body.text = [%s]", JSON.stringify(split), JSON.stringify(getDataBodyText()));
             var sign = "";
             var insertedElem = {text: "", checked: false};
@@ -881,22 +885,24 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                 // check if the list title is not empty
                 if ($scope.currentList.name != "") {
                     // create a list and send information to the server
-                    $rootScope.addList($scope.currentList.name);
+                    console.log($scope.currentList.listBody);
+                    $rootScope.addList($scope.currentList.name, $scope.data);
                 }
             }
-            // otherwise we send changes
+            // send changes to the server
             else {
                 // check if the list title is not empty
                 if ($scope.currentList.name != "") {
                     // send changes to the server
-                    var paramRow = "?changeList=";
-                    if (angular.equals($scope.currentList.name, $scope.currentList.nameBeforeChanges)) {
+                    var paramRow = "";
+                    if (($scope.currentList.nameBeforeChanges === "") ||
+                            (angular.equals($scope.currentList.name, $scope.currentList.nameBeforeChanges))) {
                         paramRow += $scope.currentList.name;
                     } else {
                         paramRow += $scope.currentList.nameBeforeChanges + "&title=" + $scope.currentList.name;
                         session.renameList($scope.currentList.nameBeforeChanges, $scope.currentList.name);
                     }
-                    $http.post(server.hostName() + "/DataServlet" + paramRow, JSON.stringify($scope.data)).then(function (response) {
+                    $http.post(server.hostName() + "/DataServlet?changeList=" + paramRow, JSON.stringify($scope.data)).then(function (response) {
                         console.log("changeList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                     }, function (response) {
                         console.log("changeList: " + response.status + " " + response.statusText);

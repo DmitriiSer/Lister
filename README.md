@@ -1,5 +1,5 @@
 # Lister
-### Version: 0.2.14
+### Version: 0.2.15
 Lister is a mobile-ready, natively looking, AngularJS and Ionic powered HTML5 todo organizer.
 
 ##### Main specifications:
@@ -34,8 +34,10 @@ And of course **Lister** itself is open source with a [public repository](https:
 - [x] ~~IMPROVEMENT: Make the minus button in the list editor show remove list dialog~~
 - [x] ~~ISSUE: Turn off the poop-up list item menu for the desktop platform~~
 - [x] ~~IMPROVEMENT: Show alert and confirmation messages~~
+- [x] ~~ISSUE: Server does not save list content when user creates a list~~
 
 ##### Changelog:
+- v0.2.15 Fixed an issue when the server didn't save list content on list creation
 - v0.2.14 Removed a bottom border line on ion-header-bar side menu
 - v0.2.13 Improved displaying the alert and confirmation messages
 - v0.2.12 Turned off the poop-up list item menu for the desktop platform

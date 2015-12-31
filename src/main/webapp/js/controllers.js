@@ -307,12 +307,11 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
             $ionicScrollDelegate.freezeScroll(false);
         };
         $scope.thumbnailHold = function (listname, e) {
-            console.log("thumbnailHold");
+            //console.log("thumbnailHold");
             if ($scope.dragList)
                 return;
             $scope.dragList = false;
-            //if (browser.isMobileOrTablet()) {
-            if (true) {
+            if (browser.isMobileOrTablet()) {
                 $scope.listHold = true;
                 $ionicScrollDelegate.freezeScroll(true);
                 $ionicSideMenuDelegate.canDragContent(false);

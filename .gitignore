@@ -122,10 +122,9 @@ www
 !/src/main/webapp/lib/ionic/css/
 !/src/main/webapp/lib/ionic/css/ionic.min.css
 !/src/main/webapp/lib/ionic/fonts/
-!/src/main/webapp/lib/ionic/fonts/*
 !/src/main/webapp/lib/ionic/js/
-!/src/main/webapp/lib/ionic/js/*
 !/src/main/webapp/lib/*/*.js
 !/src/main/webapp/lib/*/dist/
 !/src/main/webapp/lib/*/dist/*.js
+!/src/main/webapp/lib/*/rollups/
 !/src/main/webapp/lib/*/rollups/sha3.js

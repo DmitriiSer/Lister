@@ -115,6 +115,7 @@ www
 /*/*/*test*
 
 # All Bower lib files
+/src/main/webapp/lib/*/*
 /src/main/webapp/lib/*/*/*
 
 # except

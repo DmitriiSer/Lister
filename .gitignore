@@ -119,8 +119,11 @@ www
 
 # except
 !/src/main/webapp/lib/ionic/
+!/src/main/webapp/lib/ionic/css/
 !/src/main/webapp/lib/ionic/css/ionic.min.css
+!/src/main/webapp/lib/ionic/fonts/
 !/src/main/webapp/lib/ionic/fonts/*
+!/src/main/webapp/lib/ionic/js/
 !/src/main/webapp/lib/ionic/js/*
 !/src/main/webapp/lib/*/*.js
 !/src/main/webapp/lib/*/dist/

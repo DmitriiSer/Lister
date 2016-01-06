@@ -53,12 +53,12 @@
             <scope>provided</scope>
         </dependency>
         <!-- my dependencies -->
-        <!-- urlwriter 
+        <!-- urlwriter -->
         <dependency>
             <groupId>org.tuckey</groupId>
             <artifactId>urlrewritefilter</artifactId>
             <version>4.0.3</version>
-        </dependency>-->
+        </dependency>
         <!-- Google GSON -->
         <dependency>
             <groupId>com.google.code.gson</groupId>

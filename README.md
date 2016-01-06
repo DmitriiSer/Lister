@@ -19,7 +19,7 @@ Lister uses a number of open source projects to work properly:
 
 And of course **Lister** itself is open source with a [public repository](https://github.com/DmitriiSer/Lister)
  on GitHub.
-##### TODO:
+##### TODO: 
 - [ ] IMPROVEMENT: Save list order on the server after reordering
 - [ ] IMPROVEMENT: Create a toolbar in the list editor 
 - [ ] IMPROVEMENT: Fix "I forgot my password" link in the login window

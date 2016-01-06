@@ -288,14 +288,21 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
             forceThumbnailRedraw(e.target);
             forceThumbnailRedraw(e.target.parentElement);
         };
-        $scope.thumbnailDropSuccess = function (index, data) {
-            console.log("thumbnailDropSuccess");
-            // send list order to the server
-            $http.post(server.hostName() + "/DataServlet?reorderLists=", JSON.stringify($scope.data)).then(function () {
-                console.log("SUCCESS");
-            }, function () {
-                console.log("ERROR");
-            });
+        $scope.thumbnailDropSuccess = function (newObjIndex, curObjTitle) {
+            //console.log("thumbnailDropSuccess");
+            var curObjIndex = $scope.userProfile.lists.indexOf(curObjTitle);
+            console.log("$scope.userProfile.lists = %s", JSON.stringify($scope.userProfile.lists));
+            console.log("session.getUserLists() = %s", JSON.stringify(session.getUserLists()));
+            //console.log("newObjIndex = %s, curObjIndex = %s", newObjIndex, curObjIndex);
+            if (curObjIndex != newObjIndex) {
+                console.log("session.getUserLists() = %s", JSON.stringify(session.getUserLists()));
+                // send list order to the server
+                $http.post(server.hostName() + "/DataServlet?reorderLists=", JSON.stringify($scope.data)).then(function () {
+                    console.log("SUCCESS");
+                }, function () {
+                    console.log("ERROR");
+                });
+            }
         };
         $scope.thumbnailTap = function (listname, e) {
             //console.log("thumbnailTap");

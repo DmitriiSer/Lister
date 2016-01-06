@@ -8,6 +8,9 @@ Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
+# Windows Batch files
+*.bat
+
 # Windows Installer files
 *.cab
 *.msi
@@ -93,6 +96,9 @@ node_modules
 .node_repl_history
 /target1/
 
+# NetBeans Files
+nb-configuration.xml
+
 # Ionic and Cordova
 /hooks/
 /platforms/
@@ -102,8 +108,15 @@ node_modules
 www
 !*/www
 
-# test files
+# Test Files
 *test*
 /*test*
 /*/*test*
 /*/*/*test*
+
+# All Bower lib files
+/src/main/webapp/lib/*/*
+!/src/main/webapp/lib/*/dist/
+# except
+!/src/main/webapp/lib/*/*.js
+!/src/main/webapp/lib/*/dist/*.js

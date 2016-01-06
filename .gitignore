@@ -116,7 +116,9 @@ www
 
 # All Bower lib files
 /src/main/webapp/lib/*/*
-!/src/main/webapp/lib/*/dist/
+
 # except
 !/src/main/webapp/lib/*/*.js
+!/src/main/webapp/lib/*/dist/
 !/src/main/webapp/lib/*/dist/*.js
+!/src/main/webapp/lib/*/rollups/sha3.js

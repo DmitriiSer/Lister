@@ -1,4 +1,4 @@
-# Lister
+# Lister ([DEMO](http://lister-advancedlists.rhcloud.com))
 ### Version: 0.2.15
 Lister is a mobile-ready, natively looking, AngularJS and Ionic powered HTML5 todo organizer.
 

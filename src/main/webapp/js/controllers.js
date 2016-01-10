@@ -86,10 +86,10 @@ controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$io
                     // create a list
                     $scope.userProfile = session.getUserProfile();
                     // send information to the server
-                    console.log(JSON.stringify($scope.userProfile));
+                    //console.log(JSON.stringify($scope.userProfile));
                     if (angular.isUndefined(data))
                         data = "";
-                    console.debug(data);
+                    //console.debug(data);
                     $http.post(server.hostName() + "/DataServlet?addList=" + $scope.listName, JSON.stringify(data)).then(function (response) {
                         console.log("addList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                         $scope.userProfile.lists.push($scope.listName);
@@ -99,7 +99,8 @@ controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$io
                         // call $ionicScrollDelegate.resize() to expand scrollable area
                         $ionicScrollDelegate.resize();
                     }, function (response) {
-                        $scope.dataError(response.data);
+                        var errorMsg = $scope.dataError(response.data);
+                        $rootScope.showAlertMsg(errorMsg);
                         $rootScope.showListButton = true;
                         $rootScope.showPlusButton = false;
                         $scope.listName = "";
@@ -903,7 +904,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                 // check if the list title is not empty
                 if ($scope.currentList.name != "") {
                     // create a list and send information to the server
-                    console.log($scope.currentList.listBody);
+                    //console.log($scope.currentList.listBody);
                     $rootScope.addList($scope.currentList.name, $scope.data);
                 }
             }

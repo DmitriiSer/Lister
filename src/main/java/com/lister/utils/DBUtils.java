@@ -214,9 +214,42 @@ public class DBUtils {
             return null;
         }
     }
-    public static boolean removeList(String username, String listname) {
+    public static boolean removeList(String username, String listname, int listsSize) {
         try {
             Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT ListOrder FROM lists WHERE UserName='" + username + "' AND ListName='" + listname + "'");
+            String currentListOrder = null;
+            while (rs.next()) {
+                currentListOrder = rs.getString("ListOrder");
+            }
+            //
+            logger.info("currentListOrder = " + currentListOrder);
+            try {
+                int intCurrentListOrder = Integer.parseInt(currentListOrder);
+                if (intCurrentListOrder < 0 || intCurrentListOrder > listsSize - 1) {
+                    throw new Exception("List data integrity was violated");
+                }
+                int subtracter = 1;
+                for (int i = intCurrentListOrder + 1; i < listsSize; i++) {
+                    ResultSet rs1 = stmt.executeQuery("SELECT ListName FROM lists WHERE UserName='" + username + "' AND ListOrder='" + i + "'");
+                    String nextListName = null;
+                    while (rs1.next()) {
+                        nextListName = rs1.getString("ListName");
+                    }
+                    if (nextListName == null) {
+                        subtracter += 1;
+                        continue;
+                    }
+                    int result = stmt.executeUpdate("UPDATE lists SET ListOrder='" + (i - subtracter) + "' WHERE UserName='" + username
+                            + "' AND ListName='" + nextListName + "'");
+                    if (result != 1) {
+                        throw new SQLException("There is no rows to delete from table 'lists'");
+                    }
+                }
+            } catch (Exception e) {
+                throw new SQLException(e.getMessage());
+            }
+            // removing the current list from
             int result = stmt.executeUpdate("DELETE FROM lists WHERE UserName='" + username + "' AND ListName='" + listname + "'");
             if (result != 1) {
                 throw new SQLException("There is no rows to delete from table 'lists'");

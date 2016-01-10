@@ -13,7 +13,7 @@ public class UserProfile {
     private boolean loggedIn;
     List<String> lists;
     //
-    public UserProfile(){
+    public UserProfile() {
     }
     public UserProfile(String username, String avatar) {
         this.username = username;
@@ -42,5 +42,13 @@ public class UserProfile {
     }
     public void setListTitles(List<String> lists) {
         this.lists = lists;
+    }
+    public boolean removeList(String listName) {
+        try {
+            this.lists.remove(listName);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }

@@ -22,7 +22,7 @@ app.run(["$ionicHistory", "$ionicPlatform", "$ionicActionSheet", "$cordovaTouchI
         // TODO: move it from here to modal window show function
         $window.onkeydown = function (e) {
             var modal = document.getElementsByName("loginForm")[0];
-            if (modal === undefined)
+            if (angular.isUndefined(modal))
                 return;
             var firstTabindex = null;
             var lastTabindex = null;

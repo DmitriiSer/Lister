@@ -1,5 +1,5 @@
 # Lister ([DEMO](http://lister-advancedlists.rhcloud.com))
-### Version: 0.2.15
+### Version: 0.2.16
 Lister is a mobile-ready, natively looking, AngularJS and Ionic powered HTML5 todo organizer.
 
 ##### Main specifications:
@@ -20,7 +20,7 @@ Lister uses a number of open source projects to work properly:
 And of course **Lister** itself is open source with a [public repository](https://github.com/DmitriiSer/Lister)
  on GitHub.
 ##### TODO: 
-- [ ] IMPROVEMENT: Show popup window if session was expired
+- [ ] IMPROVEMENT: Show pop-up window if session was expired
 - [ ] IMPROVEMENT: Create a toolbar in the list editor 
 - [ ] IMPROVEMENT: Fix "I forgot my password" link in the login window
 - [ ] ISSUE: Focusing the textarea in the list editor on mobile devices causes a sliding glitch

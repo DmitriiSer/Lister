@@ -79,15 +79,15 @@ controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$io
                 e = param;
             if (!e)
                 e = {which: 1};
-            if (e.which == 1 || e.which == undefined) {
+            if (e.which == 1 || angular.isUndefined(e.which)) {
                 //
                 // if there is a name for created list ($scope.listName) then create a list on the server
-                if ($scope.listName !== "" && $scope.listName !== undefined) {
+                if ($scope.listName !== "" && !angular.isUndefined($scope.listName)) {
                     // create a list
                     $scope.userProfile = session.getUserProfile();
                     // send information to the server
                     console.log(JSON.stringify($scope.userProfile));
-                    if (data === undefined)
+                    if (angular.isUndefined(data))
                         data = "";
                     console.debug(data);
                     $http.post(server.hostName() + "/DataServlet?addList=" + $scope.listName, JSON.stringify(data)).then(function (response) {
@@ -118,7 +118,7 @@ controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$io
         };
         $rootScope.removeList = function (listName) {
             //console.log("$rootScope.removeList");
-            if (listName !== undefined) {
+            if (!angular.isUndefined(listName)) {
                 $rootScope.listNameToRemove = listName;
             } else {
                 $rootScope.listNameToRemove = session.getOpenedListName();
@@ -213,7 +213,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
         };
         $scope.checkIfLoggedIn();
         $scope.$parent.updateUserProfile(session.getUserProfile());
-        console.log(JSON.stringify($scope.userProfile));
+        //console.log(JSON.stringify($scope.userProfile));
         //
         if ($scope.userProfile.lists) {
             $rootScope.showListButton = ($scope.userProfile.lists.length > 0) ? true : false;
@@ -228,7 +228,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
         $scope.getList = function (listName, e) {
             //console.log("listName = %s", listName);
             //console.log("$scope.listButtonDisabled = %s", $scope.listButtonDisabled);
-            if (e.which == 1 || e.which == undefined) {
+            if (e.which == 1 || angular.isUndefined(e.which)) {
                 $http.get(server.hostName() + "/DataServlet?getList=" + listName).then(function (response) {
                     console.log("getList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                     session.setOpenedListName(listName);
@@ -284,7 +284,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
             if (!element)
                 return;
             var display = display = window.getComputedStyle(element)["display"]; //element.style.display;
-            if (display === undefined || display === "")
+            if (angular.isUndefined(display) || display === "")
                 display = "block";
             element.style.display = "none";
             var trick = element.offsetHeight;
@@ -613,7 +613,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
          ]};*/
         // updating checkbox column data
         var updateCheckboxColumnData = function () {
-            if ($scope.data.body !== undefined) {
+            if (!angular.isUndefined($scope.data.body)) {
                 var arr = new Array();
                 for (var i = 0; i < $scope.data.body.length; i++)
                     arr.push($scope.data.body[i].checked);
@@ -623,7 +623,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
         };
         // updating additional column data
         var updateAdditionalColumnsData = function () {
-            if ($scope.data === "{}" || $scope.data === undefined) {
+            if ($scope.data === "{}" || angular.isUndefined($scope.data)) {
                 return [];
             }
             var arr = new Array();
@@ -938,14 +938,14 @@ controllers.controller("RemoveListConfirmationController", ["$rootScope", "$scop
         $scope.message = "Do you really want to delete list with name \"" + $rootScope.listNameToRemove + "\"";
         $scope.confirmationYes = function () {
             // check if the list editor is open and close it if it is
-            if ($rootScope.listEditorWindow !== undefined) {
+            if (!angular.isUndefined($rootScope.listEditorWindow)) {
                 $rootScope.listEditorWindow.dismiss("cancel");
             }
             //
             var listName = $rootScope.listNameToRemove;
             var lists = session.getUserLists();
             $rootScope.confirmationWindow.close();
-            if (listName !== undefined && listName != "") {
+            if (!angular.isUndefined(listName) && listName != "") {
                 // remove a list
                 $http.get(server.hostName() + "/DataServlet?removeList=" + listName).then(function (response) {
                     console.log("removeList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));

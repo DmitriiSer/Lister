@@ -96,15 +96,18 @@ public class DataServlet extends HttpServlet {
                     } // remove a list
                     else if (request.getParameter("removeList") != null) {
                         String paramListname = request.getParameter("removeList");
+                        UserProfile sessionData = (UserProfile) session.getAttribute("Data");
                         String DataRef;
                         logger.info("Attempt to remove a record in the database and a file referenced to that record with list[" + paramListname + "] data");
-                        if ((DBUtils.removeList(sessionUsername, paramListname))
-                                && (FileUtils.removeListFile("/data/" + sessionUsername + "_" + paramListname + ".dt"))) {
+                        if ((DBUtils.removeList(sessionUsername, paramListname, sessionData.lists.size()))
+                                && (FileUtils.removeListFile("/data/" + sessionUsername + "_" + paramListname + ".dt"))
+                                && (sessionData.removeList(paramListname))) {
+                            logger.info("sessionData.lists = " + sessionData.lists.toString());
                             logger.info("The record in the database and the file were removed");
                             Utils.sendResponse(DataServlet.class.getName(), response, "list with name '" + paramListname + "' was deleted");
                             logger.info("user [" + sessionRemoteIP + "] removedr a list with name \"" + paramListname + "\"");
                         } else {
-                            response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error. File cannot be removed from the database");
+                            //response.sendError(HttpServletResponse.SC_CONFLICT, "ServerError: Internal error. File cannot be removed from the database");
                             throw new IOException("DataServlet cannot remove list " + paramListname + " from the database");
                         }
                     } // wrong request
@@ -216,15 +219,15 @@ public class DataServlet extends HttpServlet {
                     } else if (request.getParameter("reorderLists") != null) {
                         String reorderListsContent = (String) Utils.fromJson(DataServlet.class.getName(), request, String.class);
                         List<String> listOrderIndexes = new ArrayList<>(Arrays.asList(reorderListsContent.split(",")));
-
                         UserProfile sessionData = (UserProfile) session.getAttribute("Data");
                         List<String> newLists = new ArrayList<>();
                         for (int i = 0; i < listOrderIndexes.size(); i++) {
-                            int listOrderIndex = Integer.parseInt(listOrderIndexes.get(i));
+                            int listOrderIndex = listOrderIndexes.indexOf(Integer.toString(i));
                             String newListElement = sessionData.lists.get(listOrderIndex);
                             newLists.add(newListElement);
                         }
                         logger.info("prev lists: " + sessionData.lists.toString());
+                        logger.info("new  lists: " + newLists.toString());
                         // reorder lists in the database
                         DBUtils.changeListsOrder(sessionUsername, sessionData.lists, listOrderIndexes);
                         // overwrite session data

@@ -53,6 +53,9 @@ var services = angular.module("app.services", [])
         /* session factory */
         .factory("session", ["$http", function ($http) {
                 var service = {
+                    checkStatus: function () {
+                        $http.get
+                    },
                     openedList: {
                         listName: "",
                         listContent: ""
@@ -84,9 +87,12 @@ var services = angular.module("app.services", [])
                     setLoggedIn: function (loggedIn) {
                         service.userProfile.loggedIn = loggedIn;
                     },
-                    // get, remove user lists
+                    // get, set and remove user lists
                     getUserLists: function () {
                         return service.userProfile.lists;
+                    },
+                    setUserLists: function (lists) {
+                        service.userProfile.lists = lists;
                     },
                     renameList: function (oldListName, newListName) {
                         service.userProfile.lists.forEach(function (elem, index) {

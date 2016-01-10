@@ -213,6 +213,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
         };
         $scope.checkIfLoggedIn();
         $scope.$parent.updateUserProfile(session.getUserProfile());
+        console.log(JSON.stringify($scope.userProfile));
         //
         if ($scope.userProfile.lists) {
             $rootScope.showListButton = ($scope.userProfile.lists.length > 0) ? true : false;
@@ -254,6 +255,10 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
         $scope.thumbnailDragStart = function () {
             //console.log("thumbnailDragStart");
             $scope.dragList = true;
+            $scope.oldLists = $scope.userProfile.lists.slice();
+            $scope.newListIndexes = [];
+            for (var i = 0; i < $scope.userProfile.lists.length; i++)
+                $scope.newListIndexes.push(i);
             $ionicScrollDelegate.freezeScroll(true);
             $ionicSideMenuDelegate.canDragContent(false);
         };
@@ -262,6 +267,13 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
             var curObjIndex = $scope.userProfile.lists.indexOf(curObjTitle);
             if (newObjIndex != curObjIndex) {
                 var newObjTitle = $scope.userProfile.lists[newObjIndex];
+                // update current object value index from '$scope.newListIndexes'
+                var curObjVal = $scope.newListIndexes[curObjIndex];
+                // remove draggable object's index from the '$scope.newListIndexes'
+                $scope.newListIndexes.splice(curObjIndex, 1);
+                // insert draggable object's index in a new position in the '$scope.newListIndexes'
+                $scope.newListIndexes.splice(newObjIndex, 0, curObjVal);
+                //
                 // remove draggable object from the '$scope.userProfile.lists'
                 $scope.userProfile.lists.splice(curObjIndex, 1);
                 // insert draggable object in a new position in the '$scope.userProfile.lists'
@@ -288,18 +300,17 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
             forceThumbnailRedraw(e.target);
             forceThumbnailRedraw(e.target.parentElement);
         };
-        $scope.thumbnailDropSuccess = function (newObjIndex, curObjTitle) {
+        $scope.thumbnailDropSuccess = function () {
             //console.log("thumbnailDropSuccess");
-            var curObjIndex = $scope.userProfile.lists.indexOf(curObjTitle);
-            console.log("$scope.userProfile.lists = %s", JSON.stringify($scope.userProfile.lists));
-            console.log("session.getUserLists() = %s", JSON.stringify(session.getUserLists()));
-            //console.log("newObjIndex = %s, curObjIndex = %s", newObjIndex, curObjIndex);
-            if (curObjIndex != newObjIndex) {
-                console.log("session.getUserLists() = %s", JSON.stringify(session.getUserLists()));
+            var listsWereReordered = ($scope.userProfile.lists.toString() !== $scope.oldLists.toString());
+            if (listsWereReordered) {
                 // send list order to the server
-                $http.post(server.hostName() + "/DataServlet?reorderLists=", JSON.stringify($scope.data)).then(function () {
-                    console.log("SUCCESS");
-                }, function () {
+                for (var i = 0; i < $scope.oldLists.length; i++)
+                    $scope.newListIndexes[i] = $scope.userProfile.lists.indexOf($scope.oldLists[i]);
+                var data = $scope.newListIndexes.toString();
+                $http.post(server.hostName() + "/DataServlet?reorderLists", data).then(function (response) {
+                    console.log("reorderLists: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
+                }, function (response) {
                     console.log("ERROR");
                 });
             }

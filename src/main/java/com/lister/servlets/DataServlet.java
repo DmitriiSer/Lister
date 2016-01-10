@@ -5,6 +5,8 @@ import com.lister.utils.FileUtils;
 import com.lister.utils.Utils;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
@@ -163,7 +165,8 @@ public class DataServlet extends HttpServlet {
                             // list does not exists in database
                             // create a list in database
                             logger.info("Attempt to create a record in the database and a file referenced to that record with list[" + paramListname + "] data");
-                            if (DBUtils.createList(sessionUsername, paramListname)
+                            UserProfile sessionData = (UserProfile) session.getAttribute("Data");
+                            if (DBUtils.createList(sessionUsername, paramListname, sessionData.lists.size())
                                     && FileUtils.createListFile("/data/" + sessionUsername + "_" + paramListname + ".dt")) {
                                 logger.info("The record in the database and the file were created");
                                 String DataRef = DBUtils.getListContentRef(sessionUsername, paramListname);
@@ -171,7 +174,6 @@ public class DataServlet extends HttpServlet {
                                     // set list content
                                     FileUtils.setFileContent(DataRef, listContent);
                                     //
-                                    UserProfile sessionData = (UserProfile) session.getAttribute("Data");
                                     sessionData.lists.add(paramListname);
                                     //UserList userList = new UserList(paramListname, "{}", UserList.CREATED_BY_SERVER);
                                     UserList userList = new UserList(paramListname, listContent, UserList.CREATED_BY_SERVER);
@@ -211,6 +213,25 @@ public class DataServlet extends HttpServlet {
                         else {
                             throw new IOException("DataServlet cannot get data reference from the database");
                         }
+                    } else if (request.getParameter("reorderLists") != null) {
+                        String reorderListsContent = (String) Utils.fromJson(DataServlet.class.getName(), request, String.class);
+                        List<String> listOrderIndexes = new ArrayList<>(Arrays.asList(reorderListsContent.split(",")));
+
+                        UserProfile sessionData = (UserProfile) session.getAttribute("Data");
+                        List<String> newLists = new ArrayList<>();
+                        for (int i = 0; i < listOrderIndexes.size(); i++) {
+                            int listOrderIndex = Integer.parseInt(listOrderIndexes.get(i));
+                            String newListElement = sessionData.lists.get(listOrderIndex);
+                            newLists.add(newListElement);
+                        }
+                        logger.info("prev lists: " + sessionData.lists.toString());
+                        // reorder lists in the database
+                        DBUtils.changeListsOrder(sessionUsername, sessionData.lists, listOrderIndexes);
+                        // overwrite session data
+                        sessionData.lists.clear();
+                        sessionData.lists.addAll(newLists);
+
+                        Utils.sendResponse(DataServlet.class.getName(), response, sessionData);
                     } // wrong request
                     else {
                         response.sendError(HttpServletResponse.SC_NOT_FOUND);

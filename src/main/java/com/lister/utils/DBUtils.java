@@ -161,7 +161,7 @@ public class DBUtils {
         try {
             List<String> lists = new ArrayList<>();
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM lists WHERE UserName='" + username + "'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM lists WHERE UserName='" + username + "' ORDER BY ListOrder");
             while (rs.next()) {
                 // check if 'username' equalsIgnoreCase to 'UserName' in 'users' table
                 if (username.equalsIgnoreCase(rs.getString("UserName"))) {
@@ -177,11 +177,11 @@ public class DBUtils {
             return null;
         }
     }
-    public static boolean createList(String username, String listname) {
+    public static boolean createList(String username, String listname, int listsSize) {
         try {
             Statement stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO lists(UserName, ListName) "
-                    + "VALUES('" + username + "', '" + listname + "')", Statement.RETURN_GENERATED_KEYS);
+            stmt.executeUpdate("INSERT INTO lists(UserName, ListName, ListOrder) "
+                    + "VALUES('" + username + "', '" + listname + "', '" + listsSize + "')", Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = stmt.getGeneratedKeys();
             long listID = -1;
             if (rs.next()) {
@@ -266,5 +266,19 @@ public class DBUtils {
             throw new SQLException("There is no rows to modify in table 'list_contents'");
         }
         stmt.close();
+    }
+    public static void changeListsOrder(String username, List<String> oldListTitles, List<String> newListIndexes) {
+        try {
+            logger.info(newListIndexes.toString());
+            Statement stmt = con.createStatement();
+            for (int i = 0; i < oldListTitles.size(); i++) {
+                int result = stmt.executeUpdate("UPDATE lists SET ListOrder='" + newListIndexes.get(i) + "' WHERE UserName='" + username
+                        + "' AND ListName='" + oldListTitles.get(i) + "'");
+            }
+            String listOrder = null;
+            stmt.close();
+        } catch (SQLException e) {
+            logger.error(errorMesage(e));
+        }
     }
 }

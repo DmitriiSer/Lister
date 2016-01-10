@@ -20,7 +20,7 @@ Lister uses a number of open source projects to work properly:
 And of course **Lister** itself is open source with a [public repository](https://github.com/DmitriiSer/Lister)
  on GitHub.
 ##### TODO: 
-- [ ] IMPROVEMENT: Save list order on the server after reordering
+- [ ] IMPROVEMENT: Show popup window if session was expired
 - [ ] IMPROVEMENT: Create a toolbar in the list editor 
 - [ ] IMPROVEMENT: Fix "I forgot my password" link in the login window
 - [ ] ISSUE: Focusing the textarea in the list editor on mobile devices causes a sliding glitch
@@ -35,8 +35,10 @@ And of course **Lister** itself is open source with a [public repository](https:
 - [x] ~~ISSUE: Turn off the poop-up list item menu for the desktop platform~~
 - [x] ~~IMPROVEMENT: Show alert and confirmation messages~~
 - [x] ~~ISSUE: Server does not save list content when user creates a list~~
+- [x] IMPROVEMENT: Save list order on the server after reordering
 
 ##### Changelog:
+- v0.2.16 Made server remember lists order after user reorders them
 - v0.2.15 Fixed an issue when the server didn't save list content on list creation
 - v0.2.14 Removed a bottom border line on ion-header-bar side menu
 - v0.2.13 Improved displaying the alert and confirmation messages

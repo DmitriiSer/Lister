@@ -37,14 +37,20 @@ public class LoginServlet extends HttpServlet {
             // set response type to JSON
             response.setContentType("application/json");
             HttpSession session = request.getSession(/*false*/); // 'false' - do not create a new session if does not exist
+            // get session timeout in seconds
+            int sessionTimeout = session.getMaxInactiveInterval();
+            // get session remote IP
             String sessionRemoteIP = (String) session.getAttribute("RemoteIP");
+            // get session's username
             String sessionUsername = (String) session.getAttribute("Username");
             // check if requested 'isLoggedIn'
             if (request.getParameter("isLoggedIn") != null) {
                 // check if it's a first attempt to log in
                 if (sessionRemoteIP == null) {
                     logger.info("user [" + request.getRemoteAddr() + "] requires an authentification");
-                    Utils.sendResponse(LoginServlet.class.getName(), response, new UserProfile());
+                    UserProfile userProfile = new UserProfile();
+                    userProfile.setTimeout(sessionTimeout);
+                    Utils.sendResponse(LoginServlet.class.getName(), response, userProfile);
                 } // check if user already logged in and it's remote IP is the same as IP stored in session
                 else {
                     logger.info("User [" + request.getRemoteAddr()
@@ -67,6 +73,7 @@ public class LoginServlet extends HttpServlet {
                     if (sessionData == null) {
                         throw new IOException("LoginServlet cannot obtain session data");
                     }
+                    sessionData.setTimeout(sessionTimeout);
                     sessionData.setListTitles(lists);
                     session.setAttribute("Data", sessionData);
                     Utils.sendResponse(LoginServlet.class.getName(), response, (UserProfile) session.getAttribute("Data"));
@@ -103,8 +110,16 @@ public class LoginServlet extends HttpServlet {
             response.setContentType("application/json");
             // get UserProfile from request body
             UserProfile userProfile = (UserProfile) Utils.fromJson(LoginServlet.class.getName(), request, UserProfile.class);
+            // get username and password from th request body
             String username = userProfile.getUsername();
             String password = userProfile.getPassword();
+            // get session object and set session relative attributes
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                session = request.getSession(true);
+            }
+            // get session timeout in seconds
+            int sessionTimeout = session.getMaxInactiveInterval();
             // connect to database
             logger.info("Attempting to get database connection");
             if (DBUtils.connect()) {
@@ -116,11 +131,7 @@ public class LoginServlet extends HttpServlet {
                     List<String> lists = DBUtils.getLists(username);
                     userProfile.setLoggedIn(true);
                     userProfile.setListTitles(lists);
-                    // get session object and set session relative attributes
-                    HttpSession session = request.getSession(false);
-                    if (session == null) {
-                        session = request.getSession(true);
-                    }
+                    userProfile.setTimeout(sessionTimeout);
                     session.setAttribute("RemoteIP", new String(request.getRemoteAddr()));
                     session.setAttribute("Username", new String(username));
                     session.setAttribute("Data", userProfile);

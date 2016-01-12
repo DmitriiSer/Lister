@@ -211,6 +211,13 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                     }
                 });
             }
+            var sessionTimeout = session.getUserProfile().timeout;
+            if (session.isLoggedIn() && sessionTimeout != 0) {
+                console.log(sessionTimeout);
+                // set up session timeout counter
+                //session.watch(sessionTimeout);
+                session.watch(3);
+            }
         };
         $scope.checkIfLoggedIn();
         $scope.$parent.updateUserProfile(session.getUserProfile());
@@ -237,7 +244,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                     $rootScope.showListButton = false;
                     $state.go("listEditor");
                 }, function (response) {
-                    $scope.dataError(response.data);
+                    $rootScope.showAlertMsg($scope.dataError(response.data));
                 });
             }
         };
@@ -519,6 +526,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$h
                 avatar: data.avatar,
                 lists: data.lists
             });
+            //
             $scope.userProfile.username = data.username;
             $rootScope.loginWindow.close();
             $state.go("home");

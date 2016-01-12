@@ -11,6 +11,7 @@ public class UserProfile {
     private String password;
     private String avatar;
     private boolean loggedIn;
+    private int timeout;
     List<String> lists;
     //
     public UserProfile() {
@@ -30,6 +31,9 @@ public class UserProfile {
     }
     public String getAvatar() {
         return avatar;
+    }
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
     public void setUsername(String username) {
         this.username = username;

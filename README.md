@@ -21,12 +21,12 @@ And of course **Lister** itself is open source with a [public repository](https:
  on GitHub.
 ##### TODO: 
 - [ ] IMPROVEMENT: Show pop-up window if session was expired
+- [ ] IMPROVEMENT: Reordering on mobile devices turns on only if user picked the "Reorder" menu item in list item pop-up menu
+- [ ] IMPROVEMENT: Create an UI element displaying the online/offline status
 - [ ] IMPROVEMENT: Create a toolbar in the list editor 
 - [ ] IMPROVEMENT: Fix "I forgot my password" link in the login window
 - [ ] ISSUE: Focusing the textarea in the list editor on mobile devices causes a sliding glitch
-- [ ] IMPROVEMENT: Reordering on mobile devices turns on only if user picked the "Reorder" menu item in list item pop-up menu
-- [ ] IMPROVEMENT: Create an UI message showing online/offline status
-- [ ] IMPROVEMENT: Create a task stack for offline mode that would be responsible for uploading and syncing all the missed request to the server
+- [ ] IMPROVEMENT: Create a task stack for the offline mode that would be responsible for uploading and syncing all the missed request to the server
 - [x] ~~IMPROVEMENT: Pull to close list editor~~
 - [x] ~~ISSUE: Renaming a list does not rename it on the server~~
 - [x] ~~ISSUE: Vertical list reordering causes wrong reordering~~

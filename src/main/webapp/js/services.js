@@ -51,10 +51,18 @@ var services = angular.module("app.services", [])
                 }
             }])
         /* session factory */
-        .factory("session", ["$http", function ($http) {
+        .factory("session", ["$interval", "$http", function ($interval, $http) {
                 var service = {
-                    checkStatus: function () {
-                        $http.get
+                    watchInterval: undefined,
+                    watch: function (delayInSeconds) {
+                        this.watchInterval = $interval(function () {
+                            alert("The session was expired");
+                            service.stopWatching();
+                        }, delayInSeconds * 1000);
+                    },
+                    stopWatching: function () {
+                        $interval.cancel(this.watchInterval);
+                        this.watchInterval = undefined;
                     },
                     openedList: {
                         listName: "",
@@ -62,6 +70,7 @@ var services = angular.module("app.services", [])
                     },
                     userProfile: {
                         loggedIn: false,
+                        timeout: 0,
                         username: "",
                         avatar: "",
                         lists: []
@@ -71,6 +80,7 @@ var services = angular.module("app.services", [])
                     },
                     setUserProfile: function (value) {
                         service.userProfile.loggedIn = value.loggedIn;
+                        service.userProfile.timeout = value.timeout;
                         service.userProfile.username = value.username;
                         service.userProfile.avatar = value.avatar;
                         service.userProfile.lists = value.lists;

@@ -54,11 +54,17 @@ var services = angular.module("app.services", [])
         .factory("session", ["$interval", "$http", function ($interval, $http) {
                 var service = {
                     watchInterval: undefined,
-                    watch: function (delayInSeconds) {
-                        this.watchInterval = $interval(function () {
-                            alert("The session was expired");
-                            service.stopWatching();
-                        }, delayInSeconds * 1000);
+                    watch: function (fn, delayInSeconds) {
+                        if (angular.isDefined(delayInSeconds) && angular.isUndefined(this.watchInterval)) {
+                            if (delayInSeconds >= 0) {
+                                this.watchInterval = $interval(function () {
+                                    fn();
+                                    service.stopWatching();
+                                }, delayInSeconds * 1000);
+                            } else {
+                                fn();
+                            }
+                        }
                     },
                     stopWatching: function () {
                         $interval.cancel(this.watchInterval);

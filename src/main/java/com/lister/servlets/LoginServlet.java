@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.lister.utils.DBUtils;
 import com.lister.utils.Utils;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +18,7 @@ public class LoginServlet extends HttpServlet {
     private static final Logger logger = LogManager.getLogger(LoginServlet.class);
     // Initialize GSON object
     private static final Gson gson = new Gson();
+    //
     public LoginServlet() {
         // load JDBC driver
         if (!DBUtils.loadDriver()) {
@@ -37,20 +39,25 @@ public class LoginServlet extends HttpServlet {
             // set response type to JSON
             response.setContentType("application/json");
             HttpSession session = request.getSession(/*false*/); // 'false' - do not create a new session if does not exist
-            // get session timeout in seconds
-            int sessionTimeout = session.getMaxInactiveInterval();
             // get session remote IP
             String sessionRemoteIP = (String) session.getAttribute("RemoteIP");
+            if (sessionRemoteIP != null) {
+                logger.info("New session [" + session.getId() + "] was created for user [" + sessionRemoteIP + "] at " + new Date(session.getCreationTime()));
+            }
             // get session's username
             String sessionUsername = (String) session.getAttribute("Username");
+            // get session timeout in seconds
+            int sessionTimeout = (int) (session.getMaxInactiveInterval() * 1000 - (new Date().getTime() - session.getCreationTime())) / 1000;
+            //
+            //Date sessionStartedDate = new Date();
             // check if requested 'isLoggedIn'
             if (request.getParameter("isLoggedIn") != null) {
                 // check if it's a first attempt to log in
                 if (sessionRemoteIP == null) {
                     logger.info("user [" + request.getRemoteAddr() + "] requires an authentification");
-                    UserProfile userProfile = new UserProfile();
-                    userProfile.setTimeout(sessionTimeout);
-                    Utils.sendResponse(LoginServlet.class.getName(), response, userProfile);
+                    UserProfile sessionData = new UserProfile();
+                    sessionData.setTimeout(sessionTimeout);
+                    Utils.sendResponse(LoginServlet.class.getName(), response, sessionData);
                 } // check if user already logged in and it's remote IP is the same as IP stored in session
                 else {
                     logger.info("User [" + request.getRemoteAddr()

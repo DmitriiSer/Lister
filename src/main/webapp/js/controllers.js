@@ -200,9 +200,11 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                     else {
                         // TODO: get lists in case if database was updated
                         //session.updateLists();
+                        $scope.$parent.updateUserProfile(session.getUserProfile());
                         // redirect to 'home'
                         $state.go("home");
                     }
+                    $scope.$parent.updateUserProfile(session.getUserProfile());
                 }, function (response) {
                     if ($rootScope.loginWindow) {
                         $scope.alertMsg = $scope.dataError(response.data);
@@ -211,18 +213,20 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                     }
                 });
             }
-            var sessionTimeout = session.getUserProfile().timeout;
-            if (session.isLoggedIn() && sessionTimeout != 0) {
-                console.log(sessionTimeout);
-                // set up session timeout counter
-                //session.watch(sessionTimeout);
-                session.watch(3);
+            else if ($state.current.name == "home") {
+                // set session timeout
+                var sessionTimeout = $scope.userProfile.timeout;
+                if (session.isLoggedIn() && sessionTimeout != 0) {
+                    //console.log("sessionTimeout = %s", sessionTimeout);
+                    // set up session timeout counter
+                    session.watch(function () {
+                        alert("Your session was expired");
+                        $scope.logout();
+                    }, sessionTimeout);
+                }
             }
         };
         $scope.checkIfLoggedIn();
-        $scope.$parent.updateUserProfile(session.getUserProfile());
-        //console.log(JSON.stringify($scope.userProfile));
-        //
         if ($scope.userProfile.lists) {
             $rootScope.showListButton = ($scope.userProfile.lists.length > 0) ? true : false;
             $rootScope.showPlusButton = ($scope.userProfile.lists.length == 0) ? true : false;
@@ -522,6 +526,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$h
             $scope.userProfile.password = "";
             session.setUserProfile({
                 loggedIn: true,
+                timeout: data.timeout,
                 username: data.username,
                 avatar: data.avatar,
                 lists: data.lists

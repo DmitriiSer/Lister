@@ -1,5 +1,5 @@
 # Lister ([DEMO](http://lister-advancedlists.rhcloud.com))
-### Version: 0.2.16
+### Version: 0.2.17
 Lister is a mobile-ready, natively looking, AngularJS and Ionic powered HTML5 todo organizer.
 
 ##### Main specifications:
@@ -19,8 +19,7 @@ Lister uses a number of open source projects to work properly:
 
 And of course **Lister** itself is open source with a [public repository](https://github.com/DmitriiSer/Lister)
  on GitHub.
-##### TODO: 
-- [ ] IMPROVEMENT: Show pop-up window if session was expired
+##### TODO:
 - [ ] IMPROVEMENT: Reordering on mobile devices turns on only if user picked the "Reorder" menu item in list item pop-up menu
 - [ ] IMPROVEMENT: Create an UI element displaying the online/offline status
 - [ ] IMPROVEMENT: Create a toolbar in the list editor 
@@ -36,8 +35,10 @@ And of course **Lister** itself is open source with a [public repository](https:
 - [x] ~~IMPROVEMENT: Show alert and confirmation messages~~
 - [x] ~~ISSUE: Server does not save list content when user creates a list~~
 - [x] IMPROVEMENT: Save list order on the server after reordering
+- [x] IMPROVEMENT: Show pop-up window if session was expired
 
 ##### Changelog:
+- v0.2.17 Created a session counter that is responsible for logging a user out when his session is expired
 - v0.2.16 Made server remember lists order after user reorders them
 - v0.2.15 Fixed an issue when the server didn't save list content on list creation
 - v0.2.14 Removed a bottom border line on ion-header-bar side menu

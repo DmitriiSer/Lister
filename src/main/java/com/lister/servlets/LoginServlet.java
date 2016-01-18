@@ -41,13 +41,13 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession(/*false*/); // 'false' - do not create a new session if does not exist
             // get session remote IP
             String sessionRemoteIP = (String) session.getAttribute("RemoteIP");
-            if (sessionRemoteIP != null) {
+            if (sessionRemoteIP != null && session.isNew()) {
                 logger.info("New session [" + session.getId() + "] was created for user [" + sessionRemoteIP + "] at " + new Date(session.getCreationTime()));
             }
             // get session's username
             String sessionUsername = (String) session.getAttribute("Username");
-            // get session timeout in seconds
-            int sessionTimeout = (int) (session.getMaxInactiveInterval() * 1000 - (new Date().getTime() - session.getCreationTime())) / 1000;
+            //
+            int sessionTimeout = 0;
             //
             //Date sessionStartedDate = new Date();
             // check if requested 'isLoggedIn'
@@ -56,7 +56,10 @@ public class LoginServlet extends HttpServlet {
                 if (sessionRemoteIP == null) {
                     logger.info("user [" + request.getRemoteAddr() + "] requires an authentification");
                     UserProfile sessionData = new UserProfile();
+                    // get session timeout in seconds and append it to the response object
+                    sessionTimeout = session.getMaxInactiveInterval();
                     sessionData.setTimeout(sessionTimeout);
+                    // send the response back to a client
                     Utils.sendResponse(LoginServlet.class.getName(), response, sessionData);
                 } // check if user already logged in and it's remote IP is the same as IP stored in session
                 else {
@@ -79,10 +82,14 @@ public class LoginServlet extends HttpServlet {
                     UserProfile sessionData = (UserProfile) session.getAttribute("Data");
                     if (sessionData == null) {
                         throw new IOException("LoginServlet cannot obtain session data");
-                    }
-                    sessionData.setTimeout(sessionTimeout);
+                    }                    
                     sessionData.setListTitles(lists);
+                    // get session timeout in seconds and append it to the response object
+                    sessionTimeout = session.getMaxInactiveInterval();
+                    sessionData.setTimeout(sessionTimeout);
+                    // set 'Data' attribute to the session
                     session.setAttribute("Data", sessionData);
+                    // send the response back to a client
                     Utils.sendResponse(LoginServlet.class.getName(), response, (UserProfile) session.getAttribute("Data"));
                 }
             } // check if requested 'logout'

@@ -63,6 +63,7 @@ var services = angular.module("app.services", [])
                                 }, delayInSeconds * 1000);
                             } else {
                                 fn();
+                                service.stopWatching();
                             }
                         }
                     },

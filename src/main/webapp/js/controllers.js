@@ -135,6 +135,10 @@ controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$io
             $http.get(server.hostName() + "/LoginServlet?logout").then(function (response) {
                 $scope.userProfile = {};
                 console.log("logout: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
+                if (angular.isDefined($rootScope.listEditorWindow))
+                    $rootScope.listEditorWindow.close();
+                if (angular.isDefined($rootScope.alertWindow))
+                    $rootScope.alertWindow.close();
                 $state.go("index");
             }, function (response) {
                 error(response);
@@ -220,7 +224,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                     //console.log("sessionTimeout = %s", sessionTimeout);
                     // set up session timeout counter
                     session.watch(function () {
-                        alert("Your session was expired");
+                        alert("Your session has expired");
                         $scope.logout();
                     }, sessionTimeout);
                 }
@@ -952,8 +956,8 @@ controllers.controller("RemoveListConfirmationController", ["$rootScope", "$scop
         $scope.message = "Do you really want to delete list with name \"" + $rootScope.listNameToRemove + "\"";
         $scope.confirmationYes = function () {
             // check if the list editor is open and close it if it is
-            if (!angular.isUndefined($rootScope.listEditorWindow)) {
-                $rootScope.listEditorWindow.dismiss("cancel");
+            if (angular.isDefined($rootScope.listEditorWindow)) {
+                $rootScope.listEditorWindow.close();
             }
             //
             var listName = $rootScope.listNameToRemove;
@@ -972,6 +976,6 @@ controllers.controller("RemoveListConfirmationController", ["$rootScope", "$scop
             }
         }
         $scope.confirmationNo = function () {
-            $rootScope.confirmationWindow.dismiss("cancel");
+            $rootScope.confirmationWindow.close();
         }
     }]);

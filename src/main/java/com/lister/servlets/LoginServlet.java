@@ -41,15 +41,13 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession(/*false*/); // 'false' - do not create a new session if does not exist
             // get session remote IP
             String sessionRemoteIP = (String) session.getAttribute("RemoteIP");
-            if (sessionRemoteIP != null && session.isNew()) {
-                logger.info("New session [" + session.getId() + "] was created for user [" + sessionRemoteIP + "] at " + new Date(session.getCreationTime()));
+            if (session.isNew()) {
+                logger.info("New session [" + session.getId() + "] was created for user [" + request.getRemoteAddr() + "]");
             }
             // get session's username
             String sessionUsername = (String) session.getAttribute("Username");
             //
             int sessionTimeout = 0;
-            //
-            //Date sessionStartedDate = new Date();
             // check if requested 'isLoggedIn'
             if (request.getParameter("isLoggedIn") != null) {
                 // check if it's a first attempt to log in
@@ -82,10 +80,10 @@ public class LoginServlet extends HttpServlet {
                     UserProfile sessionData = (UserProfile) session.getAttribute("Data");
                     if (sessionData == null) {
                         throw new IOException("LoginServlet cannot obtain session data");
-                    }                    
+                    }
                     sessionData.setListTitles(lists);
                     // get session timeout in seconds and append it to the response object
-                    sessionTimeout = session.getMaxInactiveInterval();
+                    sessionTimeout = (int) (new Date().getTime() - session.getLastAccessedTime());
                     sessionData.setTimeout(sessionTimeout);
                     // set 'Data' attribute to the session
                     session.setAttribute("Data", sessionData);
@@ -141,6 +139,14 @@ public class LoginServlet extends HttpServlet {
                 // check if user with the right credentials from the request exists
                 if (DBUtils.checkCreds(username, password)) {
                     // credentials are correct
+                    // create a new session
+                    request.getSession(false).invalidate();
+                    session = request.getSession();
+                    //
+                    if (session.isNew()) {
+                        logger.info("New session [" + session.getId() + "] was created for user [" + request.getRemoteAddr() + "]");
+                    }
+                    //
                     userProfile = DBUtils.getUserProfile(username);
                     List<String> lists = DBUtils.getLists(username);
                     userProfile.setLoggedIn(true);

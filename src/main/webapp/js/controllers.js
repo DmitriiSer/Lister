@@ -223,10 +223,10 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                 if (session.isLoggedIn() && sessionTimeout != 0) {
                     //console.log("sessionTimeout = %s", sessionTimeout);
                     // set up session timeout counter
-                    session.watch(function () {
+                    /*session.watch(function () {
                         alert("Your session has expired");
                         $scope.logout();
-                    }, sessionTimeout);
+                    }, sessionTimeout);*/
                 }
             }
         };

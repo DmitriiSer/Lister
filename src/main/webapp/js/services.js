@@ -3,7 +3,11 @@
 var services = angular.module("app.services", [])
         /*server factory*/
         .factory("server", ["browser", function (browser) {
-                return {
+                var service = {
+                    timeout: {
+                        serverTime: null,
+                        clientTimeOffset: null
+                    },
                     hostName: function () {
                         var platform = ionic.Platform;
                         var hostName = "";
@@ -12,8 +16,21 @@ var services = angular.module("app.services", [])
                             hostName = "http://lister-advancedlists.rhcloud.com";
                         }
                         return hostName;
+                    },
+                    getServerTime: function () {
+                        return this.timeout.serverTime;
+                    },
+                    setServerTime: function (value) {
+                        this.timeout.serverTime = (value == null) ? null : Math.abs(value);
+                    },
+                    getClientTimeOffset: function () {
+                        return this.timeout.clientTimeOffset;
+                    },
+                    setClientTimeOffset: function (value) {
+                        this.timeout.clientTimeOffset = (value == null) ? null : Math.abs(value);
                     }
                 };
+                return service;
             }])
         /* browser detection service */
         .service("browser", ["$window", function ($window) {
@@ -51,7 +68,7 @@ var services = angular.module("app.services", [])
                 }
             }])
         /* session factory */
-        .factory("session", ["$interval", "$http", function ($interval, $http) {
+        .factory("session", ["$interval", "$http", "server", function ($interval, $http, server) {
                 var service = {
                     watchInterval: undefined,
                     watch: function (fn, delayInSeconds) {
@@ -59,7 +76,6 @@ var services = angular.module("app.services", [])
                             if (delayInSeconds >= 0) {
                                 this.watchInterval = $interval(function () {
                                     fn();
-                                    service.stopWatching();
                                 }, delayInSeconds * 1000);
                             } else {
                                 fn();

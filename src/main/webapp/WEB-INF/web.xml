@@ -21,7 +21,15 @@
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
-
+    <filter>
+        <filter-name>SessionTimeoutCookieFilter</filter-name>
+        <filter-class>com.lister.filters.SessionTimeoutCookieFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SessionTimeoutCookieFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.lister.servlets.LoginServlet</servlet-class>
@@ -39,6 +47,6 @@
         <url-pattern>/SignUpServlet</url-pattern>
     </servlet-mapping>
     <session-config>
-        <session-timeout>1</session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
 </web-app>

@@ -96,6 +96,13 @@ public class LoginServlet extends HttpServlet {
                 logger.info("user [" + request.getRemoteAddr() + "] sent 'logout' and session [" + session.getId() + "] was invalidated");
                 Utils.sendResponse(LoginServlet.class.getName(), response, new UserProfile());
                 //response.sendRedirect("/Lister/index.html");
+            } // check if requested 'a'
+            else if (request.getParameter("a") != null) {
+                if (session == null) {
+                    Utils.sendResponse(LoginServlet.class.getName(), response, new UserProfile());
+                } else {
+                    Utils.sendResponse(LoginServlet.class.getName(), response, (UserProfile) session.getAttribute("Data"));
+                }
             } // wrong request
             else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Wrong request");

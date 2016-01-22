@@ -36,6 +36,7 @@ And of course **Lister** itself is open source with a [public repository](https:
 - [x] ~~ISSUE: Server does not save list content when user creates a list~~
 - [x] ~~IMPROVEMENT: Save list order on the server after reordering~~
 - [x] ~~IMPROVEMENT: Show pop-up window if session was expired~~
+- [x] ~~ISSUE: Fixed some issues with session expiration mechanism~~
 
 ##### Changelog:
 - v0.2.17 Created a session counter that is responsible for logging a user out when his session is expired

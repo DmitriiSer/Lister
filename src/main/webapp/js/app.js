@@ -1,6 +1,6 @@
 "use strict";
 /* Angular app */
-var app = angular.module("appLister", ["ionic", "ngCordova", "ui.bootstrap", "ngDraggable",
+var app = angular.module("appLister", ["ionic", "ngCordova", "ui.bootstrap", "ngCookies", "ngDraggable",
     /*"ngAnimate", "ngRoute", "ngSanitize", "ui.router", */
     "app.directives", "app.controllers"]);
 app.run(["$ionicHistory", "$ionicPlatform", "$ionicActionSheet", "$cordovaTouchID", "$window", "$state", "$rootScope", "$http", "session",

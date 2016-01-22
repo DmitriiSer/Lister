@@ -131,6 +131,7 @@ controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$io
             return session.isLoggedIn();
         };
         $scope.logout = function () {
+            session.stopWatching();
             session.setUserProfile({});
             $http.get(server.hostName() + "/LoginServlet?logout").then(function (response) {
                 $scope.userProfile = {};
@@ -145,8 +146,8 @@ controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$io
             });
         };
     }]);
-controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$timeout", "$http", "$uibModal", "$ionicScrollDelegate", "$ionicSideMenuDelegate", "$ionicActionSheet", "ngDraggableDelegate", "server", "browser", "session",
-    function ($rootScope, $scope, $state, $timeout, $http, $uibModal, $ionicScrollDelegate, $ionicSideMenuDelegate, $ionicActionSheet, ngDraggableDelegate, server, browser, session) {
+controllers.controller("HomeController", ["$rootScope", "$scope", "$filter", "$state", "$timeout", "$http", "$cookies", "$uibModal", "$ionicScrollDelegate", "$ionicSideMenuDelegate", "$ionicActionSheet", "ngDraggableDelegate", "server", "browser", "session",
+    function ($rootScope, $scope, $filter, $state, $timeout, $http, $cookies, $uibModal, $ionicScrollDelegate, $ionicSideMenuDelegate, $ionicActionSheet, ngDraggableDelegate, server, browser, session) {
         console.debug("HomeController was loaded");
         $scope.listNameToRemove = null;
         $scope.listButtonDisabled = false;
@@ -218,16 +219,28 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                 });
             }
             else if ($state.current.name == "home") {
-                // set session timeout
-                var sessionTimeout = $scope.userProfile.timeout;
-                if (session.isLoggedIn() && sessionTimeout != 0) {
-                    //console.log("sessionTimeout = %s", sessionTimeout);
-                    // set up session timeout counter
-                    /*session.watch(function () {
+                server.setServerTime($cookies.get("serverTime"));
+                server.setClientTimeOffset($cookies.get("clientTimeOffset"));
+                // get serverTime cookie
+                var serverTime = server.getServerTime();
+                var clientTimeOffset = (new Date()).getTime() - serverTime;
+                $cookies.put("clientTimeOffset", clientTimeOffset);
+                //var sessionTimeout = $scope.userProfile.timeout;
+                //if (session.isLoggedIn() && sessionTimeout != 0) {
+                //console.log("sessionTimeout = %s", sessionTimeout);
+                // set up session timeout counter
+                session.watch(function () {
+                    var sessionExpiry = Number($cookies.get("sessionExpiry")) + 15000; // 15 extra seconds to make sure
+                    var clientTimeOffset = $cookies.get("clientTimeOffset");
+                    var localTime = (new Date()).getTime();
+                    console.log("localTime = %s, sessionExpiry = %s",
+                            $filter("date")(localTime - clientTimeOffset, "HH:mm:ss"),
+                            $filter("date")(sessionExpiry, "HH:mm:ss"));
+                    if (localTime - clientTimeOffset > sessionExpiry) {
                         alert("Your session has expired");
                         $scope.logout();
-                    }, sessionTimeout);*/
-                }
+                    }
+                }, 15);
             }
         };
         $scope.checkIfLoggedIn();
@@ -364,8 +377,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                     buttons: [
                         {text: "Edit"}
                     ],
-                    destructiveText: "Delete",
-                    destructiveButtonClicked: function () {
+                    destructiveText: "Delete", destructiveButtonClicked: function () {
                         hideSheet();
                         $scope.removeList(listname);
                     },
@@ -381,8 +393,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                         }
                         return true;
                     },
-                    cancelText: "Cancel",
-                    cancel: function () {
+                    cancelText: "Cancel", cancel: function () {
                         $scope.listHold = false;
                         $ionicScrollDelegate.freezeScroll(false);
                         $ionicSideMenuDelegate.canDragContent(true);
@@ -390,7 +401,8 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$state", "$ti
                     },
                 });
             }
-        };
+        }
+        ;
     }]);
 controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$http", "server", "browser", "session",
     function ($rootScope, $scope, $state, $http, server, browser, session) {
@@ -485,12 +497,7 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$h
                     }
                 }
             }
-            $scope.passwordStrength.progress += ($scope.passwordStrength.minimumLength ? 10 : 0)
-                    + ($scope.passwordStrength.recommendLength ? 30 : 0)
-                    + ($scope.passwordStrength.number ? 10 : 0)
-                    + ($scope.passwordStrength.upperCaseLetter ? 10 : 0)
-                    + ($scope.passwordStrength.lowerCaseLetter ? 10 : 0)
-                    + ($scope.passwordStrength.specialCharacter ? 30 : 0);
+            $scope.passwordStrength.progress += ($scope.passwordStrength.minimumLength ? 10 : 0) + ($scope.passwordStrength.recommendLength ? 30 : 0) + ($scope.passwordStrength.number ? 10 : 0) + ($scope.passwordStrength.upperCaseLetter ? 10 : 0) + ($scope.passwordStrength.lowerCaseLetter ? 10 : 0) + ($scope.passwordStrength.specialCharacter ? 30 : 0);
         };
         $scope.encryptPassword = function (s) {
             // TODO: $location.host() doesn't work through LAN
@@ -811,8 +818,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                         }
                         // textarea caret in MIDDLE of the text and in the MIDDLE OF the ROW and there was Enter key pressed
                         else {
-                            $scope.data.body[i].text = split[i];
-                            // add additional row to $scope.data.body
+                            $scope.data.body[i].text = split[i];                             // add additional row to $scope.data.body
                             insertedElem.text = split[i + 1];
                             $scope.data.body.splice(i + 1, 0, insertedElem);
                         }

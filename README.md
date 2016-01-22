@@ -1,5 +1,5 @@
 # Lister ([DEMO](http://lister-advancedlists.rhcloud.com))
-### Version: 0.2.17
+### Version: 0.2.18
 Lister is a mobile-ready, natively looking, AngularJS and Ionic powered HTML5 todo organizer.
 
 ##### Main specifications:
@@ -39,6 +39,7 @@ And of course **Lister** itself is open source with a [public repository](https:
 - [x] ~~ISSUE: Fixed some issues with session expiration mechanism~~
 
 ##### Changelog:
+- v0.2.18 Fixed some issues with session expiration mechanism
 - v0.2.17 Created a session counter that is responsible for logging a user out when his session is expired
 - v0.2.16 Made server remember lists order after user reorders them
 - v0.2.15 Fixed an issue when the server didn't save list content on list creation

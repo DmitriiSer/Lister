@@ -5,8 +5,10 @@ var app = angular.module("appLister", ["ionic", "ngCordova", "ui.bootstrap", "ng
     "app.directives", "app.controllers"]);
 app.run(["$ionicHistory", "$ionicPlatform", "$ionicActionSheet", "$cordovaTouchID", "$window", "$state", "$rootScope", "$http", "session",
     function ($ionicHistory, $ionicPlatform, $ionicActionSheet, $cordovaTouchID, $window, $state, $rootScope, $http, session) {
-        /* load ionic plugins */
+        // load ionic plugins
+        // clear cached elements
         $ionicHistory.clearCache();
+        //
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -46,6 +48,7 @@ app.run(["$ionicHistory", "$ionicPlatform", "$ionicActionSheet", "$cordovaTouchI
                 }
             }
         }
+
     }]);
 /* configure routing */
 app.config(["$httpProvider", "$stateProvider", "$urlRouterProvider", "$locationProvider",

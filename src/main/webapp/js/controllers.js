@@ -233,9 +233,9 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$filter", "$s
                     var sessionExpiry = Number($cookies.get("sessionExpiry")) + 15000; // 15 extra seconds to make sure
                     var clientTimeOffset = $cookies.get("clientTimeOffset");
                     var localTime = (new Date()).getTime();
-                    console.log("localTime = %s, sessionExpiry = %s",
+                    /*console.log("localTime = %s, sessionExpiry = %s",
                             $filter("date")(localTime - clientTimeOffset, "HH:mm:ss"),
-                            $filter("date")(sessionExpiry, "HH:mm:ss"));
+                            $filter("date")(sessionExpiry, "HH:mm:ss"));*/
                     if (localTime - clientTimeOffset > sessionExpiry) {
                         alert("Your session has expired");
                         $scope.logout();
@@ -277,7 +277,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$filter", "$s
             $scope.scrolling = false;
         };
         $scope.pullToRefreshDoRefresh = function () {
-            console.log("pullToRefreshDoRefresh");
+            //console.log("pullToRefreshDoRefresh");
             $state.go("index");
             $scope.$broadcast("scroll.refreshComplete");
         };
@@ -778,7 +778,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             return arr;
         };
         $scope.pullToClose = function () {
-            console.log("pullToClose");
+            //console.log("pullToClose");
             $rootScope.listEditorWindow.close();
             $state.go("home");
             $scope.$broadcast("scroll.refreshComplete");

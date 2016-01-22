@@ -57,6 +57,9 @@
                           ng-show="true"
                           ng-focus-on-enter></textarea>
             </td>
+            <td id="list-editor-window-side-toolbar">
+                <div>123</div>
+            </td>
             <td class="list-editor-window-additional-column"
                 ng-class="currentColumn = 'ad' + $index"
                 ng-repeat="column in additionalColumnsData track by $index">
@@ -67,10 +70,11 @@
                         ng-model="item"/>
                 </div>
             </td>
+            
         </tr>
     </table>
     <!-- floating toolbox -->
-    <div class="animate-show fast" id="list-editor-window-cursor-toolbox"
+    <div class="animate-show fast" id="list-editor-window-cursor-toolbar"
          ng-style="{
                  display: toolboxDisplay, left
                      : textareaMousePosition.x, top

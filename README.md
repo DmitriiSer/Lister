@@ -3,7 +3,7 @@
 Lister is a mobile-ready, natively looking, AngularJS and Ionic powered HTML5 todo organizer.
 
 <img src="/../screenshots/screenshots/signup.gif?raw=true" title="Sign Up process" align="left" height="240" width="160">
-<img src="/../screenshots/screenshots/signup.gif?raw=true" title="Sign Up process" align="left" height="480" width="320">
+</br>
 
 ##### Main specifications:
   - [x] *All the lists are stored on a server*

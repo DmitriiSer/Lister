@@ -33,9 +33,9 @@
     border-radius: 0px 0px 4px 4px;
 }
 .progress-focused {
-    border-left: 1px solid #66afe9;
+    /*border-left: 1px solid #66afe9;
     border-right: 1px solid #66afe9;
-    border-bottom: 1px solid #66afe9;
+    border-bottom: 1px solid #66afe9;*/
 }
 .popover {
     font-size: 1.2rem;

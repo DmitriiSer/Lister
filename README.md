@@ -2,8 +2,8 @@
 ### Version: 0.2.18
 Lister is an on-line organizer that is written in HTML5, CSS, JavaScript and is mobile-ready, natively looking, and backed by AngularJS and Ionic Fraeworks
 
-<img src="/../screenshots/screenshots/small_screen.gif?raw=true" title="Small screen device" height="240" width="160">
-<img src="/../screenshots/screenshots/big_screen.gif?raw=true" title="Big screen device" height="240" width="480">
+<img src="/../screenshots/screenshots/small_screen.gif?raw=true" align="left" title="Small screen device" height="240" width="160">
+<img src="/../screenshots/screenshots/big_screen.gif?raw=true" align="right" title="Big screen device" height="240" width="480">
 </br>
 <img src="/../screenshots/screenshots/signup.gif?raw=true" title="Sign Up process" height="240" width="160">
 </br>

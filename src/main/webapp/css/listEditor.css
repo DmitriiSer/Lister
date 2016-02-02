@@ -2,12 +2,11 @@
     Created on : Oct 21, 2015, 9:51:14 AM
     Author     : dmitr
 */
-#list-editor .scroll {
-    height: 100%;
-}
+#list-editor-content,#list-editor-content .scroll {}
 .list-editor-window .modal-dialog.modal-lg,
 .modal.list-editor-window {
-    overflow-y: hidden;
+    overflow-y: hidden !important;
+    height: 100vh;
 }
 .list-editor-window .modal-content {
     background: transparent;
@@ -20,7 +19,7 @@
     border: none;
     border-radius: 0px;
     /*border-bottom-right-radius: 28px;*/
-    overflow: hidden;
+    overflow:hidden !important;
     /* animation */
     -webkit-transition: all 0.6s;
     -moz-transition:    all 0.6s;
@@ -35,9 +34,7 @@
     border: none;
     outline: none;
 }
-#list-editor-window-body {
-    height: 100%;
-}
+#list-editor-window-body { height: 100%; }
 @media only screen and (max-width: 767px) {
     .list-editor-window .modal-dialog, .list-editor-window .modal-content {
         position: fixed;
@@ -49,12 +46,18 @@
         margin: 0;
     }
     /*.list-editor-window .modal-content {*/
-    #list-editor .scroll {
+    #list-editor-content .scroll {
         border: 5px solid rgba(144, 238, 144, 0.3);
         border-bottom-right-radius: 28px;
     }
     #list-editor-window-header { height: 40px; }
     #list-editor-window-body {
+        height: -webkit-calc(100vh - 98px);
+        height: -moz-calc(100vh - 98px);
+        height: -o-calc(100vh - 98px);
+        height: calc(100vh - 98px);
+    }
+    #list-editor-window-textarea {
         height: -webkit-calc(100vh - 98px);
         height: -moz-calc(100vh - 98px);
         height: -o-calc(100vh - 98px);
@@ -76,13 +79,19 @@
     .list-editor-window .modal-content {
         /*background: rgba(0, 0, 0, 50);*/
     }
-    #list-editor .scroll {
+    #list-editor-content .scroll {
         border: 10px solid rgba(144, 238, 144, 0.3);
         border-bottom-right-radius: 35px;
     }
     /*#list-editor-window-textarea {min-height: 20vh;max-height: 70vh;height: 70vh;}*/
     #list-editor-window-header { height: 40px; }
     #list-editor-window-body {
+        height: -webkit-calc(100vh - 160px);
+        height: -moz-calc(100vh - 160px);
+        height: -o-calc(100vh - 160px);
+        height: calc(100vh - 160px);
+    }
+    #list-editor-window-textarea {
         height: -webkit-calc(100vh - 160px);
         height: -moz-calc(100vh - 160px);
         height: -o-calc(100vh - 160px);
@@ -173,7 +182,7 @@
 .list-editor-window-checkbox {
     position: relative;
 }
-.list-editor-window-checkbox>a {
+.list-editor-window-checkbox > a {
     cursor: pointer;
 }
 .strikethrough {
@@ -197,20 +206,23 @@
 #list-editor-window-textarea {
     min-width: 100% !important;
     max-width: 100% !important;
-    width: 100% !important;
-    height: 100% !important;
+    width:     100% !important;
+    /*max-height: 100% !important;
+    height: 100% !important;*/
     /*padding: 0 5px;*/
     padding: 5px 10px 0 10px;
     background: transparent;
     border: none;
     outline: 0;
     border: none;
+    /*border: 1px solid black;*/
     -webkit-appearance: none;
     appearance: none;
     resize: none;
     white-space: pre;
     word-wrap: normal;
     overflow-x: visible;
+    overflow-y: auto;
 }
 #list-editor-window-table .list-editor-window-additional-column {
     border-left: 1px solid #DCDCDC;

@@ -8,7 +8,6 @@
            ng-focus="heaaderInputIsActive = true"
            ng-blur="heaaderInputIsActive = false; cursorIsAboveTheHeader = false"
            ng-keypress="($event.which === 13) ? headerClicked = false : ''"
-           ng-focus-on-enter
            ng-focus-on-show="500"/>
     <a href class="animate-show fast" id="list-editor-window-header-delete-btn"
        on-tap="$root.removeList(listname)"
@@ -55,7 +54,7 @@
                           ng-change="changeTextarea()"
                           ng-model="currentList.listBody"
                           ng-show="true"
-                          ng-focus-on-enter></textarea>
+                          ng-scroll-fix></textarea>
             </td>
             <!--<td id="list-editor-window-side-toolbar">
                 <div>123</div>
@@ -65,20 +64,15 @@
                 ng-repeat="column in additionalColumnsData track by $index">
                 <div class="list-editor-window-additional-item"
                      ng-repeat="item in column track by $index">
-                    <input 
-                        ng-change="changeAdditional(item, $index, currentColumn)"
-                        ng-model="item"/>
+                    <input ng-change="changeAdditional(item, $index, currentColumn)"
+                           ng-model="item"/>
                 </div>
             </td>
-            
         </tr>
     </table>
     <!-- floating toolbox -->
     <div class="animate-show fast" id="list-editor-window-cursor-toolbar"
-         ng-style="{
-                 display: toolboxDisplay, left
-                     : textareaMousePosition.x, top
-                     : textareaMousePosition.y}"         
+         ng-style="{ display: toolboxDisplay, left: textareaMousePosition.x, top: textareaMousePosition.y}"
          ng-mouseleave="toolboxMouseleave()"
          ng-show="showToolbox">
         <a class="{{item.icon.length == 0 ? 'separator':''}}" title="{{item.title}}"

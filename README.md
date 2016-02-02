@@ -1,8 +1,8 @@
 # Lister ([DEMO](http://lister-advancedlists.rhcloud.com))
 ### Version: 0.2.18
-Lister is a mobile-ready, natively looking, AngularJS and Ionic powered HTML5 todo organizer.
+Lister is an on-line organizer that is written in HTML5, CSS, JavaScript and is mobile-ready, natively looking, and backed by AngularJS and Ionic Fraeworks
 
-<img src="/../screenshots/screenshots/signup.gif?raw=true" title="Sign Up process" align="left" height="240" width="160">
+<img src="/../screenshots/screenshots/signup.gif?raw=true" title="Sign Up process" height="240" width="160">
 </br>
 
 ##### Main specifications:
@@ -23,9 +23,9 @@ Lister uses a number of open source projects to work properly:
 And of course **Lister** itself is open source with a [public repository](https://github.com/DmitriiSer/Lister)
  on GitHub.
 ##### TODO:
+- [ ] IMPROVEMENT: Create a toolbar in the list editor 
 - [ ] IMPROVEMENT: Reordering on mobile devices turns on only if user picked the "Reorder" menu item in list item pop-up menu
 - [ ] IMPROVEMENT: Create an UI element displaying the online/offline status
-- [ ] IMPROVEMENT: Create a toolbar in the list editor 
 - [ ] IMPROVEMENT: Fix "I forgot my password" link in the login window
 - [ ] ISSUE: Focusing the textarea in the list editor on mobile devices causes a sliding glitch
 - [ ] IMPROVEMENT: Create a task stack for the offline mode that would be responsible for uploading and syncing all the missed request to the server

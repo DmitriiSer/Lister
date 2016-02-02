@@ -48,7 +48,6 @@ app.run(["$ionicHistory", "$ionicPlatform", "$ionicActionSheet", "$cordovaTouchI
                 }
             }
         }
-
     }]);
 /* configure routing */
 app.config(["$httpProvider", "$stateProvider", "$urlRouterProvider", "$locationProvider",
@@ -81,6 +80,8 @@ app.config(["$httpProvider", "$stateProvider", "$urlRouterProvider", "$locationP
         $urlRouterProvider.otherwise('/');
         // use the HTML5 History API
         //if (ionic.Platform.platform() !== "android")
-        if (!ionic.Platform.isWebView())
+        if (!ionic.Platform.isWebView()) {
+            // set mode to HTML5
             $locationProvider.html5Mode(true);
+        }
     }]);

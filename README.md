@@ -5,11 +5,11 @@ Lister is an on-line organizer that is written in HTML5, CSS, JavaScript and is 
 <table align="center">
     <tr>
         <td>
-            <h3>Small screen device:</h3>
+            <h4>Small screen device:</h3>
             <img src="/../screenshots/screenshots/small_screen.gif?raw=true" align="left" title="Small screen device" height="240" width="160">
         </td>
         <td>
-            <h3>Big screen device:</h3>
+            <h5>Big screen device:</h3>
             <img src="/../screenshots/screenshots/big_screen.gif?raw=true" align="right" title="Big screen device" height="240" width="480">
         </td>
     </tr>

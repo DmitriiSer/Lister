@@ -1,5 +1,5 @@
 # Lister ([DEMO](http://lister-advancedlists.rhcloud.com))
-### Version: 0.2.18
+### Version: 0.2.19
 Lister is an on-line organizer that is written in HTML5, CSS, JavaScript and is mobile-ready, natively looking, and backed by AngularJS and Ionic Fraeworks
 
 <table align="center">
@@ -49,6 +49,7 @@ And of course **Lister** itself is open source with a [public repository](https:
 - [ ] IMPROVEMENT: Fix "I forgot my password" link in the login window
 - [ ] ISSUE: Focusing the textarea in the list editor on mobile devices causes a sliding glitch
 - [ ] IMPROVEMENT: Create a task stack for the offline mode that would be responsible for uploading and syncing all the missed request to the server
+- [x] ~~IMPROVEMENT: Truncate list title on list thumbnail if length of text is bigger than 15 symbols~~
 - [x] ~~IMPROVEMENT: Pull to close list editor~~
 - [x] ~~ISSUE: Renaming a list does not rename it on the server~~
 - [x] ~~ISSUE: Vertical list reordering causes wrong reordering~~
@@ -62,6 +63,7 @@ And of course **Lister** itself is open source with a [public repository](https:
 - [x] ~~ISSUE: Fixed some issues with session expiration mechanism~~
 
 ##### Changelog:
+- v0.2.19 Truncate list title on list thumbnail if length of text is bigger than 15 symbols
 - v0.2.18 Fixed some issues with session expiration mechanism
 - v0.2.17 Created a session counter that is responsible for logging a user out when his session is expired
 - v0.2.16 Made server remember lists order after user reorders them

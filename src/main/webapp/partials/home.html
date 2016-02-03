@@ -30,7 +30,7 @@
                     <!-- list icon for phones and tablets representation -->
                     <i class="fa fa-list-alt list-title-btn-icon"></i>
                     <!-- list title representation -->
-                    <div class="list-title-btn-title">{{listname}}</div>
+                    <div class="list-title-btn-title">{{ listname | limitTo: 15 }}{{ listname.length > 15 ? '...' : '' }}</div>
                     <!-- list delete button -->
                     <button class="animate-show x-fast list-title-btn-delete"
                             title="Delete {{listname}}"

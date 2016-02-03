@@ -12,12 +12,12 @@ Lister is an on-line organizer that is written in HTML5, CSS, JavaScript, Java a
             <h5>Big screen device:</h5>
             <img src="/../screenshots/screenshots/big_screen.gif?raw=true" title="Big screen device" height="240" width="480">
         </td>
-    </tr>
-    <tr>
         <td>
             <h5>Sign Up Process:</h5>
             <img src="/../screenshots/screenshots/signup.gif?raw=true" title="Sign Up process" height="240" width="160">
         </td>
+    </tr>
+    <tr>
         <td>
             <h5>Small size screen pop-up menu:</h5>
             <img src="/../screenshots/screenshots/popup_menu_small_screen.gif?raw=true" title="Small size screen pop-up menu" height="240" width="160">
@@ -26,8 +26,6 @@ Lister is an on-line organizer that is written in HTML5, CSS, JavaScript, Java a
             <h5>Pull to refresh feature:</h5>
             <img src="/../screenshots/screenshots/pull_to_refresh.gif?raw=true" title="Pull to refresh feature" height="240" width="160">
         </td>
-    </tr>
-    <tr>
         <td>
             <h5>Pull to close opened list:</h5>
             <img src="/../screenshots/screenshots/pull_to_close.gif?raw=true" title="Pull to close opened list" height="240" width="160">

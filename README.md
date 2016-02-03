@@ -27,6 +27,12 @@ Lister is an on-line organizer that is written in HTML5, CSS, JavaScript and is 
             <img src="/../screenshots/screenshots/pull_to_refresh.gif?raw=true" title="Pull to refresh feature" height="240" width="160">
         </td>
     </tr>
+    <tr>
+        <td>
+            <h5>Pull to close opened list:</h5>
+            <img src="/../screenshots/screenshots/pull_to_close.gif?raw=true" title="Pull to close opened list" height="240" width="160">
+        </td>
+    </tr>
 </table>
 
 ##### Main specifications:

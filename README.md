@@ -18,6 +18,10 @@ Lister is an on-line organizer that is written in HTML5, CSS, JavaScript and is 
             <h5>Sign Up Process:</h5>
             <img src="/../screenshots/screenshots/signup.gif?raw=true" title="Sign Up process" height="240" width="160">
         </td>
+        <td>
+            <h5>Small size screen pop-up menu:</h5>
+            <img src="/../screenshots/screenshots/popup_menu_small_screen.gif?raw=true" title="Small size screen pop-up menu" height="240" width="160">
+        </td>
     </tr>
 </table>
 

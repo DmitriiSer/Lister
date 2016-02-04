@@ -259,7 +259,8 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$filter", "$s
             //console.log("$scope.listButtonDisabled = %s", $scope.listButtonDisabled);
             if (e.which == 1 || angular.isUndefined(e.which)) {
                 $http.get(server.hostName() + "/DataServlet?getList=" + listName).then(function (response) {
-                    console.log("getList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
+                    var data = JSON.stringify(response.data).replace(/\\/g, "");
+                    console.log("getList: " + response.status + " " + response.statusText + ", data: " + data);
                     session.setOpenedListName(listName);
                     session.setOpenedListContent(response.data.content);
                     $rootScope.showListButton = false;
@@ -593,10 +594,13 @@ controllers.controller("LoginController", ["$rootScope", "$scope", "$state", "$h
             }
         };
     }]);
-controllers.controller("OpenListEditorController", ["$rootScope", "$uibModal", function ($rootScope, $uibModal) {
-        //console.debug("OpenListEditorController was loaded");
+controllers.controller("OpenListEditorController", ["$rootScope", "$state", "browser", "$uibModal", "$ionicScrollDelegate",
+    function ($rootScope, $state, browser, $uibModal, $ionicScrollDelegate) {
+        var templateName = "listEditorWindow";
+        if (browser.isMobileOrTablet())
+            templateName = "listEditorWindowNoScroll";
         $rootScope.listEditorWindow = $uibModal.open({
-            templateUrl: "listEditorWindow",
+            templateUrl: templateName,
             controller: "ListEditorController",
             windowClass: "list-editor-window",
             backdropClass: "list-editor-window-backdrop",
@@ -608,6 +612,14 @@ controllers.controller("OpenListEditorController", ["$rootScope", "$uibModal", f
 controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state", "$timeout", "$http", "$ionicScrollDelegate", "server", "browser", "session",
     function ($rootScope, $scope, $state, $timeout, $http, $ionicScrollDelegate, server, browser, session) {
         console.debug("ListEditorController was loaded");
+        /*var templateName = "listEditorWindow";
+         if (browser.isMobileOrTablet())
+         templateName = "listEditorWindowNoScroll";
+         $ionicModal.fromTemplateUrl(templateName, {scope: $scope, animation: "slide-in-up"})
+         .then(function (modal) {
+         $rootScope.listEditorWindow = modal;
+         $rootScope.listEditorWindow.show();
+         });*/
         $scope.headerFocused = true;
         $scope.checkboxesColumnDisplay = "none";
         $scope.currentList = {
@@ -700,6 +712,13 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             $state.go("home");
         });
         $scope.timer = null;
+        $scope.calculateTextareaWidth = function () {
+            var text = angular.element(document.querySelector("#list-editor-window-text"))[0];
+            var textPaddingLeft = parseInt(window.getComputedStyle(text)["padding-left"], 10);
+            var textPaddingRight = parseInt(window.getComputedStyle(text)["padding-right"], 10);
+            var textWidth = parseInt(window.getComputedStyle(text)["width"], 10) - 2 * textPaddingLeft - 2 * textPaddingRight;
+            return textWidth + "px";
+        };
         var getSelection = function (elem) {
             // obtain the index of the first and the last selected character
             var start = elem.selectionStart;
@@ -778,18 +797,6 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             });
             return arr;
         };
-        $scope.contentScroll = function () {
-            
-        };
-        $scope.contentScrollComplete = function () {
-            /*var content = angular.element(document.querySelector("#list-editor-content"))[0];
-            var contentHeight = window.getComputedStyle(content)["height"];
-            var bodySection = angular.element(document.querySelector("#list-editor-window-body"))[0];
-            var bodySectionHeight = window.getComputedStyle(bodySection)["height"];
-            var contentScroll = angular.element(document.querySelector("#list-editor-content .scroll"))[0];
-            var contentScrollHeight = window.getComputedStyle(contentScroll)["height"];*/
-            //alert("contentScrollHeight = " + contentScrollHeight + ", contentHeight = " + contentHeight + ", bodySectionHeight = " + bodySectionHeight);
-        };
         $scope.pullToClose = function () {
             //console.log("pullToClose");
             $rootScope.listEditorWindow.close();
@@ -800,8 +807,21 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             $scope.data.headings[index] = headingTitle;
         };
         $scope.changeCheckbox = function (index) {
-            console.log("YAY " + index);
+            console.log("changeCheckbox::index(" + index + ")");
             $scope.data.body[index].checked = !$scope.data.body[index].checked;
+        };
+        $scope.disableScrolling = function () {
+            $ionicScrollDelegate.freezeAllScrolls(true);
+        };
+        $scope.enableScrolling = function () {
+            $ionicScrollDelegate.freezeAllScrolls(false);
+        };
+        $scope.scrollTextarea = function (e) {
+            var currentPos = e.currentTarget.scrollTop;
+            var checkboxesColumn = angular.element(document.querySelector("#list-editor-window-checkboxes-column"))[0];
+            console.log(checkboxesColumn.scrollTop);
+            checkboxesColumn.scrollTop = currentPos;
+            console.log(checkboxesColumn.scrollTop);
         };
         $scope.changeTextarea = function () {
             // make changes in $scope.data
@@ -957,8 +977,10 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                         paramRow += $scope.currentList.nameBeforeChanges + "&title=" + $scope.currentList.name;
                         session.renameList($scope.currentList.nameBeforeChanges, $scope.currentList.name);
                     }
+                    console.log(JSON.stringify($scope.data));
                     $http.post(server.hostName() + "/DataServlet?changeList=" + paramRow, JSON.stringify($scope.data)).then(function (response) {
-                        console.log("changeList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
+                        var data = JSON.stringify(response.data).replace(/\\/g, "");
+                        console.log("changeList: " + response.status + " " + response.statusText + ", data: " + data);
                     }, function (response) {
                         console.log("changeList: " + response.status + " " + response.statusText);
                         $scope.dataError(response.data);

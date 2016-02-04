@@ -46,9 +46,9 @@
         <script type="application/javascript" src="js/services.js"></script>
         <script type="application/javascript" src="js/controllers.js"></script>
         <script type="application/javascript" src="js/app.js"></script>
-        <!-- cordova script (this will be a 404 during development) -->
+        <!-- cordova script (this will be a 404 during development)
         <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
-        <script src="cordova.js"></script>
+        <script src="cordova.js"></script>-->
         <!-- templates -->
         <script type="text/ng-template" id="passwordPopoverHtml.html">
             <div ng-include="'partials/passwordPopoverHtml.html'"></div>
@@ -65,14 +65,14 @@
                 base.href = "/";
                 head.appendChild(base);
             }
+            /*document.ontouchmove = function(event) { event.preventDefault(); }*/
         </script>
         <!--title-->
         <title>Lister</title>
         <!-- no enabled javascript-->
         <noscript>Your browser does not support JavaScript!</noscript>
     </head>
-    <body ontouchmove="function blockMove() { event.preventDefault(); }"
-        ng-controller="RootController" ng-width="">
+    <body ng-controller="RootController" ng-width="">
     <alert-window></alert-window>
     <confirmation-window></confirmation-window>
     <ion-side-menus enable-menu-with-back-views="true">

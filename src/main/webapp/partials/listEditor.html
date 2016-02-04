@@ -1,13 +1,33 @@
-<script type="text/ng-template" id="listEditorWindow">
+<!--<script type="text/ng-template" id="listEditorWindow">
     <ion-content id="list-editor-content"
-        delegate-handle="list-editor-content"
-        overflow-scroll="false"
-        scrollbar-y="false"
-        on-scroll="contentScroll()"
-        on-scroll-complete="contentScrollComplete()"
+        scrollbar-y="true"
         ng-keydown="keydownShortcut($event)"
         ng-enter-as-tab>
-            <ion-refresher pulling-icon="ion-close-round" on-refresh="pullToClose()"></ion-refresher>
-            <list-editor-content></list-editor-content>
-    </ion-content>
+<!--<ion-refresher pulling-icon="ion-close-round" on-refresh="pullToClose()"></ion-refresher>
+<list-editor-content></list-editor-content>
+</ion-content>
+</script>-->
+<script type="text/ng-template" id="listEditorWindow">
+    <ion-modal-view>
+        <ion-content id="list-editor-content"
+            delegate-handle="list-editor-content"
+            scrollbar-y="false"
+            ng-keydown="keydownShortcut($event)"
+            ng-enter-as-tab>
+                <ion-refresher pulling-icon="ion-close-round" on-refresh="pullToClose()"></ion-refresher>
+                <list-editor-content></list-editor-content>
+        </ion-content>
+    </ion-modal-view>
+</script>
+<script type="text/ng-template" id="listEditorWindowNoScroll">
+    <ion-modal-view>
+        <!--<ion-content id="list-editor-content"
+            class="no-border" style="z-index: 1060"
+            scrollbar-y="false"
+            ng-keydown="keydownShortcut($event)"
+            ng-enter-as-tab>
+                <ion-refresher pulling-icon="ion-close-round" on-refresh="pullToClose()"></ion-refresher>
+        </ion-content>-->
+        <list-editor-content></list-editor-content>
+    </ion-modal-view>
 </script>

@@ -47,3 +47,12 @@
     -webkit-animation-duration: 0;
     animation-duration:         0;
 }
+
+//Scale-In Animation
+.slide-in-up { opacity: 0; }
+.slide-in-up.ng-enter, .slide-in-up > .ng-enter {
+  /*transition: all cubic-bezier(.1, .7, .1, 1) 500ms;*/
+  transition-duration: 500ms;
+}
+.slide-in-up.ng-enter-active, .slide-in-up > .ng-enter-active { opacity: 1; }
+.slide-in-up.ng-leave, .slide-in-up > .ng-leave { transition: all ease-out 50ms; }

@@ -69,6 +69,20 @@
                         }
                     };
                 }])
+            .directive("ngScroll", ["$parse", function ($parse) {
+                    return {
+                        compile: function (element, attrs) {
+                            var fn = $parse(attrs.ngScroll);
+                            return function (scope, element, attrs) {
+                                element.on("scroll", function (e) {
+                                    scope.$apply(function () {
+                                        fn(scope, {$event: e});
+                                    });
+                                });
+                            }
+                        }
+                    };
+                }])
             .directive("popoverClose", function () {
                 return {
                     "restrict": "A",
@@ -150,42 +164,6 @@
                                     element[0].focus();
                                 }, timeout);
                             }
-                        }
-                    }
-                    ;
-                }])
-            .directive("ngScrollFix", ["$window", "$timeout", "$ionicScrollDelegate", function ($window, $timeout, $ionicScrollDelegate) {
-                    return {
-                        restrict: "A",
-                        link: function (scope, element, attrs) {
-                            //$ionicScrollDelegate.resize();
-                            element.on("focus", function (event) {
-                                event.preventDefault();
-                                event.stopPropagation();
-                                $ionicScrollDelegate.freezeAllScrolls(true);
-                                //$ionicScrollDelegate.freezeAllScrolls(true);
-                                var height = ($window.innerWidth < 768) ? ($window.innerHeight - 98) : ($window.innerHeight - 160);
-                                //element[0].style.height = height + "px";
-                                var scrollContainer = angular.element(document.querySelector("#list-editor-window-body"))[0];
-                                scrollContainer.style.height = height + "px";
-                                $timeout(function () {
-                                    //$ionicScrollDelegate.$getByHandle("listEditorContent").scrollTop();
-                                    $ionicScrollDelegate.scrollTop();
-                                    //$ionicScrollDelegate.$getByHandle("listEditorContent").resize();
-                                    $ionicScrollDelegate.resize();
-                                }, 50)
-                            });
-                            element.on("blur", function (event) {
-                                event.preventDefault();
-                                event.stopPropagation();
-                                $ionicScrollDelegate.freezeAllScrolls(false);
-                                //var scrollContainer = angular.element(document.querySelector("#list-editor-content"));
-                                var height = ($window.innerWidth < 768) ? ($window.innerHeight - 98) : ($window.innerHeight - 160);
-                                var scrollContainer = angular.element(document.querySelector("#list-editor-window-body"))[0];
-                                //scrollContainer = scrollContainer[0].childNodes[0];
-                                scrollContainer.style.height = height + "px";
-                                $ionicScrollDelegate.resize();
-                            });
                         }
                     };
                 }]);

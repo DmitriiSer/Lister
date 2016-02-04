@@ -2,7 +2,15 @@
     Created on : Oct 21, 2015, 9:51:14 AM
     Author     : dmitr
 */
-#list-editor-content,#list-editor-content .scroll {}
+/*#list-editor-content,#list-editor-content .scroll { overflow: hidden; }*/
+.modal-backdrop.active { background-color: transparent; }
+.active .modal-backdrop-bg { 
+    /*background-color: black;*/
+    background-color: transparent;
+    opacity: 0.5;
+}
+.modal { display: block; }
+/*#list-editor-content .scroll { height: 100%; }*/
 .list-editor-window .modal-dialog.modal-lg,
 .modal.list-editor-window {
     overflow-y: hidden !important;
@@ -39,7 +47,7 @@
     /*border-left: 2px solid whitesmoke !important;*/
 }
 #list-editor-window-side-toolbar a:active {
-    background: rgb(124, 205, 124);
+    /*background: rgb(124, 205, 124);*/
     width: 32px !important;
     border-radius: 50%;
 }
@@ -64,6 +72,13 @@
         height: -moz-calc(100vh - 98px);
         height: -o-calc(100vh - 98px);
         height: calc(100vh - 98px);
+    }
+    /* set height for editor body section without border */
+    ion-modal-view > list-editor-content #list-editor-window-body {
+        height: -webkit-calc(100vh - 90px);
+        height: -moz-calc(100vh - 90px);
+        height: -o-calc(100vh - 90px);
+        height: calc(100vh - 90px);
     }
     #list-editor-window-text {
         height: -webkit-calc(100vh - 98px);
@@ -102,10 +117,10 @@
         height: calc(100vh - 160px);
     }
     #list-editor-window-text {
-        height: -webkit-calc(100vh - 160px);
-        height: -moz-calc(100vh - 160px);
-        height: -o-calc(100vh - 160px);
-        height: calc(100vh - 160px);
+        height: -webkit-calc(100vh - 109px);
+        height: -moz-calc(100vh - 109px);
+        height: -o-calc(100vh - 109px);
+        height: calc(100vh - 109px);
     }
     #list-editor-window-side-toolbar, #list-editor-window-side-toolbar * { width: 32px !important; }
     #list-editor-window-side-toolbar a { font-size: 16px; }
@@ -125,8 +140,10 @@
 /*#list-editor-window-header h3, */
 #list-editor-window-header-input {    
     display: inline-block;
+    width: 100%;
     height: auto; /*35px;*/
     margin: 0;
+    background-color: snow;
     font-family: 'Lobster', cursive;
     font-size: 1.7em;
     /*line-height: 1em;*/
@@ -182,9 +199,10 @@
 #list-editor-window-checkboxes-column {
     display: none;
     width: 16px !important;
-    padding: 0;
+    padding: 5px 5px 0px !important;
     text-align: center;
     border: none;
+    overflow-y: scroll;
 }
 #list-editor-window-table-headings > th > input {
     padding: 0;
@@ -202,8 +220,9 @@
     position: absolute;
     width: auto;
     top: -10px;
-    left: 32px;
-    border-top: 1px solid lightgray;
+    left: 28px;
+    /*border-top: 1px solid lightgray;*/
+    border-top: 1px solid rgba(0,0,0,0.6);
     cursor: text;
 }
 #list-editor-window-text-column {

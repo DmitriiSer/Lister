@@ -6,22 +6,12 @@
     text-align: center;
     background-color: transparent; 
 }
-@media screen and (min-width: 768px) { 
-    /*.modal:before {
-        display: inline-block;
-        vertical-align: middle;
-        content: " ";
-        height: 100%;
-    }*/
-}
 .modal-dialog {
     display: inline-block;
     text-align: left;
     vertical-align: middle;    
 }
-.modal-header {
-    margin: auto; 
-}
+.modal-header { margin: auto; }
 .modal-body { margin: auto; }
 #row-username-controls { margin-bottom: 15px; }
 .progress {

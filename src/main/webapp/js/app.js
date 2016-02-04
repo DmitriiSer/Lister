@@ -1,10 +1,10 @@
 "use strict";
 /* Angular app */
-var app = angular.module("appLister", ["ionic", "ngCordova", "ui.bootstrap", "ngCookies", "ngDraggable",
+var app = angular.module("appLister", ["ionic", /*"ngCordova",*/ "ui.bootstrap", "ngCookies", "ngDraggable",
     /*"ngAnimate", "ngRoute", "ngSanitize", "ui.router", */
     "app.directives", "app.controllers"]);
-app.run(["$ionicHistory", "$ionicPlatform", "$ionicActionSheet", "$cordovaTouchID", "$window", "$state", "$rootScope", "$http", "session",
-    function ($ionicHistory, $ionicPlatform, $ionicActionSheet, $cordovaTouchID, $window, $state, $rootScope, $http, session) {
+app.run(["$ionicHistory", "$ionicPlatform", "$ionicActionSheet", "$window", "$state", "$rootScope", "$http", "session",
+    function ($ionicHistory, $ionicPlatform, $ionicActionSheet, $window, $state, $rootScope, $http, session) {
         // load ionic plugins
         // clear cached elements
         $ionicHistory.clearCache();
@@ -76,6 +76,7 @@ app.config(["$httpProvider", "$stateProvider", "$urlRouterProvider", "$locationP
                     url: "/listEditor",
                     templateUrl: "partials/listEditor.html",
                     controller: "OpenListEditorController"
+                    //controller: "ListEditorController"
                 });
         $urlRouterProvider.otherwise('/');
         // use the HTML5 History API

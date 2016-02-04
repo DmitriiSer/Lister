@@ -8,8 +8,7 @@
            ng-focus="heaaderInputIsActive = true"
            ng-blur="heaaderInputIsActive = false; cursorIsAboveTheHeader = false"
            ng-keypress="($event.which === 13) ? headerClicked = false : ''"
-           ng-focus-on-show="500"
-           ng-scroll-fix/>
+           ng-focus-on-show="500"/>
     <a href class="animate-show fast" id="list-editor-window-header-delete-btn"
        on-tap="$root.removeList(listname)"
        ng-show="cursorIsAboveTheHeader">
@@ -42,34 +41,28 @@
                      ng-repeat="checked in checkboxColumnData track by $index">
                     <a ng-click="checked = !checked; changeCheckbox($index)"><i class="fa fa-{{checked ? checkboxIcon : checkboxIconUnchecked}}" aria-label="Checkbox"></i></a>
                     <hr class="strikethrough" 
-                        ng-style="{ display: checked ? 'block' : 'none', width: '10000px'}">
+                        ng-style="{ display: checked ? 'block' : 'none', width: calculateTextareaWidth()}">
                 </div>
             </td>
             <td id="list-editor-window-text-column">
                 <!--<div id="list-editor-window-text"
                      contenteditable="true"
                      ng-style="{textAlign: textAlign, cursor: textareaCursor}"
-                     ng-trim="false"
-                     ng-click="textareaMouseleave()"
-                     
-                     ng-mouseleave="textareaMouseleave()"
-                     ng-change="changeTextarea()"
                      ng-model="currentList.listBody"
-                     ng-show="true"
-                     ng-scroll-fix>
+                     ng-change="changeTextarea()">
                 </div>-->
                 <textarea id="list-editor-window-text"
-                          
-                          ng-scroll-fix>                              
-                </textarea>
-                <!--ng-style="{textAlign: textAlign, cursor: textareaCursor}"
-                          ng-trim="false"
-                          ng-click="textareaMouseleave()"
-                          ng-mousemove="textareaMousemove($event)"
-                          ng-mouseleave="textareaMouseleave()"
-                          ng-change="changeTextarea()"
+                          ng-style="{textAlign: textAlign, cursor: textareaCursor}"
                           ng-model="currentList.listBody"
-                          ng-show="true"-->
+                          ng-change="changeTextarea()"
+                          ng-focus="disableScrolling()"
+                          ng-blur="enableScrolling()"
+                          ng-scroll="scrollTextarea($event)">
+                </textarea>
+                <!--ng-trim="false"
+                ng-click="textareaMouseleave()"
+                ng-mousemove="textareaMousemove($event)"
+                ng-mouseleave="textareaMouseleave()"-->
             </td>
             <td id="list-editor-window-side-toolbar">
                 <div align="center">

@@ -55,12 +55,12 @@ Lister uses a number of open source projects to work properly:
 And of course **Lister** itself is open source with a [public repository](https://github.com/DmitriiSer/Lister)
  on GitHub.
 ##### TODO:
-- [ ] ISSUE: Focusing the textarea in the list editor on mobile devices causes a sliding glitch
 - [ ] IMPROVEMENT: Create a toolbar in the list editor
 - [ ] IMPROVEMENT: Reordering on mobile devices turns on only if user picked the "Reorder" menu item in list item pop-up menu
 - [ ] IMPROVEMENT: Create an UI element displaying the online/offline status
 - [ ] IMPROVEMENT: Fix "I forgot my password" link in the login window
 - [ ] IMPROVEMENT: Create a task stack for the offline mode that would be responsible for uploading and syncing all the missed request to the server
+- [x] ISSUE: Focusing the textarea in the list editor on mobile devices causes a sliding glitch
 - [x] ~~IMPROVEMENT: Truncate list title on list thumbnail if length of text is bigger than 15 symbols~~
 - [x] ~~IMPROVEMENT: Pull to close list editor~~
 - [x] ~~ISSUE: Renaming a list does not rename it on the server~~

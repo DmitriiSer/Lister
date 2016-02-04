@@ -38,6 +38,7 @@ body, .ionic-body {
     -o-user-select: none;
     user-select: none;
 }
+.no-border, .no-border * { border: none !important; }
 .no-border-radius, .no-border-radius * { border-radius: 0px !important; }
 .animate-show { opacity: 1; }
 .animate-show.ng-hide { opacity: 0; }

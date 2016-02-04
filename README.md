@@ -30,12 +30,16 @@ Lister is an on-line organizer that is written in HTML5, CSS, JavaScript, Java a
             <h5>Pull to close opened list:</h5>
             <img src="/../screenshots/screenshots/pull_to_close.gif?raw=true" title="Pull to close opened list" height="240" width="160">
         </td>
+        <td>
+            <h5>List reordering:</h5>
+            <img src="/../screenshots/screenshots/list_reordering.gif?raw=true" title="List reordering" height="240" width="160">
+        </td>
     </tr>
 </table>
 
 ##### Main specifications:
   - [x] *All the lists are stored on a server*
-  - [ ] ~~Fast syncronization between all the devices~~
+  - [ ] ~~TODO: Fast syncronization between all the devices~~
 
 ##### Tech:
 Lister uses a number of open source projects to work properly:
@@ -51,11 +55,11 @@ Lister uses a number of open source projects to work properly:
 And of course **Lister** itself is open source with a [public repository](https://github.com/DmitriiSer/Lister)
  on GitHub.
 ##### TODO:
-- [ ] IMPROVEMENT: Create a toolbar in the list editor 
+- [ ] ISSUE: Focusing the textarea in the list editor on mobile devices causes a sliding glitch
+- [ ] IMPROVEMENT: Create a toolbar in the list editor
 - [ ] IMPROVEMENT: Reordering on mobile devices turns on only if user picked the "Reorder" menu item in list item pop-up menu
 - [ ] IMPROVEMENT: Create an UI element displaying the online/offline status
 - [ ] IMPROVEMENT: Fix "I forgot my password" link in the login window
-- [ ] ISSUE: Focusing the textarea in the list editor on mobile devices causes a sliding glitch
 - [ ] IMPROVEMENT: Create a task stack for the offline mode that would be responsible for uploading and syncing all the missed request to the server
 - [x] ~~IMPROVEMENT: Truncate list title on list thumbnail if length of text is bigger than 15 symbols~~
 - [x] ~~IMPROVEMENT: Pull to close list editor~~

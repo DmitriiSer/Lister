@@ -71,7 +71,8 @@
         <!-- no enabled javascript-->
         <noscript>Your browser does not support JavaScript!</noscript>
     </head>
-    <body ng-controller="RootController" ng-width="">
+    <body ontouchmove="function blockMove() { event.preventDefault(); }"
+        ng-controller="RootController" ng-width="">
     <alert-window></alert-window>
     <confirmation-window></confirmation-window>
     <ion-side-menus enable-menu-with-back-views="true">
@@ -110,7 +111,7 @@
                 <!--</div>-->
                 <h1 class="title">{{userProfile.username}}</h1>
             </ion-header-bar>
-            <ion-content>
+            <ion-content overflow-scroll="false">
                 <ion-list>
                     <ion-item menu-close="" href="#" ng-click="$root.addList($event)">Create a list</ion-item>
                     <!-- TODO: <ion-item href="#/app/browse">Settings</ion-item> -->

@@ -8,7 +8,8 @@
            ng-focus="heaaderInputIsActive = true"
            ng-blur="heaaderInputIsActive = false; cursorIsAboveTheHeader = false"
            ng-keypress="($event.which === 13) ? headerClicked = false : ''"
-           ng-focus-on-show="500"/>
+           ng-focus-on-show="500"
+           ng-scroll-fix/>
     <a href class="animate-show fast" id="list-editor-window-header-delete-btn"
        on-tap="$root.removeList(listname)"
        ng-show="cursorIsAboveTheHeader">
@@ -44,21 +45,43 @@
                         ng-style="{ display: checked ? 'block' : 'none', width: '10000px'}">
                 </div>
             </td>
-            <td id="list-editor-window-textarea-column">
-                <textarea id="list-editor-window-textarea"
-                          ng-style="{textAlign: textAlign, cursor: textareaCursor}"
+            <td id="list-editor-window-text-column">
+                <!--<div id="list-editor-window-text"
+                     contenteditable="true"
+                     ng-style="{textAlign: textAlign, cursor: textareaCursor}"
+                     ng-trim="false"
+                     ng-click="textareaMouseleave()"
+                     
+                     ng-mouseleave="textareaMouseleave()"
+                     ng-change="changeTextarea()"
+                     ng-model="currentList.listBody"
+                     ng-show="true"
+                     ng-scroll-fix>
+                </div>-->
+                <textarea id="list-editor-window-text"
+                          
+                          ng-scroll-fix>                              
+                </textarea>
+                <!--ng-style="{textAlign: textAlign, cursor: textareaCursor}"
                           ng-trim="false"
                           ng-click="textareaMouseleave()"
                           ng-mousemove="textareaMousemove($event)"
                           ng-mouseleave="textareaMouseleave()"
                           ng-change="changeTextarea()"
                           ng-model="currentList.listBody"
-                          ng-show="true"
-                          ng-scroll-fix></textarea>
+                          ng-show="true"-->
             </td>
-            <!--<td id="list-editor-window-side-toolbar">
-                <div>123</div>
-            </td>-->
+            <td id="list-editor-window-side-toolbar">
+                <div align="center">
+                    <a href=""
+                       class="{{item.icon.length == 0 ? 'separator':''}}" title="{{item.title}}"
+                       ng-class="{active: item.state}"
+                       ng-click="toolboxClick(item.icon)"
+                       ng-repeat="item in toolboxIcons">
+                        <i class="fa fa-{{item.icon}}" aria-label="{{item.title}}"></i>
+                    </a>
+                </div>
+            </td>
             <td class="list-editor-window-additional-column"
                 ng-class="currentColumn = 'ad' + $index"
                 ng-repeat="column in additionalColumnsData track by $index">
@@ -76,9 +99,7 @@
          ng-mouseleave="toolboxMouseleave()"
          ng-show="showToolbox">
         <a class="{{item.icon.length == 0 ? 'separator':''}}" title="{{item.title}}"
-           ng-class="{
-                       active: item.state
-                   }"
+           ng-class="{active: item.state}"
            ng-repeat="item in toolboxIcons"           
            ng-click="toolboxClick(item.icon)">
             <i class="fa fa-{{item.icon}}" aria-label="{{item.title}}"></i>

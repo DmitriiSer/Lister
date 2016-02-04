@@ -154,31 +154,37 @@
                     }
                     ;
                 }])
-            .directive("ngScrollFix", ["$window", "$ionicScrollDelegate", function ($window, $ionicScrollDelegate) {
+            .directive("ngScrollFix", ["$window", "$timeout", "$ionicScrollDelegate", function ($window, $timeout, $ionicScrollDelegate) {
                     return {
                         restrict: "A",
                         link: function (scope, element, attrs) {
-                            $ionicScrollDelegate.resize();
+                            //$ionicScrollDelegate.resize();
                             element.on("focus", function (event) {
                                 event.preventDefault();
                                 event.stopPropagation();
                                 $ionicScrollDelegate.freezeAllScrolls(true);
+                                //$ionicScrollDelegate.freezeAllScrolls(true);
                                 var height = ($window.innerWidth < 768) ? ($window.innerHeight - 98) : ($window.innerHeight - 160);
-                                element[0].style.height = height + "px";
+                                //element[0].style.height = height + "px";
                                 var scrollContainer = angular.element(document.querySelector("#list-editor-window-body"))[0];
-                                console.log(scrollContainer);
                                 scrollContainer.style.height = height + "px";
-                                $ionicScrollDelegate.scrollTop();
-                                $ionicScrollDelegate.resize();                                
+                                $timeout(function () {
+                                    //$ionicScrollDelegate.$getByHandle("listEditorContent").scrollTop();
+                                    $ionicScrollDelegate.scrollTop();
+                                    //$ionicScrollDelegate.$getByHandle("listEditorContent").resize();
+                                    $ionicScrollDelegate.resize();
+                                }, 50)
                             });
                             element.on("blur", function (event) {
-                                /*var scrollContainer = angular.element(document.querySelector("#list-editor-content"));
-                                 scrollContainer = scrollContainer[0].childNodes[0];*/
-                                /*element[0].style.height = window.innerHeight + "px";
-                                var scrollContainer = angular.element(document.querySelector("#list-editor-window-body"))[0];
-                                scrollContainer.style.height = window.innerHeight + "px";*/
-                                $ionicScrollDelegate.resize();
+                                event.preventDefault();
+                                event.stopPropagation();
                                 $ionicScrollDelegate.freezeAllScrolls(false);
+                                //var scrollContainer = angular.element(document.querySelector("#list-editor-content"));
+                                var height = ($window.innerWidth < 768) ? ($window.innerHeight - 98) : ($window.innerHeight - 160);
+                                var scrollContainer = angular.element(document.querySelector("#list-editor-window-body"))[0];
+                                //scrollContainer = scrollContainer[0].childNodes[0];
+                                scrollContainer.style.height = height + "px";
+                                $ionicScrollDelegate.resize();
                             });
                         }
                     };

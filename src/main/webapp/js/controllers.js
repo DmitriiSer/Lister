@@ -234,8 +234,8 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$filter", "$s
                     var clientTimeOffset = $cookies.get("clientTimeOffset");
                     var localTime = (new Date()).getTime();
                     /*console.log("localTime = %s, sessionExpiry = %s",
-                            $filter("date")(localTime - clientTimeOffset, "HH:mm:ss"),
-                            $filter("date")(sessionExpiry, "HH:mm:ss"));*/
+                     $filter("date")(localTime - clientTimeOffset, "HH:mm:ss"),
+                     $filter("date")(sessionExpiry, "HH:mm:ss"));*/
                     if (localTime - clientTimeOffset > sessionExpiry) {
                         alert("Your session has expired");
                         $scope.logout();
@@ -605,8 +605,8 @@ controllers.controller("OpenListEditorController", ["$rootScope", "$uibModal", f
             animation: true
         });
     }]);
-controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state", "$timeout", "$http", "server", "browser", "session",
-    function ($rootScope, $scope, $state, $timeout, $http, server, browser, session) {
+controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state", "$timeout", "$http", "$ionicScrollDelegate", "server", "browser", "session",
+    function ($rootScope, $scope, $state, $timeout, $http, $ionicScrollDelegate, server, browser, session) {
         console.debug("ListEditorController was loaded");
         $scope.headerFocused = true;
         $scope.checkboxesColumnDisplay = "none";
@@ -672,9 +672,9 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
         // check if data is a checklist and make arangements about it        
         if ($scope.data.type === "checklist")
             $scope.checkboxesColumnDisplay = "table-cell";
-        //<editor-fold defaultstate="collapsed" desc="var toolboxTextIcons, toolboxElementIcons">
+        //<editor-fold defaultstate="collapsed" desc="var toolboxTextIcons, toolboxElementIcons">        
         var toolboxTextIcons = [
-            {icon: "check-square-o", title: "Create a checklist", state: ""},
+            {icon: "check-square-o", title: "Show/hide checkboxes", state: ""},
             {icon: "align-left", title: "Left Align"},
             {icon: "align-center", title: "Center Align"},
             {icon: "align-right", title: "Right Align"},
@@ -682,8 +682,8 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             {icon: ""},
             {icon: "bold", title: "Bold Text"},
             {icon: "italic", title: "Italic Text"},
-            {icon: "underline", title: "Underlined Text"},
-            {icon: "strikethrough", title: "Striked Text"}
+            /*{icon: "underline", title: "Underlined Text"},
+             {icon: "strikethrough", title: "Striked Text"}*/
         ];
         var toolboxElementIcons = [
             {icon: "check-square-o", title: "Create a checklist", content: "<span>checklist</span>", state: ""},
@@ -694,6 +694,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             {icon: "align-justify", title: "Justify Align"}
         ];
         //</editor-fold>
+        $scope.toolboxIcons = toolboxTextIcons;
         $rootScope.listEditorWindow.result.then(function () {
         }, function () {
             $state.go("home");
@@ -726,8 +727,8 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                 "y": $event.offsetY
             };
             // caret {x,y} coordinates
-            var textarea = document.getElementById("list-editor-window-textarea");
-            var caretCoordinates = getCaretCoordinates(textarea, textarea.selectionEnd);
+            var text = document.getElementById("list-editor-window-text");
+            var caretCoordinates = getCaretCoordinates(text, text.selectionEnd);
             // define a limit in pixels to activate a toolbox
             var toolboxLimitArea = 20;
             // check if cursor is close to caret in textarea
@@ -742,7 +743,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                     // transform mouse coordinates to px
                     $scope.textareaMousePosition.x = $scope.textareaMousePosition.x + 10 + "px";
                     $scope.textareaMousePosition.y = $scope.textareaMousePosition.y + 10 + "px";
-                    if (getSelection(textarea) !== "") {
+                    if (getSelection(text) !== "") {
                         $scope.timer = $timeout(function () {
                             $scope.toolboxMouseentered = true;
                             $scope.toolboxIcons = toolboxTextIcons;
@@ -776,6 +777,18 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                 arr.push(item.text);
             });
             return arr;
+        };
+        $scope.contentScroll = function () {
+            
+        };
+        $scope.contentScrollComplete = function () {
+            /*var content = angular.element(document.querySelector("#list-editor-content"))[0];
+            var contentHeight = window.getComputedStyle(content)["height"];
+            var bodySection = angular.element(document.querySelector("#list-editor-window-body"))[0];
+            var bodySectionHeight = window.getComputedStyle(bodySection)["height"];
+            var contentScroll = angular.element(document.querySelector("#list-editor-content .scroll"))[0];
+            var contentScrollHeight = window.getComputedStyle(contentScroll)["height"];*/
+            //alert("contentScrollHeight = " + contentScrollHeight + ", contentHeight = " + contentHeight + ", bodySectionHeight = " + bodySectionHeight);
         };
         $scope.pullToClose = function () {
             //console.log("pullToClose");
@@ -879,7 +892,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                 case "align-justify":
                     $scope.textAlign = "justify";
                     break;
-                case "strikethrough":
+                case "bold":
                     $scope.textAlign = "justify";
                     break;
                 default :

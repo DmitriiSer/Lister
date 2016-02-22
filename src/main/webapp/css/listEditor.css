@@ -42,7 +42,12 @@
     border: none;
     outline: none;
 }
-#list-editor-window-body { height: 100%; overflow: hidden; }
+#list-editor-window-body {
+    position: relative;
+    height: 100%;
+    padding: 0 0 10px 10px;
+    overflow: hidden;
+}
 #list-editor-window-side-toolbar {
     /*border-left: 2px solid whitesmoke !important;*/
 }
@@ -160,22 +165,26 @@
     opacity: 0;
 }*/
 /* list editor body styles */
-#list-editor-window-body {
-    position: relative;
-    /*padding: 10px;*/
-    padding: 0 0 10px 0;
-}
 #list-editor-window-table {
     height: 100%;
     margin: 0;
     overflow: hidden;
     /*border: 1px solid #DCDCDC;*/
 }
-#list-editor-window-table tr,
+/*#list-editor-window-table tr,
 #list-editor-window-table th,
 #list-editor-window-table td{
     padding: 0;
     border: none;
+}*/
+.table {
+    background-color: transparent !important;
+}
+.table th, .table > tbody > th,
+.table tr, .table > tbody > tr,
+.table td, .table > tbody > td {
+    padding: 0 !important;
+    border: none !important;
 }
 #list-editor-window-table-headings > th {
     height: 16px;
@@ -197,12 +206,13 @@
     transition:         all 0.4s linear;
 }
 #list-editor-window-checkboxes-column {
-    display: none;
+    /*display: none;*/
+    display: table-cell;
     width: 16px !important;
     padding: 5px 5px 0px !important;
     text-align: center;
     border: none;
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
 }
 #list-editor-window-table-headings > th > input {
     padding: 0;
@@ -229,7 +239,8 @@
     /*height: 50vh;*/
     /*min-height: 20vh !important;
     max-height: 80vh !important;*/
-    padding: 0;
+    /*padding: 0;*/
+    padding: 5px 0px 0px !important;
     border: none;
 }
 /*#list-editor-window-checkboxes * { margin: 0 auto; }*/
@@ -241,7 +252,7 @@
     /*max-height: 100% !important;
     height: 100% !important;*/
     /*padding: 0 5px;*/
-    padding: 5px 10px 0 10px;
+    padding: 5px 0 0;
     background: transparent;
     border: none;
     outline: 0;

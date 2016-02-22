@@ -55,6 +55,7 @@ Lister uses a number of open source projects to work properly:
 And of course **Lister** itself is open source with a [public repository](https://github.com/DmitriiSer/Lister)
  on GitHub.
 ##### TODO:
+- [ ] ISSUE: Scrolling textarea doesn't scroll checkboxes in list editor
 - [ ] IMPROVEMENT: Create a toolbar in the list editor
 - [ ] IMPROVEMENT: Reordering on mobile devices turns on only if user picked the "Reorder" menu item in list item pop-up menu
 - [ ] IMPROVEMENT: Create an UI element displaying the online/offline status

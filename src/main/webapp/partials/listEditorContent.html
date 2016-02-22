@@ -17,76 +17,85 @@
     <hr/>
 </section>
 <section id="list-editor-window-body">
-    <!-- TODO: make columns resizable -->
-    <table class="table" id="list-editor-window-table">
-        <thead>
-            <tr id="list-editor-window-table-headings"
-                ng-show="data.headings.length > 1">
-                <th ng-style="{display: checkboxesColumnDisplay}"></th>
-                <th title="Double click to change column title"
-                    ng-dblclick="editHeadings = !editHeadings"
-                    ng-repeat="headingTitle in data.headings track by $index">
-                    <span ng-hide="editHeadings">{{headingTitle}}</span>
-                    <input ng-keydown="$event.keyCode == 13 ? editHeadings = !editHeadings : ''"
-                           ng-model="headingTitle"
-                           ng-change="changeHeading(headingTitle, $index)"
-                           ng-show="editHeadings"/>
-                </th>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td width="100%">
+                    <textarea id="list-editor-window-text"
+                              ng-style="{textAlign: textAlign, cursor: textareaCursor}"
+                              ng-model="currentList.listBody"
+                              ng-change="changeTextarea()"
+                              ng-focus="disableScrolling()"
+                              ng-blur="enableScrolling()"
+                              ng-scroll="scrollTextarea($event)"
+                              ng-show="currentList.type == 'simple' ? true : false">
+                    </textarea>
+                    <!-- TODO: make columns resizable -->
+                    <table class="table" id="list-editor-window-table"
+                           ng-show="currentList.type == 'checklist' ? true : false">
+                        <thead>
+                            <tr id="list-editor-window-table-headings"
+                                ng-show="data.headings.length > 1">
+                                <th ng-style="{display: checkboxesColumnDisplay}"></th>
+                                <th title="Double click to change column title"
+                                    ng-dblclick="editHeadings = !editHeadings"
+                                    ng-repeat="headingTitle in data.headings track by $index">
+                                    <span ng-hide="editHeadings">{{headingTitle}}</span>
+                                    <input ng-keydown="$event.keyCode == 13 ? editHeadings = !editHeadings : ''"
+                                           ng-model="headingTitle"
+                                           ng-change="changeHeading(headingTitle, $index)"
+                                           ng-show="editHeadings"/>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="text in mainColumnData track by $index">
+                                <td class="no-select" id="list-editor-window-checkboxes-column">
+                                    <!--ng-style="{display: checkboxesColumnDisplay}"-->
+                                    <div class="list-editor-window-checkbox">
+                                        <!--ng-repeat="checked in checkboxColumnData track by $index"-->
+                                        <a ng-click="checked = !checked; changeCheckbox($index)"><i class="fa fa-{{checked ? checkboxIcon : checkboxIconUnchecked}}" aria-label="Checkbox"></i></a>
+                                        <hr class="strikethrough" 
+                                            ng-style="{ display: checked ? 'block' : 'none', width: calculateTextareaWidth()}">
+                                    </div>
+                                </td>
+                                <td id="list-editor-window-text-column">
+                                    <input ng-model="text"/>
+                                    <!--ng-trim="false"
+                                    ng-click="textareaMouseleave()"
+                                    ng-mousemove="textareaMousemove($event)"
+                                    ng-mouseleave="textareaMouseleave()"-->
+                                </td>
+                                <!--
+                                <td class="list-editor-window-additional-column"
+                                    ng-class="currentColumn = 'ad' + $index"
+                                    ng-repeat="column in additionalColumnsData track by $index">
+                                    <div class="list-editor-window-additional-item"
+                                         ng-repeat="item in column track by $index">
+                                        <input ng-change="changeAdditional(item, $index, currentColumn)"
+                                               ng-model="item"/>
+                                    </div>
+                                </td>
+                                -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td id="list-editor-window-side-toolbar">
+                    <div align="center">
+                        <a href=""
+                           class="{{item.icon.length == 0 ? 'separator':''}}" title="{{item.title}}"
+                           ng-class="{active: item.state}"
+                           ng-click="toolboxClick(item.icon)"
+                           ng-repeat="item in toolboxIcons">
+                            <i class="fa fa-{{item.icon}}" aria-label="{{item.title}}"></i>
+                        </a>
+                    </div>
+                </td>
             </tr>
-        </thead>
-        <tr>
-            <td class="no-select" id="list-editor-window-checkboxes-column" 
-                ng-style="{display: checkboxesColumnDisplay}">
-                <div class="list-editor-window-checkbox"
-                     ng-repeat="checked in checkboxColumnData track by $index">
-                    <a ng-click="checked = !checked; changeCheckbox($index)"><i class="fa fa-{{checked ? checkboxIcon : checkboxIconUnchecked}}" aria-label="Checkbox"></i></a>
-                    <hr class="strikethrough" 
-                        ng-style="{ display: checked ? 'block' : 'none', width: calculateTextareaWidth()}">
-                </div>
-            </td>
-            <td id="list-editor-window-text-column">
-                <!--<div id="list-editor-window-text"
-                     contenteditable="true"
-                     ng-style="{textAlign: textAlign, cursor: textareaCursor}"
-                     ng-model="currentList.listBody"
-                     ng-change="changeTextarea()">
-                </div>-->
-                <textarea id="list-editor-window-text"
-                          ng-style="{textAlign: textAlign, cursor: textareaCursor}"
-                          ng-model="currentList.listBody"
-                          ng-change="changeTextarea()"
-                          ng-focus="disableScrolling()"
-                          ng-blur="enableScrolling()"
-                          ng-scroll="scrollTextarea($event)">
-                </textarea>
-                <!--ng-trim="false"
-                ng-click="textareaMouseleave()"
-                ng-mousemove="textareaMousemove($event)"
-                ng-mouseleave="textareaMouseleave()"-->
-            </td>
-            <td id="list-editor-window-side-toolbar">
-                <div align="center">
-                    <a href=""
-                       class="{{item.icon.length == 0 ? 'separator':''}}" title="{{item.title}}"
-                       ng-class="{active: item.state}"
-                       ng-click="toolboxClick(item.icon)"
-                       ng-repeat="item in toolboxIcons">
-                        <i class="fa fa-{{item.icon}}" aria-label="{{item.title}}"></i>
-                    </a>
-                </div>
-            </td>
-            <td class="list-editor-window-additional-column"
-                ng-class="currentColumn = 'ad' + $index"
-                ng-repeat="column in additionalColumnsData track by $index">
-                <div class="list-editor-window-additional-item"
-                     ng-repeat="item in column track by $index">
-                    <input ng-change="changeAdditional(item, $index, currentColumn)"
-                           ng-model="item"/>
-                </div>
-            </td>
-        </tr>
+        </tbody>
     </table>
-    <!-- floating toolbox -->
+    <!--floating toolbox
     <div class="animate-show fast" id="list-editor-window-cursor-toolbar"
          ng-style="{ display: toolboxDisplay, left: textareaMousePosition.x, top: textareaMousePosition.y}"
          ng-mouseleave="toolboxMouseleave()"
@@ -99,6 +108,7 @@
             <span ng-bind-html="item.content"></span>
         </a>
     </div>
+    -->
 </section>
 <section class="no-select" id="list-editor-window-footer">
     <hr/>

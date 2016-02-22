@@ -89,6 +89,7 @@ var services = angular.module("app.services", [])
                     },
                     openedList: {
                         listName: "",
+                        listType: "",
                         listContent: ""
                     },
                     userProfile: {
@@ -150,6 +151,16 @@ var services = angular.module("app.services", [])
                     },
                     getOpenedListName: function () {
                         return service.openedList.listName;
+                    },
+                    // set and get opened list type
+                    setOpenedListType: function (listType) {
+                        if (listType == "")
+                            service.openedList.listType = "simple";
+                        else
+                            service.openedList.listType = listType;
+                    },
+                    getOpenedListType: function () {
+                        return service.openedList.listType;
                     },
                     // set and get opened list content
                     setOpenedListContent: function (listContent) {

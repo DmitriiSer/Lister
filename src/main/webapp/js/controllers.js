@@ -91,7 +91,8 @@ controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$io
                         data = "";
                     //console.debug(data);
                     $http.post(server.hostName() + "/DataServlet?addList=" + $scope.listName, JSON.stringify(data)).then(function (response) {
-                        console.log("addList: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
+                        var data = JSON.stringify(response.data).replace(/\\/g, "");
+                        console.log("addList: " + response.status + " " + response.statusText + ", data: " + data);
                         $scope.userProfile.lists.push($scope.listName);
                         $rootScope.showListButton = true;
                         $rootScope.showPlusButton = false;
@@ -112,6 +113,7 @@ controllers.controller("RootController", ["$rootScope", "$scope", "$state", "$io
                     $rootScope.showPlusButton = false;
                     session.setOpenedListIsNew(true);
                     session.setOpenedListName("");
+                    session.setOpenedListType("simple");
                     session.setOpenedListContent("{}");
                     $state.go("listEditor");
                 }
@@ -262,6 +264,7 @@ controllers.controller("HomeController", ["$rootScope", "$scope", "$filter", "$s
                     var data = JSON.stringify(response.data).replace(/\\/g, "");
                     console.log("getList: " + response.status + " " + response.statusText + ", data: " + data);
                     session.setOpenedListName(listName);
+                    session.setOpenedListType(JSON.parse(response.data.content).type);
                     session.setOpenedListContent(response.data.content);
                     $rootScope.showListButton = false;
                     $state.go("listEditor");
@@ -624,16 +627,28 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
         $scope.checkboxesColumnDisplay = "none";
         $scope.currentList = {
             name: session.getOpenedListName(),
+            type: session.getOpenedListType(),
             nameBeforeChanges: session.getOpenedListName(),
             listBody: ""
         };
         $scope.checkboxIcon = "check-circle-o";
         $scope.checkboxIconUnchecked = "circle-thin";
         $scope.columnHeadingTitle = "";
+        $scope.gridOptions = {
+            data: [
+                {"text": 'Bob', title: 'CEO'},
+                {field1: 'Frank', title: 'Lowly Developer', enableCellEdit: true},
+                {title: 'Ed'}
+            ],
+            columnDefs: [
+                {name: 'text', displayName: 'text'},
+                {name: 'additional', visible: true}
+            ]
+        };
         $scope.data = session.getOpenedListContent();
         if (angular.equals("{}", $scope.data) || angular.equals({}, $scope.data)) {
             $scope.data = {
-                type: "",
+                type: "simple",
                 headings: [""],
                 body: [{text: "", checked: false}]
             };
@@ -648,7 +663,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
          {text: "Sour Cream", checked: true, ad0: "2", ad1: "8oz pack"},
          {text: "Corn On A Cob", checked: true, ad0: "3", ad1: "ech"}
          ]};*/
-        // updating checkbox column data
+        // updating checkbox column data, main column data and additional columns data
         var updateCheckboxColumnData = function () {
             if (!angular.isUndefined($scope.data.body)) {
                 var arr = new Array();
@@ -658,7 +673,15 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             }
             return null;
         };
-        // updating additional column data
+        var updateMainColumnData = function () {
+            if ($scope.data === "{}" || angular.isUndefined($scope.data)) {
+                return [];
+            }
+            var arr = new Array();
+            for (var i = 0; i < $scope.data.body.length; i++)
+                arr.push($scope.data.body[i]["text"]);
+            return arr;
+        };
         var updateAdditionalColumnsData = function () {
             if ($scope.data === "{}" || angular.isUndefined($scope.data)) {
                 return [];
@@ -673,6 +696,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             return arr;
         };
         $scope.checkboxColumnData = updateCheckboxColumnData();
+        $scope.mainColumnData = updateMainColumnData();
         $scope.additionalColumnsData = updateAdditionalColumnsData();
         // setting up initial textarea text
         $scope.data.body && $scope.data.body.forEach(function (item, index) {
@@ -686,15 +710,16 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             $scope.checkboxesColumnDisplay = "table-cell";
         //<editor-fold defaultstate="collapsed" desc="var toolboxTextIcons, toolboxElementIcons">        
         var toolboxTextIcons = [
-            {icon: "check-square-o", title: "Show/hide checkboxes", state: ""},
+            {icon: "check-square-o", title: "Toggle checkboxes", state: ""},
+            /*{icon: "columns", title: "Add a column", content: "<span>column</span>"},
             {icon: "align-left", title: "Left Align"},
             {icon: "align-center", title: "Center Align"},
             {icon: "align-right", title: "Right Align"},
             {icon: "align-justify", title: "Justify Align"},
-            {icon: ""},
             {icon: "bold", title: "Bold Text"},
-            {icon: "italic", title: "Italic Text"},
-            /*{icon: "underline", title: "Underlined Text"},
+            {icon: "italic", title: "Italic Text"}
+            {icon: ""},
+             {icon: "underline", title: "Underlined Text"},
              {icon: "strikethrough", title: "Striked Text"}*/
         ];
         var toolboxElementIcons = [
@@ -895,19 +920,22 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
         $scope.toolboxClick = function (item) {
             switch (item) {
                 case "check-square-o":
-                    $scope.createChecklist();
+                    $scope.toggleChecklist();
                     break;
                 case "columns":
-                    $scope.createColumn();
+                    $scope.addColumn();
                     break;
                 case "align-left":
                     $scope.textAlign = "left";
+                    $scope.data.textAlign = $scope.textAlign;
                     break;
                 case "align-center":
                     $scope.textAlign = "center";
+                    $scope.data.textAlign = $scope.textAlign;
                     break;
                 case "align-right":
                     $scope.textAlign = "right";
+                    $scope.data.textAlign = $scope.textAlign;
                     break;
                 case "align-justify":
                     $scope.textAlign = "justify";
@@ -920,23 +948,29 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             }
             $scope.showToolbox = false;
         };
-        $scope.createChecklist = function () {
-            console.debug("createChecklist");
+        $scope.toggleChecklist = function () {
+            console.debug("toggleChecklist");
             if ($scope.data.type !== "checklist") {
                 $scope.data.type = "checklist";
+                $scope.currentList.type = "checklist";
+                session.setOpenedListType("checklist");
                 $scope.checkboxesColumnDisplay = "table-cell";
                 toolboxElementIcons[0].state = "active";
                 toolboxTextIcons[0].state = "active";
             } else {
-                $scope.data.type = "";
+                $scope.data.type = "simple";
+                $scope.currentList.type = "simple";
+                session.setOpenedListType("simple");
                 $scope.checkboxesColumnDisplay = "none";
                 toolboxElementIcons[0].state = "";
                 toolboxTextIcons[0].state = "";
             }
             $scope.checkboxColumnData = updateCheckboxColumnData();
+            $scope.mainColumnData = updateMainColumnData();
         };
-        $scope.createColumn = function () {
-            console.debug("createColumn");
+        $scope.addColumn = function () {
+            console.debug("addColumn");
+            console.log("$scope.data.body = %s", JSON.stringify($scope.data.body));
             $scope.data.headings.push("");
             //$scope.data.body.push({text: "", checked: false});
             for (var i = 0; i < $scope.data.headings.length - 1; i++) {
@@ -944,6 +978,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                     item["ad" + ($scope.data.headings.length - 2)] = "";
                 });
             }
+            console.log("$scope.data.body = %s", JSON.stringify($scope.data.body));
             $scope.additionalColumnsData = updateAdditionalColumnsData();
         };
         $scope.changeAdditional = function (data, row, col) {
@@ -977,7 +1012,6 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                         paramRow += $scope.currentList.nameBeforeChanges + "&title=" + $scope.currentList.name;
                         session.renameList($scope.currentList.nameBeforeChanges, $scope.currentList.name);
                     }
-                    console.log(JSON.stringify($scope.data));
                     $http.post(server.hostName() + "/DataServlet?changeList=" + paramRow, JSON.stringify($scope.data)).then(function (response) {
                         var data = JSON.stringify(response.data).replace(/\\/g, "");
                         console.log("changeList: " + response.status + " " + response.statusText + ", data: " + data);

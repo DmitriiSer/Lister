@@ -94,16 +94,21 @@
                     }
                 };
             })
-            .directive("ngEnterKey", function () {
+            .directive("ngEnterKey", function ($timeout) {
                 return {
                     link: function (scope, element, attrs) {
-                        element.on("keydown keypress", function (event) {
-                            if (event.which === 13) {
-                                scope.$apply(function () {
-                                    scope.$eval(attrs.ngEnterKey);
-                                });
-                                event.preventDefault();
+                        //element.on("keydown keypress", function (event) {
+                        element.on("keydown", function (event) {
+                            if (event && event.which === 13) {
+                                $timeout(function () {
+                                    scope.$apply(function () {
+                                        scope.$eval(attrs.ngEnterKey, {"$event": event});
+                                    });
+                                }, 0);
+                                //event.preventDefault();
                             }
+                            event.stopImmediatePropagation();
+                            event.stopPropagation();
                         });
                     }
                 };

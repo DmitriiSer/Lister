@@ -624,7 +624,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
          $rootScope.listEditorWindow.show();
          });*/
         $scope.headerFocused = true;
-        $scope.checkboxesColumnDisplay = "none";
+        //$scope.checkboxesColumnDisplay = "none";
         $scope.currentList = {
             name: session.getOpenedListName(),
             type: session.getOpenedListType(),
@@ -634,24 +634,10 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
         $scope.checkboxIcon = "check-circle-o";
         $scope.checkboxIconUnchecked = "circle-thin";
         $scope.columnHeadingTitle = "";
-        $scope.gridOptions = {
-            data: [
-                {"text": 'Bob', title: 'CEO'},
-                {field1: 'Frank', title: 'Lowly Developer', enableCellEdit: true},
-                {title: 'Ed'}
-            ],
-            columnDefs: [
-                {name: 'text', displayName: 'text'},
-                {name: 'additional', visible: true}
-            ]
-        };
         $scope.data = session.getOpenedListContent();
         if (angular.equals("{}", $scope.data) || angular.equals({}, $scope.data)) {
-            $scope.data = {
-                type: "simple",
-                headings: [""],
-                body: [{text: "", checked: false}]
-            };
+            // type = {"simple", "checklist", "simple_table", checklist_table"};
+            $scope.data = {type: "simple", headings: [""], body: [{text: "", checked: false}]};
         }
         /*$scope.data = {
          type: "checklist",
@@ -706,19 +692,22 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                 $scope.currentList.listBody = $scope.currentList.listBody + item.text + "\n";
         });
         // check if data is a checklist and make arangements about it        
-        if ($scope.data.type === "checklist")
+        if ($scope.data.type.includes("checklist"))
             $scope.checkboxesColumnDisplay = "table-cell";
+        else
+            $scope.checkboxesColumnDisplay = "none";
         //<editor-fold defaultstate="collapsed" desc="var toolboxTextIcons, toolboxElementIcons">        
         var toolboxTextIcons = [
             {icon: "check-square-o", title: "Toggle checkboxes", state: ""},
+            {icon: "columns", title: "Toggle a table"},
             /*{icon: "columns", title: "Add a column", content: "<span>column</span>"},
-            {icon: "align-left", title: "Left Align"},
-            {icon: "align-center", title: "Center Align"},
-            {icon: "align-right", title: "Right Align"},
-            {icon: "align-justify", title: "Justify Align"},
-            {icon: "bold", title: "Bold Text"},
-            {icon: "italic", title: "Italic Text"}
-            {icon: ""},
+             {icon: "align-left", title: "Left Align"},
+             {icon: "align-center", title: "Center Align"},
+             {icon: "align-right", title: "Right Align"},
+             {icon: "align-justify", title: "Justify Align"},
+             {icon: "bold", title: "Bold Text"},
+             {icon: "italic", title: "Italic Text"}
+             {icon: ""},
              {icon: "underline", title: "Underlined Text"},
              {icon: "strikethrough", title: "Striked Text"}*/
         ];
@@ -732,6 +721,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
         ];
         //</editor-fold>
         $scope.toolboxIcons = toolboxTextIcons;
+        // go to home page on closing the editor without submitting it
         $rootScope.listEditorWindow.result.then(function () {
         }, function () {
             $state.go("home");
@@ -751,9 +741,11 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             // return the selected text
             return elem.value.substring(start, finish);
         };
-        $scope.keydownShortcut = function (e) {
+        $scope.keydownCtrlEnterShortcut = function (e) {
             // Ctrl + Enter keyboard combination was pressed
-            if (e.which == 13 && e.ctrlKey) {
+            e.stopImmediatePropagation();
+            e.stopPropagation();
+            if (e.ctrlKey) {
                 $scope.submit();
             }
         };
@@ -876,7 +868,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                         }
                         // textarea caret in MIDDLE of the text and in the MIDDLE OF the ROW and there was Enter key pressed
                         else {
-                            $scope.data.body[i].text = split[i];                             // add additional row to $scope.data.body
+                            $scope.data.body[i].text = split[i]; // add additional row to $scope.data.body
                             insertedElem.text = split[i + 1];
                             $scope.data.body.splice(i + 1, 0, insertedElem);
                         }
@@ -912,6 +904,29 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
             //console.debug("%s split          = [%s]\n  data.body.text = [%s]", sign, JSON.stringify(split), JSON.stringify(getDataBodyText()));
             //console.debug("data.body = [%s]", JSON.stringify($scope.data.body));
         };
+        $scope.changeInput = function () {
+            $scope.currentList.listBody = "";
+            for (var i = 0; i < $scope.data.body.length; i++) {
+                $scope.currentList.listBody += $scope.data.body[i].text;
+                if (i != $scope.data.body.length - 1)
+                    $scope.currentList.listBody += "\n";
+            }
+        };
+        $scope.changeInputEnterKey = function (e, index) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            //e.stopPropagation();
+            if (!e.ctrlKey && !e.altKey && !e.shiftKey) {
+                if (index == $scope.data.body.length - 1) {
+                    console.log("// create");
+                    $scope.data.body.push({text: "", checked: false});
+                    $scope.mainColumnData = updateMainColumnData();
+                    // go to the next element
+                } else {
+                    console.log("// go to the next element");
+                }
+            }
+        }
         $scope.toolboxMouseleave = function () {
             //console.debug("toolboxMouseleave");
             $scope.showToolbox = false;
@@ -923,7 +938,7 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                     $scope.toggleChecklist();
                     break;
                 case "columns":
-                    $scope.addColumn();
+                    $scope.toggleTable();
                     break;
                 case "align-left":
                     $scope.textAlign = "left";
@@ -940,9 +955,6 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                 case "align-justify":
                     $scope.textAlign = "justify";
                     break;
-                case "bold":
-                    $scope.textAlign = "justify";
-                    break;
                 default :
                     console.log(item);
             }
@@ -950,23 +962,61 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
         };
         $scope.toggleChecklist = function () {
             console.debug("toggleChecklist");
-            if ($scope.data.type !== "checklist") {
-                $scope.data.type = "checklist";
-                $scope.currentList.type = "checklist";
-                session.setOpenedListType("checklist");
-                $scope.checkboxesColumnDisplay = "table-cell";
-                toolboxElementIcons[0].state = "active";
-                toolboxTextIcons[0].state = "active";
-            } else {
-                $scope.data.type = "simple";
-                $scope.currentList.type = "simple";
-                session.setOpenedListType("simple");
-                $scope.checkboxesColumnDisplay = "none";
-                toolboxElementIcons[0].state = "";
-                toolboxTextIcons[0].state = "";
+            switch ($scope.data.type) {
+                case "simple":
+                    $scope.data.type = "checklist";
+                    $scope.checkboxesColumnDisplay = "table-cell";
+                    toolboxElementIcons[0].state = "active";
+                    toolboxTextIcons[0].state = "active";
+                    break;
+                case "checklist":
+                    $scope.data.type = "simple";
+                    $scope.checkboxesColumnDisplay = "none";
+                    toolboxElementIcons[0].state = "";
+                    toolboxTextIcons[0].state = "";
+                    break;
+                case "simple_table":
+                    $scope.data.type = "checklist_table";
+                    $scope.checkboxesColumnDisplay = "table-cell";
+                    toolboxElementIcons[0].state = "active";
+                    toolboxTextIcons[0].state = "active";
+                    break;
+                case "checklist_table":
+                    $scope.data.type = "simple_table";
+                    $scope.checkboxesColumnDisplay = "none";
+                    toolboxElementIcons[0].state = "";
+                    toolboxTextIcons[0].state = "";
+                    break;
             }
+            console.log($scope.data.type);
+            $scope.currentList.type = $scope.data.type;
+            session.setOpenedListType($scope.data.type);
             $scope.checkboxColumnData = updateCheckboxColumnData();
             $scope.mainColumnData = updateMainColumnData();
+        };
+        $scope.toggleTable = function () {
+            console.debug("toggleTable");
+            switch ($scope.data.type) {
+                case "simple":
+                    $scope.data.type = "simple_table";
+                    $scope.checkboxesColumnDisplay = "none";
+                    break;
+                case "checklist":
+                    $scope.data.type = "checklist_table";
+                    $scope.checkboxesColumnDisplay = "table-cell";
+                    break;
+                case "simple_table":
+                    $scope.data.type = "simple";
+                    $scope.checkboxesColumnDisplay = "none";
+                    break;
+                case "checklist_table":
+                    $scope.data.type = "checklist";
+                    $scope.checkboxesColumnDisplay = "table-cell";
+                    break;
+            }
+            $scope.currentList.type = $scope.data.type;
+            session.setOpenedListType($scope.data.type);
+            console.debug("$scope.data.type = %s", $scope.data.type);
         };
         $scope.addColumn = function () {
             console.debug("addColumn");
@@ -979,7 +1029,9 @@ controllers.controller("ListEditorController", ["$rootScope", "$scope", "$state"
                 });
             }
             console.log("$scope.data.body = %s", JSON.stringify($scope.data.body));
+            console.log(JSON.stringify($scope.additionalColumnsData));
             $scope.additionalColumnsData = updateAdditionalColumnsData();
+            console.log(JSON.stringify($scope.additionalColumnsData));
         };
         $scope.changeAdditional = function (data, row, col) {
             col = col.replace(/ad/, "");

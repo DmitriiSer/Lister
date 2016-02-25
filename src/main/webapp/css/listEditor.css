@@ -183,6 +183,10 @@
 .table th, .table > tbody > th,
 .table tr, .table > tbody > tr,
 .table td, .table > tbody > td {
+    padding: 0;
+    border: none;
+}
+#list-editor-window-body-table > tbody > tr > td {
     padding: 0 !important;
     border: none !important;
 }
@@ -266,8 +270,29 @@
     overflow-x: visible;
     overflow-y: auto;
 }
-#list-editor-window-table .list-editor-window-additional-column {
-    border-left: 1px solid #DCDCDC;
+#list-editor-window-table .tableRowBorder:first-child {
+    border-bottom: 1px solid #DCDCDC;
+}
+#list-editor-window-table .tableRowBorder:not(:first-child) {
+    border-top: 1px solid #DCDCDC;
+    border-bottom: 1px solid #DCDCDC;
+}
+#list-editor-window-table .checkboxCellBorder {
+    /*border-top: 1px solid #DCDCDC;
+    border-bottom: 1px solid #DCDCDC;*/
+    border-left: none;
+    border-right: none;
+}
+#list-editor-window-table .mainCellBorder {
+    /*border: 1px solid #DCDCDC;*/
+    border-left: none;
+    border-right: none;
+}
+#list-editor-window-table .list-editor-window-additional-column {    
+    padding-top: 5px !important;
+    /*border-left: 1px solid #DCDCDC;*/
+    border: 1px solid #DCDCDC;
+    border-right: none;
 }
 #list-editor-window-cursor-toolbar {
     display: none;

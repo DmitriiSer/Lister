@@ -17,7 +17,7 @@
     <hr/>
 </section>
 <section id="list-editor-window-body">
-    <table class="table">
+    <table class="table" id="list-editor-window-body-table">
         <tbody>
             <tr>
                 <td width="100%">
@@ -32,7 +32,7 @@
                     </textarea>
                     <!-- TODO: make columns resizable -->
                     <table class="table" id="list-editor-window-table"
-                           ng-show="currentList.type == 'checklist' ? true : false">
+                           ng-show="currentList.type != 'simple' ? true : false">
                         <thead>
                             <tr id="list-editor-window-table-headings"
                                 ng-show="data.headings.length > 1">
@@ -49,34 +49,41 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="text in mainColumnData track by $index">
-                                <td class="no-select" id="list-editor-window-checkboxes-column">
-                                    <!--ng-style="{display: checkboxesColumnDisplay}"-->
+                            <tr ng-repeat="text in mainColumnData track by $index"
+                                ng-class="{tableRowBorder: currentList.type.includes('table')}">
+                                <td class="no-select" id="list-editor-window-checkboxes-column"
+                                    ng-class="{checkboxCellBorder: currentList.type.includes('table')}"
+                                    ng-style="{display: checkboxesColumnDisplay}">
+                                    <!-- ng-class="{checkboxCellBorder: additionalColumnsData.length > 0}" -->
                                     <div class="list-editor-window-checkbox">
                                         <!--ng-repeat="checked in checkboxColumnData track by $index"-->
-                                        <a ng-click="checked = !checked; changeCheckbox($index)"><i class="fa fa-{{checked ? checkboxIcon : checkboxIconUnchecked}}" aria-label="Checkbox"></i></a>
+                                        <a ng-click="checked = !checked; changeCheckbox($index)">
+                                            <i class="fa fa-{{checked ? checkboxIcon : checkboxIconUnchecked}}" aria-label="Checkbox"></i>
+                                        </a>
                                         <hr class="strikethrough" 
                                             ng-style="{ display: checked ? 'block' : 'none', width: calculateTextareaWidth()}">
                                     </div>
                                 </td>
-                                <td id="list-editor-window-text-column">
-                                    <input ng-model="text"/>
-                                    <!--ng-trim="false"
-                                    ng-click="textareaMouseleave()"
+                                <td id="list-editor-window-text-column"
+                                    ng-class="{mainCellBorder: currentList.type.includes('table')}">
+                                    <!-- ng-class="{mainCellBorder: additionalColumnsData.length > 0}" -->
+                                    <input 
+                                        ng-model="data.body[$index].text"
+                                        ng-change="changeInput()"
+                                        ng-enter-key="changeInputEnterKey($event, $index); $event.stopPropagation();"/>
+                                    <!--ng-click="textareaMouseleave()"
                                     ng-mousemove="textareaMousemove($event)"
                                     ng-mouseleave="textareaMouseleave()"-->
                                 </td>
-                                <!--
                                 <td class="list-editor-window-additional-column"
                                     ng-class="currentColumn = 'ad' + $index"
                                     ng-repeat="column in additionalColumnsData track by $index">
-                                    <div class="list-editor-window-additional-item"
-                                         ng-repeat="item in column track by $index">
+                                    <div class="list-editor-window-additional-item">
+                                        <!--ng-repeat="item in column track by $index"-->
                                         <input ng-change="changeAdditional(item, $index, currentColumn)"
                                                ng-model="item"/>
                                     </div>
                                 </td>
-                                -->
                             </tr>
                         </tbody>
                     </table>
@@ -88,7 +95,10 @@
                            ng-class="{active: item.state}"
                            ng-click="toolboxClick(item.icon)"
                            ng-repeat="item in toolboxIcons">
-                            <i class="fa fa-{{item.icon}}" aria-label="{{item.title}}"></i>
+                            <i class="fa fa-{{item.icon}}" aria-label="{{item.title}}" style="color: {{item.color}}"></i>
+                            <!--<span class="fa-stack">                                
+                                <i class="fa fa-{{item.icon2}} fa-stack-1x" aria-label="{{item.title}}" ng-show="item.icon2" style="color: {{item.color2}}; text-align: right"></i>
+                            </span>-->
                         </a>
                     </div>
                 </td>

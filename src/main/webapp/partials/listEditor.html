@@ -1,7 +1,7 @@
 <!--<script type="text/ng-template" id="listEditorWindow">
     <ion-content id="list-editor-content"
         scrollbar-y="true"
-        ng-keydown="keydownShortcut($event)"
+        ng-keydown="keydownCtrlEnterShortcut($event)"
         ng-enter-as-tab>
 <!--<ion-refresher pulling-icon="ion-close-round" on-refresh="pullToClose()"></ion-refresher>
 <list-editor-content></list-editor-content>
@@ -13,7 +13,7 @@
         <ion-content id="list-editor-content"
             delegate-handle="list-editor-content"
             scrollbar-y="false"
-            ng-keydown="keydownShortcut($event)"
+            ng-enter-key="keydownCtrlEnterShortcut($event); $event.stopPropagation();"
             ng-enter-as-tab>
                 <ion-refresher pulling-icon="ion-close-round" on-refresh="pullToClose()"></ion-refresher>
                 <list-editor-content></list-editor-content>
@@ -26,7 +26,7 @@
         <!--<ion-content id="list-editor-content"
             class="no-border" style="z-index: 1060"
             scrollbar-y="false"
-            ng-keydown="keydownShortcut($event)"
+            ng-keydown="keydownCtrlEnterShortcut($event); $event.stopPropagation();"
             ng-enter-as-tab>
                 <ion-refresher pulling-icon="ion-close-round" on-refresh="pullToClose()"></ion-refresher>
         </ion-content>-->

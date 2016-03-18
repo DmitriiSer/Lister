@@ -42,19 +42,45 @@
     border: none;
     outline: none;
 }
+.table { background-color: transparent !important; }
+.table th, .table > tbody > th,
+.table tr, .table > tbody > tr,
+.table td, .table > tbody > td {
+    padding: 0;
+    border: none;
+}
 #list-editor-window-body {
     position: relative;
     height: 100%;
     padding: 0 0 10px 10px;
     overflow: hidden;
 }
+#list-editor-window-body-table > tbody > tr > td {
+    padding: 0 !important;
+    border: none; /* !important;*/
+}
 #list-editor-window-side-toolbar {
-    /*border-left: 2px solid whitesmoke !important;*/
+    border-left: 2px solid whitesmoke !important;
 }
 #list-editor-window-side-toolbar a:active {
     /*background: rgb(124, 205, 124);*/
     width: 32px !important;
     border-radius: 50%;
+}
+#list-editor-window-side-toolbar-submenu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: auto;
+    height: auto;
+    background-color: snow;
+    border: 0px solid whitesmoke;
+    border-top-left-radius: 100px;
+    border-bottom-left-radius: 100px;
+    cursor: pointer;
+    -webkit-box-shadow: inset 2px 0px 2px 2px rgba(0,0,0,0.1);
+    -moz-box-shadow:    inset 2px 0px 2px 2px rgba(0,0,0,0.1);
+    box-shadow:         inset 2px 0px 2px 2px rgba(0,0,0,0.1);
 }
 @media only screen and (max-width: 767px) {
     .list-editor-window .modal-dialog, .list-editor-window .modal-content {
@@ -92,8 +118,9 @@
         height: calc(100vh - 98px);
     }
     /*#list-editor-window-text {height: 100%;min-height: 100%;max-height: 100%;}*/
-    #list-editor-window-side-toolbar, #list-editor-window-side-toolbar * { width: 48px !important; }
-    #list-editor-window-side-toolbar a { font-size: 24px; }
+    #list-editor-window-side-toolbar, #list-editor-window-side-toolbar div:first-child { width: 48px !important; }
+    #list-editor-window-side-toolbar a { line-height: 48px; font-size: 24px; }
+    #list-editor-window-side-toolbar-submenu { right: 48px; }
     #list-editor-window-footer { height: 60px; }
 }
 @media only screen and (min-width: 768px) {
@@ -127,8 +154,9 @@
         height: -o-calc(100vh - 109px);
         height: calc(100vh - 109px);
     }
-    #list-editor-window-side-toolbar, #list-editor-window-side-toolbar * { width: 32px !important; }
-    #list-editor-window-side-toolbar a { font-size: 16px; }
+    #list-editor-window-side-toolbar, #list-editor-window-side-toolbar div:first-child { width: 32px !important; }
+    #list-editor-window-side-toolbar a { line-height: 32px; font-size: 16px; }
+    #list-editor-window-side-toolbar-submenu { right: 32px; }
     #list-editor-window-footer { height: 60px; }
 }
 #list-editor-window-header, #list-editor-window-body, #list-editor-window-footer { background: snow; }
@@ -177,19 +205,6 @@
     padding: 0;
     border: none;
 }*/
-.table {
-    background-color: transparent !important;
-}
-.table th, .table > tbody > th,
-.table tr, .table > tbody > tr,
-.table td, .table > tbody > td {
-    padding: 0;
-    border: none;
-}
-#list-editor-window-body-table > tbody > tr > td {
-    padding: 0 !important;
-    border: none !important;
-}
 #list-editor-window-table-headings > th {
     height: 16px;
     text-align: center;

@@ -1,5 +1,7 @@
-"use strict";
 (function () {
+    "use strict";
+    /*jslint white: true*/
+    /*global angular*/
     var app = angular.module("app.directives", [])
             /* DOM template directives */
             .directive("navbar", function () {
@@ -33,6 +35,23 @@
                 };
             })
             /* behavior and event directives */
+            .directive("ngMouseenterDelayed", function ($timeout) {
+                return {
+                    link: function (scope, element, attrs) {
+                        var timeout = null;
+                        element.on("mouseenter", function (event) {
+                            timeout = $timeout(function () {
+                                scope.$apply(function () {
+                                    scope.$eval(attrs.ngMouseenterDelayed);
+                                });
+                            }, 500);
+                        });
+                        element.on("mouseleave", function (event) {
+                            $timeout.cancel(timeout);
+                        });
+                    }
+                };
+            })
             .directive("ngWidth", ["$window", "$timeout", "$ionicSideMenuDelegate", function ($window, $timeout, $ionicSideMenuDelegate) {
                     return {
                         link: function (scope, element) {
@@ -43,10 +62,11 @@
                                 scope.windowWidth = val;
                             });
                             angular.element($window).bind("resize", function () {
-                                if (scope.windowWidth < 768)
+                                if (scope.windowWidth < 768) {
                                     $ionicSideMenuDelegate.canDragContent(true);
-                                else
+                                } else {
                                     $ionicSideMenuDelegate.canDragContent(false);
+                                }
                                 scope.$apply();
                             });
                             $timeout(function () {

@@ -40,9 +40,15 @@ body, .ionic-body {
 }
 .no-border, .no-border * { border: none !important; }
 .no-border-radius, .no-border-radius * { border-radius: 0px !important; }
+/**/
 .animate-show { opacity: 1; }
 .animate-show.ng-hide { opacity: 0; }
 .animate-show.ng-hide-add, .animate-show.ng-hide-remove { transition-property: opacity; transition-timing-function: linear; }
+/**/
+.animate-slide-to-left { opacity: 1; }
+.animate-slide-to-left.ng-hide { opacity: 0; }
+.animate-slide-to-left.ng-hide-add, .animate-slide-to-left.ng-hide-remove { transition-property: opacity; transition-timing-function: linear; }
+/**/
 .animate-show.x-fast { transition-duration: 0.1s !important; }
 .animate-show.fast { transition-duration: 0.2s !important; }
 .animate-show.slow { transition-duration: 0.6s !important; }

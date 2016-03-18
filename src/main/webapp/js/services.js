@@ -2,36 +2,36 @@
 /* services */
 var services = angular.module("app.services", [])
         /*server factory*/
-        .factory("server", ["browser", function (browser) {
-                var service = {
-                    timeout: {
-                        serverTime: null,
-                        clientTimeOffset: null
-                    },
-                    hostName: function () {
-                        var platform = ionic.Platform;
-                        var hostName = "";
-                        if (platform.isWebView() ||
-                                (location.host === "localhost:8100" || location.host === "127.0.0.1:8100")) {
-                            hostName = "http://lister-advancedlists.rhcloud.com";
-                        }
-                        return hostName;
-                    },
-                    getServerTime: function () {
-                        return this.timeout.serverTime;
-                    },
-                    setServerTime: function (value) {
-                        this.timeout.serverTime = (value == null) ? null : Math.abs(value);
-                    },
-                    getClientTimeOffset: function () {
-                        return this.timeout.clientTimeOffset;
-                    },
-                    setClientTimeOffset: function (value) {
-                        this.timeout.clientTimeOffset = (value == null) ? null : Math.abs(value);
+        .factory("server", function () {
+            var service = {
+                timeout: {
+                    serverTime: null,
+                    clientTimeOffset: null
+                },
+                hostName: function () {
+                    var platform = ionic.Platform;
+                    var hostName = "";
+                    if (platform.isWebView() ||
+                            (location.host === "localhost:8100" || location.host === "127.0.0.1:8100")) {
+                        hostName = "http://lister-advancedlists.rhcloud.com";
                     }
-                };
-                return service;
-            }])
+                    return hostName;
+                },
+                getServerTime: function () {
+                    return this.timeout.serverTime;
+                },
+                setServerTime: function (value) {
+                    this.timeout.serverTime = (value === null) ? null : Math.abs(value);
+                },
+                getClientTimeOffset: function () {
+                    return this.timeout.clientTimeOffset;
+                },
+                setClientTimeOffset: function (value) {
+                    this.timeout.clientTimeOffset = (value === null) ? null : Math.abs(value);
+                }
+            };
+            return service;
+        })
         /* browser detection service */
         .service("browser", ["$window", function ($window) {
                 return {

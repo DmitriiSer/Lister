@@ -1,14 +1,13 @@
 /* 
  Created on : Sep 24, 2015, 11:21:43 AM
- Modified on: Oct 16, 2015, 5:11:03 PM
  Author     : Dmitrii Serikov
  Version    : 0.0.3
  */
-(function () {
+var uiRoulette = (function () {
     "use strict";
     /*jslint white: true, plusplus: true*/
-    /*global window, setTimeout*/
-    var uiRoulette = {
+    /*global window, document, setTimeout, Velocity*/
+    var Roulette = {
         // default data
         data: {
             rouletteTrigger: "click",
@@ -54,7 +53,9 @@
                 return;
             }
             var scope, data, Utils, i, j, key,
-                    nodeName, nodeValue, nodeNameTransform, nodeNames;
+                    nodeName, nodeValue, nodeNameTransform, nodeNames,
+                    rouletteContentOffset, rouletteContentToSwitch, bgnd,
+                    scopeCSS, bgndCSS, bgndCSSChildOpacity, animations, switchContent;
             scope = element[0];
             data = uiRoulette.data;
             Utils = uiRoulette.Utils;
@@ -77,7 +78,9 @@
             // check for options passed to the function
             if (options !== undefined) {
                 for (key in options) {
-                    data[key] = options[key];
+                    if (options.hasOwnProperty(key)) {
+                        data[key] = options[key];
+                    }
                 }
             }
             // replace some variables in data with appropriate analogues
@@ -88,15 +91,15 @@
                 data.rouletteMaskImage = "url('" + data.rouletteMaskImage + "')";
             }
             //
-            var rouletteContentOffset = {
-                x: parseInt(data.rouletteContentOffset.split(/[{},]+/)[1]),
-                y: parseInt(data.rouletteContentOffset.split(/[{},]+/)[2])
+            rouletteContentOffset = {
+                x: parseInt(data.rouletteContentOffset.split(/[{},]+/)[1], 10),
+                y: parseInt(data.rouletteContentOffset.split(/[{},]+/)[2], 10)
             };
             // create backgroud semi-transparent container for ContentToSwitch and append it to roulette element
-            var rouletteContentToSwitch = data.rouletteContent;
-            var bgnd = document.createElement("div");
+            rouletteContentToSwitch = data.rouletteContent;
+            bgnd = document.createElement("div");
             bgnd.className = "roulette-background";
-            var scopeCSS = {
+            scopeCSS = {
                 "position": "relative",
                 "cursor": "pointer",
                 "userSelect": "none",
@@ -107,7 +110,7 @@
                 "user-select": "none",
                 "overflow": "hidden"
             };
-            var bgndCSS = {
+            bgndCSS = {
                 position: "absolute",
                 width: "100%",
                 height: "100%"
@@ -123,7 +126,7 @@
             // append bgnd div to scope
             scope.appendChild(bgnd);
             // set initial opacity to bgdn child
-            var bgndCSSChildOpacity = Utils.css(bgnd.childNodes[0], "opacity"); //data.rouletteMaskImageOpacity;
+            bgndCSSChildOpacity = Utils.css(bgnd.childNodes[0], "opacity"); //data.rouletteMaskImageOpacity;
             if (data.rouletteBackgroundOpacity === "") {
                 if (bgndCSSChildOpacity === 1) {
                     bgndCSSChildOpacity = 0.2;
@@ -163,8 +166,7 @@
             setTimeout(function () {
                 window.onresize();
             });
-            // determine animation between data switchings
-            var animations;
+            // determine animation between data switchings            
             switch (data.rouletteAnimation) {
                 case "slide":
                     animations = {
@@ -197,27 +199,31 @@
             }
             animations.animationDuration = data.rouletteAnimationSpeed;
             //    
-            var switchContent = function () {
-                var divScopeFirstChild = scope.childNodes[1];
-                var divScopeSecondChild = scope.childNodes[3].childNodes[0];
-                var divBgndFirstChild = bgnd.childNodes[0];
+            switchContent = function () {
+                var divScopeFirstChild, divScopeSecondChild, rouletteCurrentContent;
+                divScopeFirstChild = scope.childNodes[1];
+                divScopeSecondChild = scope.childNodes[3].childNodes[0];
+                //var divBgndFirstChild = bgnd.childNodes[0];
                 //var rouletteCurrentContent = Utils.minimizeHTML(scope.childNodes[1].innerHTML);
-                var rouletteCurrentContent = divScopeFirstChild.innerHTML;
+                rouletteCurrentContent = divScopeFirstChild.innerHTML;
                 //var rouletteContentToSwitch = Utils.minimizeHTML(scope.childNodes[3].childNodes[0].innerHTML);
-                var rouletteContentToSwitch = divScopeSecondChild.innerHTML;
+                rouletteContentToSwitch = divScopeSecondChild.innerHTML;
                 divScopeFirstChild.innerHTML = rouletteContentToSwitch;
                 divScopeSecondChild.innerHTML = rouletteCurrentContent;
                 // change 'data-roulette-content' attribute
                 scope.setAttribute("data-roulette-content", rouletteCurrentContent);
-            }
+            };
             // determine what triggers data switching        
             scope.addEventListener(data.rouletteTrigger, function () {
-                var divScopeFirstChild = scope.childNodes[1];
-                var divScopeSecondChild = scope.childNodes[3].childNodes[0];
-                var divBgndFirstChild = bgnd.childNodes[0];
+                /*jslint newcap: true*/
+                var divScopeFirstChild, divBgndFirstChild;
+                divScopeFirstChild = scope.childNodes[1];
+                //divScopeSecondChild = scope.childNodes[3].childNodes[0];
+                divBgndFirstChild = bgnd.childNodes[0];
                 //check if animation is still in process do not animate, just switch data
-                if (divScopeFirstChild.className.indexOf("velocity-animating") != -1) {
+                if (divScopeFirstChild.className.indexOf("velocity-animating") !== -1) {
                     // stop all the animations in process
+
                     Velocity("", "stop");
                     // switch contents
                     switchContent();
@@ -230,15 +236,16 @@
                         // switch contents
                         switchContent();
                         // if there is more animations
-                        if (animations.bgnd[1] != null && animations.face[1] != null) {
-                            //console.log("MORE");
+                        if (animations.bgnd[1] !== null && animations.face[1] !== null) {
                             // animation after data switching
                             Velocity(divBgndFirstChild, animations.bgnd[1], animations.animationDuration, animations.bgnd[1].easing);
                             Velocity(divScopeFirstChild, animations.face[1], animations.animationDuration, animations.face[1].easing);
                         }
                     });
                 }
+                /*jslint newcap: false*/
             });
         }
     };
+    return Roulette;
 }());

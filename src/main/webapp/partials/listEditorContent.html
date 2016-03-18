@@ -85,7 +85,7 @@
                                     <!-- ng-style="{display: currentList.type.includes('table') ? 'table-cell' : 'none' }" -->
                                     <div class="list-editor-window-additional-item">
                                         <!--ng-repeat="item in column track by $index"-->
-                                        <input ng-change="changeAdditional(item, $index, currentColumn)"
+                                        <input type="text" ng-change="changeAdditional(item, $index, currentColumn)"
                                                ng-model="item"/>
                                     </div>
                                 </td>

@@ -125,10 +125,12 @@
 }
 @media only screen and (min-width: 768px) {
     .list-editor-window .modal-content {
+        /*
         height: -webkit-calc(100vh - 30px - 21px);
         height: -moz-calc(100vh - 30px - 21px);
         height: -o-calc(100vh - 30px - 21px);
         height: calc(100vh - 30px - 21px);
+        */
     }
     .list-editor-window ion-content {
         background: transparent;
@@ -136,17 +138,21 @@
     .list-editor-window .modal-content {
         /*background: rgba(0, 0, 0, 50);*/
     }
-    #list-editor-content .scroll {
+    /*#list-editor-content .scroll {*/
+    #list-editor-content {
+        display: block;
         border: 10px solid rgba(144, 238, 144, 0.3);
         border-bottom-right-radius: 35px;
     }
     /*#list-editor-window-text {min-height: 20vh;max-height: 70vh;height: 70vh;}*/
     #list-editor-window-header { height: 40px; }
     #list-editor-window-body {
-        height: -webkit-calc(100vh - 160px);
-        height: -moz-calc(100vh - 160px);
-        height: -o-calc(100vh - 160px);
-        height: calc(100vh - 160px);
+        height: -webkit-calc(100vh - 172px);
+        height: -moz-calc(100vh - 172px);
+        height: -o-calc(100vh - 172px);
+        height: calc(100vh - 172px);
+        /* hack to engage viewport-units-buggyfill */
+        content: 'use_css_content_hack: true; height: calc(100vh - 272px);';
     }
     #list-editor-window-text {
         height: -webkit-calc(100vh - 109px);

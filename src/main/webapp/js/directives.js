@@ -1,8 +1,8 @@
 (function () {
     "use strict";
-    /*jslint white: true*/
-    /*global angular*/
-    var app = angular.module("app.directives", [])
+    /*jslint white: true, todo: true, plusplus: true, regexp: true*/
+    /*global angular, document, console, alert*/
+    angular.module("app.directives", [])
             /* DOM template directives */
             .directive("navbar", function () {
                 return {
@@ -39,6 +39,7 @@
                 return {
                     link: function (scope, element, attrs) {
                         var timeout = null;
+                        /*jslint unparam: true*/
                         element.on("mouseenter", function (event) {
                             timeout = $timeout(function () {
                                 scope.$apply(function () {
@@ -49,10 +50,12 @@
                         element.on("mouseleave", function (event) {
                             $timeout.cancel(timeout);
                         });
+                        /*jslint unparam: false*/
                     }
                 };
             })
             .directive("ngWidth", ["$window", "$timeout", "$ionicSideMenuDelegate", function ($window, $timeout, $ionicSideMenuDelegate) {
+                    /*jslint unparam: true*/
                     return {
                         link: function (scope, element) {
                             scope.getWindowWidth = function () {
@@ -76,9 +79,11 @@
                     };
                 }])
             .directive("ngContextmenu", ["$parse", function ($parse) {
+                    /*jslint unparam: true*/
                     return {
                         compile: function (element, attrs) {
                             var fn = $parse(attrs.ngContextmenu);
+
                             return function (scope, element, attrs) {
                                 element.on("contextmenu", function (e) {
                                     scope.$apply(function () {
@@ -93,17 +98,19 @@
                     return {
                         compile: function (element, attrs) {
                             var fn = $parse(attrs.ngScroll);
+                            /*jslint unparam: true*/
                             return function (scope, element, attrs) {
                                 element.on("scroll", function (e) {
                                     scope.$apply(function () {
                                         fn(scope, {$event: e});
                                     });
                                 });
-                            }
+                            };
                         }
                     };
                 }])
             .directive("popoverClose", function () {
+                /*jslint unparam: true*/
                 return {
                     "restrict": "A",
                     link: function (scope, element, attrs) {
@@ -134,21 +141,24 @@
                 };
             })
             .directive("ngEnterAsTab", [function () {
+                    /*jslint unparam: true*/
                     return {
                         "restrict": "A",
                         link: function (scope, element, attrs) {
                             element.on("keydown", function (event) {
+                                var allChildElements, nextElemGetsFocus, i;
                                 if (!event.altKey && !event.shiftKey && !event.ctrlKey && event.which === 13) {
-                                    var allChildElements = element[0].getElementsByTagName("*");
-                                    var nextElemGetsFocus = false, prevElemGetsFocus = false;
-                                    for (var i = 0; i < allChildElements.length; i++) {
+                                    allChildElements = element[0].getElementsByTagName("*");
+                                    nextElemGetsFocus = false;
+                                    //prevElemGetsFocus = false;
+                                    for (i = 0; i < allChildElements.length; i++) {
                                         if (allChildElements[i].getAttribute("ng-focus-on-enter") !== null) {
                                             if (nextElemGetsFocus) {
                                                 event.preventDefault();
                                                 allChildElements[i].focus();
                                                 return;
                                             }
-                                            if ((allChildElements[i].tagName === "INPUT") && (allChildElements[i] == document.activeElement)) {
+                                            if ((allChildElements[i].tagName === "INPUT") && (allChildElements[i] === document.activeElement)) {
                                                 nextElemGetsFocus = true;
                                             }
                                         }
@@ -158,11 +168,11 @@
                         }
                     };
                 }])
-            .directive("ngFocusOnShow", ["$compile", "$timeout", function ($compile, $timeout) {
+            .directive("ngFocusOnShow", ["$timeout", function ($timeout) {
                     return {
                         restrict: "A",
                         link: function (scope, element, attrs) {
-                            var timeout = (attrs["ngFocusOnShow"] != "") ? attrs["ngFocusOnShow"] : 0;
+                            var timeout = (attrs.ngFocusOnShow !== "") ? attrs.ngFocusOnShow : 0;
                             // check if there is ng-show attribute
                             if (attrs.ngShow) {
                                 scope.$watch(attrs.ngShow, function (newValue) {
@@ -171,7 +181,7 @@
                                             element[0].focus();
                                         }, timeout);
                                     }
-                                })
+                                });
                             }
                             // check if there is ng-hide attribute
                             else if (attrs.ngHide) {
@@ -181,7 +191,7 @@
                                             element[0].focus();
                                         }, timeout);
                                     }
-                                })
+                                });
                             }
                             // there is no ng-show and ng-hide
                             else {
@@ -192,4 +202,4 @@
                         }
                     };
                 }]);
-})();
+}());

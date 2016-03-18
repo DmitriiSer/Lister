@@ -22,11 +22,13 @@
         <link rel="stylesheet" type="text/css" href="css/avatars.css">
         <link rel="stylesheet" type="text/css" href="css/navbar.css">
         <link rel="stylesheet" type="text/css" href="css/login.css">
-        <link rel="stylesheet" type="text/css" href="css/home.css">
+        <link rel="stylesheet" type="text/css" href="css/home.css">        
         <link rel="stylesheet" type="text/css" href="css/listEditor.css">
         <!--scripts-->
         <!--TODO change to minified version-->
         <script type="application/javascript" src="lib/modernizr-touch-events.js"></script>
+        <!-- Add support for ECMAScript 6 (newer version of JavaScript) for IE -->
+        <script type="application/javascript" src="lib/es6-shim/es6-shim.min.js"></script>
         <!-- Ionic Scripts -->
         <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above -->
         <!--<link href="css/ionic.app.css" rel="stylesheet">-->
@@ -39,6 +41,17 @@
         <script type="application/javascript" src="lib/ngDraggable/ngDraggable_modified.js"></script>
         <script type="application/javascript" src="lib/textarea-caret-position.js"></script>
         <script type="application/javascript" src="lib/cryptojslib/rollups/sha3.js"></script>
+        <script type="application/javascript" src="lib/viewport-units-buggyfill/viewport-units-buggyfill.js"></script>
+        <script type="application/javascript" src="lib/viewport-units-buggyfill/viewport-units-buggyfill.hacks.js"></script>
+        <script>
+            window.viewportUnitsBuggyfill.init({hacks: window.viewportUnitsBuggyfillHacks});
+            window.addEventListener('viewport-unit-buggyfill-init', function () {
+                console.log('getting lost in CSSOM');
+            });
+            window.addEventListener('viewport-unit-buggyfill-style', function () {
+                console.log('updated rules using viewport unit');
+            });
+        </script>
         <!--user scripts-->
         <script type="application/javascript" src="js/roulette.js"></script>
         <script type="application/javascript" src="js/directives.js"></script>

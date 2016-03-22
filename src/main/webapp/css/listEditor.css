@@ -9,12 +9,13 @@
     background-color: transparent;
     opacity: 0.5;
 }
-.modal { display: block; }
+.modal {
+    display: block;
+}
 /*#list-editor-content .scroll { height: 100%; }*/
 .list-editor-window .modal-dialog.modal-lg,
 .modal.list-editor-window {
     overflow-y: hidden !important;
-    height: 100vh;
 }
 .list-editor-window .modal-content {
     background: transparent;
@@ -83,33 +84,28 @@
     box-shadow:         inset 2px 0px 2px 2px rgba(0,0,0,0.1);
 }
 @media only screen and (max-width: 767px) {
-    .list-editor-window .modal-dialog, .list-editor-window .modal-content {
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        /*width: 100%;height: 100%;*/
+    .modal { min-height: auto !important; }
+    .modal.list-editor-window, .list-editor-window .modal-dialog {
+        width: 100%;
+        height: 100%;
         margin: 0;
     }
-    /*.list-editor-window .modal-content {*/
+    #list-editor-content {
+        position: static;
+        width: auto;
+        height: auto;
+    }
     #list-editor-content .scroll {
         border: 5px solid rgba(144, 238, 144, 0.3);
         border-bottom-right-radius: 28px;
     }
     #list-editor-window-header { height: 40px; }
-    #list-editor-window-body {
-        height: -webkit-calc(100vh - 98px);
-        height: -moz-calc(100vh - 98px);
-        height: -o-calc(100vh - 98px);
-        height: calc(100vh - 98px);
-    }
     /* set height for editor body section without border */
-    ion-modal-view > list-editor-content #list-editor-window-body {
-        height: -webkit-calc(100vh - 90px);
-        height: -moz-calc(100vh - 90px);
-        height: -o-calc(100vh - 90px);
-        height: calc(100vh - 90px);
+    #list-editor-window-body {
+        height: -webkit-calc(100% - 90px);
+        height: -moz-calc(100% - 90px);
+        height: -o-calc(100% - 90px);
+        height: calc(100% - 90px);
     }
     #list-editor-window-text {
         height: -webkit-calc(100vh - 98px);
@@ -124,35 +120,40 @@
     #list-editor-window-footer { height: 60px; }
 }
 @media only screen and (min-width: 768px) {
-    .list-editor-window .modal-content {
-        /*
+    .modal.list-editor-window {
+        margin: 0;
+        padding: 5%;
+    }
+    .list-editor-window .modal-dialog {
+        height: 100%;
+        margin: 0;
+    }
+    #list-editor-content {
+        position: static;
+        width: auto;
+        height: 100%;
+    }
+    /*.list-editor-window .modal-content {
         height: -webkit-calc(100vh - 30px - 21px);
         height: -moz-calc(100vh - 30px - 21px);
         height: -o-calc(100vh - 30px - 21px);
         height: calc(100vh - 30px - 21px);
-        */
-    }
-    .list-editor-window ion-content {
-        background: transparent;
-    }
-    .list-editor-window .modal-content {
-        /*background: rgba(0, 0, 0, 50);*/
-    }
+    }*/
+    .list-editor-window ion-content { background: transparent; }
+    /* .list-editor-window .modal-content { background: rgba(0, 0, 0, 50); }*/
     /*#list-editor-content .scroll {*/
     #list-editor-content {
-        display: block;
+        display: block;        
         border: 10px solid rgba(144, 238, 144, 0.3);
         border-bottom-right-radius: 35px;
     }
     /*#list-editor-window-text {min-height: 20vh;max-height: 70vh;height: 70vh;}*/
     #list-editor-window-header { height: 40px; }
     #list-editor-window-body {
-        height: -webkit-calc(100vh - 172px);
-        height: -moz-calc(100vh - 172px);
-        height: -o-calc(100vh - 172px);
-        height: calc(100vh - 172px);
-        /* hack to engage viewport-units-buggyfill */
-        content: 'use_css_content_hack: true; height: calc(100vh - 272px);';
+        height: -webkit-calc(100% - 89px);
+        height: -moz-calc(100% - 89px);
+        height: -o-calc(100% - 89px);
+        height: calc(100% - 89px);
     }
     #list-editor-window-text {
         height: -webkit-calc(100vh - 109px);
@@ -170,13 +171,11 @@
 #list-editor-window-header {
     margin-bottom: -1px;
     padding: 5px 0 0 10px;
-    /*border: 1px solid black;*/
 }
 #list-editor-window-header hr {
     border-top: 2px solid whitesmoke;
     margin: 0;
 }
-/*#list-editor-window-header h3, */
 #list-editor-window-header-input {    
     display: inline-block;
     width: 100%;

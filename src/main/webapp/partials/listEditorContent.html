@@ -69,11 +69,9 @@
                                 <!-- main area td -->
                                 <td id="list-editor-window-text-column"
                                     ng-class="{mainCellBorder: currentList.type.includes('table')}">
-                                    <!-- ng-class="{mainCellBorder: additionalColumnsData.length > 0}" -->
-                                    <input 
-                                        ng-model="data.body[$index].text"
-                                        ng-change="changeInput()"
-                                        ng-enter-key="changeInputEnterKey($event, $index); $event.stopPropagation();"/>
+                                    <input ng-change="changeInput()"
+                                           ng-model="data.body[$index].text"
+                                           ng-enter-key="changeInputEnterKey($event, $index); $event.stopPropagation();"/>
                                     <!--ng-click="textareaMouseleave()"
                                     ng-mousemove="textareaMousemove($event)"
                                     ng-mouseleave="textareaMouseleave()"-->
@@ -85,7 +83,7 @@
                                     <!-- ng-style="{display: currentList.type.includes('table') ? 'table-cell' : 'none' }" -->
                                     <div class="list-editor-window-additional-item">
                                         <!--ng-repeat="item in column track by $index"-->
-                                        <input type="text" ng-change="changeAdditional(item, $index, currentColumn)"
+                                        <input ng-change="changeAdditional(item, $index, currentColumn)"
                                                ng-model="item"/>
                                     </div>
                                 </td>

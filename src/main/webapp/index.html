@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="appLister">
     <head>
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, minimal-ui">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, shrink-to-fit=no">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
@@ -40,17 +40,13 @@
         <script type="application/javascript" src="lib/velocity/velocity.min.js"></script>
         <script type="application/javascript" src="lib/ngDraggable/ngDraggable_modified.js"></script>
         <script type="application/javascript" src="lib/textarea-caret-position.js"></script>
-        <script type="application/javascript" src="lib/cryptojslib/rollups/sha3.js"></script>
+        <script type="application/javascript" src="lib/cryptojslib/rollups/sha3.js"></script>        
         <script type="application/javascript" src="lib/viewport-units-buggyfill/viewport-units-buggyfill.js"></script>
         <script type="application/javascript" src="lib/viewport-units-buggyfill/viewport-units-buggyfill.hacks.js"></script>
         <script>
+            window.viewportUnitsBuggyfill.init();
             window.viewportUnitsBuggyfill.init({hacks: window.viewportUnitsBuggyfillHacks});
-            window.addEventListener('viewport-unit-buggyfill-init', function () {
-                console.log('getting lost in CSSOM');
-            });
-            window.addEventListener('viewport-unit-buggyfill-style', function () {
-                console.log('updated rules using viewport unit');
-            });
+            window.viewportUnitsBuggyfill.refresh();
         </script>
         <!--user scripts-->
         <script type="application/javascript" src="js/roulette.js"></script>
@@ -86,50 +82,52 @@
     <body ng-controller="RootController" ng-width="">
     <alert-window></alert-window>
     <confirmation-window></confirmation-window>
-    <ion-side-menus enable-menu-with-back-views="true">
-        <ion-side-menu-content drag-content="true">
-            <ion-nav-bar class="bar-stable" ng-show="isLoggedIn()">
-                <ion-nav-buttons side="right">
-                    <button class="button button-icon button-clear" menu-toggle="right">
-                        <div class="avatar-circle">
-                            <div class="avatars absolute-center">
-                                <div class="avatar {{userProfile.avatar}}"></div>
+    <div class="bodyWrapper">
+        <ion-side-menus enable-menu-with-back-views="true">
+            <ion-side-menu-content drag-content="true">
+                <ion-nav-bar class="bar-stable" ng-show="isLoggedIn()">
+                    <ion-nav-buttons side="right">
+                        <button class="button button-icon button-clear" menu-toggle="right">
+                            <div class="avatar-circle">
+                                <div class="avatars absolute-center">
+                                    <div class="avatar {{userProfile.avatar}}"></div>
+                                </div>
                             </div>
+                        </button>
+                    </ion-nav-buttons>
+                </ion-nav-bar>
+                <div class="bg-image blur"></div>
+                <div class="content">
+                    <header><navbar></navbar></header>
+                    <ion-nav-view></ion-nav-view>
+                    <footer>
+                        &#xA9;2015 Dmitrii Serikov
+                        <div class="pull-right">
+                            Avatars <a href="http://www.freepik.com/free-vector/user-avatars-pack_746488.htm">designed by Freepik</a>.
+                            Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>
                         </div>
-                    </button>
-                </ion-nav-buttons>
-            </ion-nav-bar>
-            <div class="bg-image blur"></div>
-            <div class="content">
-                <header><navbar></navbar></header>
-                <ion-nav-view></ion-nav-view>
-                <footer>
-                    &#xA9;2015 Dmitrii Serikov
-                    <div class="pull-right">
-                        Avatars <a href="http://www.freepik.com/free-vector/user-avatars-pack_746488.htm">designed by Freepik</a>.
-                        Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>
-                    </div>
-                </footer>
-            </div>
-        </ion-side-menu-content>
-        <!-- Side Menu -->
-        <ion-side-menu side="right" ng-show="isLoggedIn()">
-            <ion-header-bar class="bar-stable">
-                <!--<div class="avatar-circle">
-                <div class="avatars small animate-show slow">
-                    <div class="avatar {{userProfile.avatar}}"></div>
+                    </footer>
                 </div>
-                <!--</div>-->
-                <h1 class="title">{{userProfile.username}}</h1>
-            </ion-header-bar>
-            <ion-content overflow-scroll="false">
-                <ion-list>
-                    <ion-item menu-close="" href="#" ng-click="$root.addList($event)">Create a list</ion-item>
-                    <!-- TODO: <ion-item href="#/app/browse">Settings</ion-item> -->
-                    <ion-item menu-close="" ng-click="logout()">Log Out</ion-item>
-                </ion-list>
-            </ion-content>
-        </ion-side-menu>
-    </ion-side-menus>
+            </ion-side-menu-content>
+            <!-- Side Menu -->
+            <ion-side-menu side="right" ng-show="isLoggedIn()">
+                <ion-header-bar class="bar-stable">
+                    <!--<div class="avatar-circle">
+                    <div class="avatars small animate-show slow">
+                        <div class="avatar {{userProfile.avatar}}"></div>
+                    </div>
+                    <!--</div>-->
+                    <h1 class="title">{{userProfile.username}}</h1>
+                </ion-header-bar>
+                <ion-content overflow-scroll="false">
+                    <ion-list>
+                        <ion-item menu-close="" href="#" ng-click="$root.addList($event)">Create a list</ion-item>
+                        <!-- TODO: <ion-item href="#/app/browse">Settings</ion-item> -->
+                        <ion-item menu-close="" ng-click="logout()">Log Out</ion-item>
+                    </ion-list>
+                </ion-content>
+            </ion-side-menu>
+        </ion-side-menus>
+    </div>
 </body>
 </html>

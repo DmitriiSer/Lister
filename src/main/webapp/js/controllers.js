@@ -524,7 +524,6 @@
                                 if (parseInt(char, 10)) {
                                     $scope.passwordStrength.number = true;
                                 } else if ((/^[! \" # $ % & \' ( ) * + , \- . \/ : ; < = \> ? @ \[ \\\ \] \^ _ ` { | } ~]*$/).test(char) === true) {
-                                    alert("$scope.passwordStrength.specialCharacter = true;");
                                     $scope.passwordStrength.specialCharacter = true;
                                 } else if (char === char.toUpperCase()) {
                                     $scope.passwordStrength.upperCaseLetter = true;

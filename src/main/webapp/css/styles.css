@@ -97,11 +97,10 @@ body, .ionic-body {
     filter: blur(4px);
     filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='4');
 }
-.content {
-    /*position: absolute;*/
-    /*margin: 0;*/
-    width: 100vw;
-    height: 100vh;
+.bodyWrapper, .content {
+    position: static;
+    width: auto;
+    height: auto;
     z-index: 1;
 }
 .content > section, .content > ion-nav-view {
@@ -220,9 +219,9 @@ footer {
 .popover {
     margin: 0px;
 }
-ion-side-menus {
+/*ion-side-menus {
     position: fixed !important;
-}
+}*/
 ion-content.has-header {
     top: 68px;
 }

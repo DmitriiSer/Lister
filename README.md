@@ -76,6 +76,7 @@ And of course **Lister** itself is open source with a [public repository](https:
 - [x] ~~ISSUE: Fixed some issues with session expiration mechanism~~
 
 ##### Changelog:
+ -v0.2.20 Fixed the issue on iOS platform when application window in Mobile Safari was not scaling properly to fit the screen
 - v0.2.19 Truncate list title on list thumbnail if length of text is bigger than 15 symbols
 - v0.2.18 Fixed some issues with session expiration mechanism
 - v0.2.17 Created a session counter that is responsible for logging a user out when his session is expired

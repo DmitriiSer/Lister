@@ -902,8 +902,7 @@
                     $scope.changeHeading = function (headingTitle, index) {
                         $scope.data.headings[index] = headingTitle;
                     };
-                    $scope.changeCheckbox = function (index) {
-                        console.log("changeCheckbox::index(" + index + ")");
+                    $scope.changeCheckboxStatus = function (index) {
                         $scope.data.body[index].checked = !$scope.data.body[index].checked;
                     };
                     $scope.disableScrolling = function () {

@@ -1,5 +1,5 @@
 # Lister ([DEMO](http://lister-advancedlists.rhcloud.com))
-### Version: 0.2.20
+### Version: 0.2.21
 Lister is an on-line organizer that is written in HTML5, CSS, JavaScript, Java and is mobile-ready, natively looking, and backed by AngularJS and Ionic Frameworks
 
 <table align="center">
@@ -61,6 +61,7 @@ And of course **Lister** itself is open source with a [public repository](https:
 - [ ] IMPROVEMENT: Fix "I forgot my password" link in the login window
 - [ ] IMPROVEMENT: Create a task stack for the offline mode that would be responsible for uploading and syncing all the missed request to the server
 - [ ] IMPROVEMENT: Create a possibility to change tab views
+- [x] ISSUE: Proper work of the checkboxes in the list editor
 - [x] ISSUE: Focusing the textarea in the list editor on mobile devices causes a sliding glitch
 - [x] ~~IMPROVEMENT: Truncate list title on list thumbnail if length of text is bigger than 15 symbols~~
 - [x] ~~IMPROVEMENT: Pull to close list editor~~

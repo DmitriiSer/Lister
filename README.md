@@ -61,8 +61,9 @@ And of course **Lister** itself is open source with a [public repository](https:
 - [ ] IMPROVEMENT: Fix "I forgot my password" link in the login window
 - [ ] IMPROVEMENT: Create a task stack for the offline mode that would be responsible for uploading and syncing all the missed request to the server
 - [ ] IMPROVEMENT: Create a possibility to change tab views
-- [x] ISSUE: Proper work of the checkboxes in the list editor
-- [x] ISSUE: Focusing the textarea in the list editor on mobile devices causes a sliding glitch
+- [x] ~~ISSUE: Proper displaying the content of additional columns~~
+- [x] ~~ISSUE: Proper work of the checkboxes in the list editor~~
+- [x] ~~ISSUE: Focusing the textarea in the list editor on mobile devices causes a sliding glitch~~
 - [x] ~~IMPROVEMENT: Truncate list title on list thumbnail if length of text is bigger than 15 symbols~~
 - [x] ~~IMPROVEMENT: Pull to close list editor~~
 - [x] ~~ISSUE: Renaming a list does not rename it on the server~~
@@ -77,7 +78,9 @@ And of course **Lister** itself is open source with a [public repository](https:
 - [x] ~~ISSUE: Fixed some issues with session expiration mechanism~~
 
 ##### Changelog:
- -v0.2.20 Fixed the issue on iOS platform when application window in Mobile Safari was not scaling properly to fit the screen
+- v0.2.22 Fixed the issue with hidden content in additional columns
+- v0.2.21 Fixed the issue with incorrect checkbox behavior in the list editor. Fixed 'Wrong request' message that pops up when you log out
+- v0.2.20 Fixed the issue on iOS platform when application window in Mobile Safari was not scaling properly to fit the screen
 - v0.2.19 Truncate list title on list thumbnail if length of text is bigger than 15 symbols
 - v0.2.18 Fixed some issues with session expiration mechanism
 - v0.2.17 Created a session counter that is responsible for logging a user out when his session is expired

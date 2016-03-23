@@ -73,7 +73,7 @@
                     ng-class="{mainCellBorder: currentList.type.includes('table')}">
                     <input ng-change="changeInput()"
                            ng-model="data.body[$index].text"
-                           ng-style="{'text-decoration': data.body[$index].checked ? 'line-through' : 'none'}"
+                           ng-class="{lineThrough : data.body[$index].checked}"
                            ng-enter-key="changeInputEnterKey($event, $index); $event.stopPropagation();"/>
                     <!--ng-click="textareaMouseleave()"
                     ng-mousemove="textareaMousemove($event)"
@@ -86,8 +86,9 @@
                     <!-- ng-style="{display: currentList.type.includes('table') ? 'table-cell' : 'none' }" -->
                     <div class="list-editor-window-additional-item">
                         <!--ng-repeat="item in column track by $index"-->
-                        <input ng-change="changeAdditional(item, $index, currentColumn)"
-                               ng-model="item"/>
+                        <input ng-change="changeAdditional(column[$parent.$index], $parent.$index, currentColumn)"
+                               ng-model="column[$parent.$index]"
+                               ng-class="{lineThrough : data.body[$parent.$index].checked}"/>
                     </div>
                 </td>
             </tr>

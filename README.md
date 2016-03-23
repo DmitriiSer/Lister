@@ -1,5 +1,5 @@
 # Lister ([DEMO](http://lister-advancedlists.rhcloud.com))
-### Version: 0.2.21
+### Version: 0.2.22
 Lister is an on-line organizer that is written in HTML5, CSS, JavaScript, Java and is mobile-ready, natively looking, and backed by AngularJS and Ionic Frameworks
 
 <table align="center">

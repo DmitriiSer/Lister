@@ -668,6 +668,7 @@
                     $scope.checkboxIcon = "check-circle-o";
                     $scope.checkboxIconUnchecked = "circle-thin";
                     $scope.columnHeadingTitle = "";
+                    
                     $scope.data = session.getOpenedListContent();
                     if (angular.equals("{}", $scope.data) || angular.equals({}, $scope.data)) {
                         // type = {"simple", "checklist", "simple_table", checklist_table"};
@@ -1190,13 +1191,14 @@
                         console.debug("removeColumn");
                     };
                     $scope.changeAdditional = function (data, row, col) {
-                        console.debug(data, row, col);
+                        //console.debug("$scope.changeAdditional");
+                        //console.debug(data, row, col);
                         col = col.replace(/ad/, "");
                         // make changes in $scope.data
                         $scope.data.body[row]["ad" + col] = data;
                     };
                     $scope.submit = function () {
-                        //console.log("$scope.submit");
+                        console.debug("$scope.submit");
                         // check if it's a new list
                         if (session.getOpenedListIsNew()) {
                             // changing list status
@@ -1208,7 +1210,7 @@
                                 $rootScope.addList($scope.currentList.name, $scope.data);
                             }
                         }
-                        // send changes to the server
+                        // else send changes to the server
                         else {
                             // check if the list title is not empty
                             if ($scope.currentList.name !== "") {
@@ -1221,6 +1223,7 @@
                                     paramRow += $scope.currentList.nameBeforeChanges + "&title=" + $scope.currentList.name;
                                     session.renameList($scope.currentList.nameBeforeChanges, $scope.currentList.name);
                                 }
+                                //console.debug("data: " + JSON.stringify($scope.data));
                                 $http.post(server.hostName() + "/DataServlet?changeList=" + paramRow, JSON.stringify($scope.data)).then(function (response) {
                                     var data = JSON.stringify(response.data).replace(/\\/g, "");
                                     console.log("changeList: " + response.status + " " + response.statusText + ", data: " + data);

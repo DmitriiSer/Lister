@@ -61,7 +61,8 @@
                     <!-- ng-class="{checkboxCellBorder: additionalColumnsData.length > 0}" -->
                     <div class="list-editor-window-checkbox">
                         <!--ng-repeat="checked in checkboxColumnData track by $index"-->
-                        <a ng-click="changeCheckboxStatus($index)">
+                        <a ng-click="changeCheckboxStatus($index)"
+                           ng-class="{marked : data.body[$index].checked}">
                             <i class="fa fa-{{data.body[$index].checked ? checkboxIcon : checkboxIconUnchecked}}" aria-label="Checkbox"></i>
                         </a>
                         <!--<hr class="strikethrough" 
@@ -73,7 +74,7 @@
                     ng-class="{mainCellBorder: currentList.type.includes('table')}">
                     <input ng-change="changeInput()"
                            ng-model="data.body[$index].text"
-                           ng-class="{lineThrough : data.body[$index].checked}"
+                           ng-class="{'marked lineThrough' : data.body[$index].checked}"
                            ng-enter-key="changeInputEnterKey($event, $index); $event.stopPropagation();"/>
                     <!--ng-click="textareaMouseleave()"
                     ng-mousemove="textareaMousemove($event)"
@@ -88,7 +89,7 @@
                         <!--ng-repeat="item in column track by $index"-->
                         <input ng-change="changeAdditional(column[$parent.$index], $parent.$index, currentColumn)"
                                ng-model="column[$parent.$index]"
-                               ng-class="{lineThrough : data.body[$parent.$index].checked}"/>
+                               ng-class="{'marked lineThrough' : data.body[$parent.$index].checked}"/>
                     </div>
                 </td>
             </tr>

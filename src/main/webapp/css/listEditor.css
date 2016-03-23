@@ -246,11 +246,14 @@
     top: -10px;
     left: 28px;
     /*border-top: 1px solid lightgray;*/
-    /*border-top: 1px solid rgba(0,0,0,0.6);
-    cursor: text;
+/*border-top: 1px solid rgba(0,0,0,0.6);
+cursor: text;
 }*/
-.lineThrough {
-    text-decoration: line-through;
+.marked {
+    color: #A5A5A5;
+}
+.marked.lineThrough {
+    text-decoration: line-through;    
 }
 .list-editor-window-text-column {
     /*height: 50vh;*/

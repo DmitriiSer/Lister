@@ -13,7 +13,7 @@
 </script>
 <!--list editor window without scrolling for mobile view-->
 <script type="text/ng-template" id="listEditorWindowNoScroll">
-    <ion-modal-view>
+    <ion-modal-view ng-enter-key="keydownCtrlEnterShortcut($event); $event.stopPropagation();">
         <!--<ion-content id="list-editor-content"
             class="no-border" style="z-index: 1060"
             scrollbar-y="false"

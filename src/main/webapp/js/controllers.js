@@ -143,7 +143,7 @@
                     $scope.logout = function () {
                         session.stopWatching();
                         session.setUserProfile({});
-                        $http.get(server.hostName() + "/LoginServlet?logout1").then(function (response) {
+                        $http.get(server.hostName() + "/LoginServlet?logout").then(function (response) {
                             $scope.userProfile = {};
                             console.log("logout: " + response.status + " " + response.statusText + ", data: " + JSON.stringify(response.data));
                             if (angular.isDefined($rootScope.listEditorWindow)) {

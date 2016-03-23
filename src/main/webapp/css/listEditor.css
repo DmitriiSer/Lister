@@ -52,13 +52,16 @@
 }
 #list-editor-window-body {
     position: relative;
+    float: left;
     height: 100%;
     padding: 0 0 10px 10px;
-    overflow: hidden;
+    overflow: auto;
 }
-#list-editor-window-body-table > tbody > tr > td {
-    padding: 0 !important;
-    border: none; /* !important;*/
+#list-editor-window-body-toolbar-section {
+    position: fixed;
+    height: calc(100% - 90px);
+    right: 0;
+    background: snow;
 }
 #list-editor-window-side-toolbar {
     border-left: 2px solid whitesmoke !important;
@@ -83,6 +86,9 @@
     -moz-box-shadow:    inset 2px 0px 2px 2px rgba(0,0,0,0.1);
     box-shadow:         inset 2px 0px 2px 2px rgba(0,0,0,0.1);
 }
+#list-editor-window-side-toolbar-submenu > a {
+    float: left;
+}
 @media only screen and (max-width: 767px) {
     .modal { min-height: auto !important; }
     .modal.list-editor-window, .list-editor-window .modal-dialog {
@@ -102,16 +108,11 @@
     #list-editor-window-header { height: 40px; }
     /* set height for editor body section without border */
     #list-editor-window-body {
+        width: calc(100% - 47px);
         height: -webkit-calc(100% - 90px);
         height: -moz-calc(100% - 90px);
         height: -o-calc(100% - 90px);
         height: calc(100% - 90px);
-    }
-    #list-editor-window-text {
-        height: -webkit-calc(100vh - 98px);
-        height: -moz-calc(100vh - 98px);
-        height: -o-calc(100vh - 98px);
-        height: calc(100vh - 98px);
     }
     /*#list-editor-window-text {height: 100%;min-height: 100%;max-height: 100%;}*/
     #list-editor-window-side-toolbar, #list-editor-window-side-toolbar div:first-child { width: 48px !important; }
@@ -133,12 +134,6 @@
         width: auto;
         height: 100%;
     }
-    /*.list-editor-window .modal-content {
-        height: -webkit-calc(100vh - 30px - 21px);
-        height: -moz-calc(100vh - 30px - 21px);
-        height: -o-calc(100vh - 30px - 21px);
-        height: calc(100vh - 30px - 21px);
-    }*/
     .list-editor-window ion-content { background: transparent; }
     /* .list-editor-window .modal-content { background: rgba(0, 0, 0, 50); }*/
     /*#list-editor-content .scroll {*/
@@ -150,17 +145,13 @@
     /*#list-editor-window-text {min-height: 20vh;max-height: 70vh;height: 70vh;}*/
     #list-editor-window-header { height: 40px; }
     #list-editor-window-body {
+        width: calc(100% - 31px);
         height: -webkit-calc(100% - 89px);
         height: -moz-calc(100% - 89px);
         height: -o-calc(100% - 89px);
         height: calc(100% - 89px);
     }
-    #list-editor-window-text {
-        height: -webkit-calc(100vh - 109px);
-        height: -moz-calc(100vh - 109px);
-        height: -o-calc(100vh - 109px);
-        height: calc(100vh - 109px);
-    }
+    #list-editor-window-body-toolbar-section { height: calc(100% - 108px); right: 10px; }
     #list-editor-window-side-toolbar, #list-editor-window-side-toolbar div:first-child { width: 32px !important; }
     #list-editor-window-side-toolbar a { line-height: 32px; font-size: 16px; }
     #list-editor-window-side-toolbar-submenu { right: 32px; }
@@ -171,6 +162,7 @@
 #list-editor-window-header {
     margin-bottom: -1px;
     padding: 5px 0 0 10px;
+    clear: both;
 }
 #list-editor-window-header hr {
     border-top: 2px solid whitesmoke;
@@ -206,10 +198,7 @@
 }
 /*#list-editor-window-table tr,
 #list-editor-window-table th,
-#list-editor-window-table td{
-    padding: 0;
-    border: none;
-}*/
+#list-editor-window-table td { padding: 0; border: none; }*/
 #list-editor-window-table-headings > th {
     height: 16px;
     text-align: center;
@@ -270,18 +259,17 @@
 /*#list-editor-window-checkboxes * { margin: 0 auto; }*/
 /*#list-editor-window-header-input, #list-editor-window-header-input:focus,*/
 #list-editor-window-text {
-    min-width: 100% !important;
-    max-width: 100% !important;
-    width:     100% !important;
-    /*max-height: 100% !important;
-    height: 100% !important;*/
-    /*padding: 0 5px;*/
+    position: absolute;
+    width: -webkit-calc(100% - 10px);
+    width: -moz-calc(100% - 10px);
+    width: -o-calc(100% - 10px);
+    width: calc(100% - 10px);
+    height: 100%;
     padding: 5px 0 0;
     background: transparent;
     border: none;
     outline: 0;
     border: none;
-    /*border: 1px solid black;*/
     -webkit-appearance: none;
     appearance: none;
     resize: none;
@@ -355,6 +343,7 @@
     margin-top: -1px; 
     font-size: 1rem; padding: 0; /*10px 0 10px 10px;*/
     border-bottom-right-radius: 25px;
+    clear: both;
 }
 #list-editor-window-footer hr {
     border-top: 2px solid whitesmoke;

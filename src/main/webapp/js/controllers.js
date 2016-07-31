@@ -25,13 +25,23 @@
                         }
                         return String(formattedData);
                     };
-                    $rootScope.showAlertMsg = function (message) {
+                    $rootScope.showAlertMsg = function (message, callbackOnOk) {
+                        $rootScope.alertCallback = callbackOnOk;
                         $rootScope.alertMsg = message;
                         $rootScope.alertWindow = $uibModal.open({
                             templateUrl: "alertWindow",
                             controller: function ($scope) {
                                 $scope.alertMsg = $rootScope.alertMsg;
+                                $scope.alertCallback = $rootScope.alertCallback;
+                                $scope.onOk = function () {
+                                    console.log("$rootScope.alertCallback = ");
+                                    console.log($scope.alertCallback);
+                                    if ($scope.alertCallback !== undefined) {
+                                        $scope.alertCallback();
+                                    }
+                                };
                                 delete $rootScope.alertMsg;
+                                delete $rootScope.alertCallback;
                             },
                             size: "sm",
                             windowClass: "center-modal no-border-radius",
@@ -154,8 +164,11 @@
                             }
                             $state.go("index");
                         }, function (response) {
-                            $rootScope.showAlertMsg($scope.dataError(response.data));
-                            $state.go("index");
+                            $rootScope.showAlertMsg($scope.dataError(response.data), function(){
+                                console.log("onOk was fired");
+                                alert("onOk was fired");
+                            });
+                            //$state.go("index");
                         });
                     };
                 }])
@@ -251,8 +264,9 @@
                                  $filter("date")(localTime - clientTimeOffset, "HH:mm:ss"),
                                  $filter("date")(sessionExpiry, "HH:mm:ss"));*/
                                 if (localTime - clientTimeOffset > sessionExpiry) {
-                                    alert("Your session has expired");
-                                    $scope.logout();
+                                    //alert("Your session has expired");
+                                    $rootScope.showAlertMsg("Your session has expired");
+                                    //$scope.logout();
                                 }
                             }, 15);
                         }
@@ -668,7 +682,7 @@
                     $scope.checkboxIcon = "check-circle-o";
                     $scope.checkboxIconUnchecked = "circle-thin";
                     $scope.columnHeadingTitle = "";
-                    
+
                     $scope.data = session.getOpenedListContent();
                     if (angular.equals("{}", $scope.data) || angular.equals({}, $scope.data)) {
                         // type = {"simple", "checklist", "simple_table", checklist_table"};
@@ -888,12 +902,12 @@
                         }
                     };
                     /*getDataBodyText = function () {
-                        var arr = [];
-                        $scope.data.body.forEach(function (item) {
-                            arr.push(item.text);
-                        });
-                        return arr;
-                    };*/
+                     var arr = [];
+                     $scope.data.body.forEach(function (item) {
+                     arr.push(item.text);
+                     });
+                     return arr;
+                     };*/
                     $scope.pullToClose = function () {
                         //console.log("pullToClose");
                         $rootScope.listEditorWindow.close();

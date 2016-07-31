@@ -2,7 +2,7 @@
     <div class="modal-body no-select">
         <h5>{{alertMsg}}</h5>
     </div>
-    <div class="modal-footer" ng-enter-key="$root.alertWindow.dismiss()">
-        <button class="btn btn-link" type="button" ng-click="$root.alertWindow.dismiss()" autofocus>Ok</button>
+    <div class="modal-footer" ng-enter-key="onOk(); $root.alertWindow.dismiss()">
+        <button class="btn btn-link" type="button" ng-click="onOk(); $root.alertWindow.dismiss()" autofocus>Ok</button>
     </div>
 </script>

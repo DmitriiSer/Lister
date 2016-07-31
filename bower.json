@@ -2,9 +2,9 @@
   "name": "lister",
   "private": "true",
   "//": [
-    "driftyco/ionic-bower#1.1.1"
+    "driftyco/ionic-bower#1.7.14"
   ],
   "devDependencies": {
-    "ionic": "driftyco/ionic-bower#1.2.4"
+    "ionic": "driftyco/ionic-bower#1.7.14"
   }
 }

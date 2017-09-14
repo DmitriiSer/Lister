@@ -1,4 +1,6 @@
-# Lister ([DEMO](http://lister-advancedlists.rhcloud.com))
+# Lister ([DEMO](http://lister-advancedlists.rhcloud.com)) (Hosted using [RedHat OpenShift](https://www.openshift.com/) PaaS v2)
+<small><b>Note</b>: <i>If the application didn't receive an external http/https request for 24 hours, then it will enter an idled state. When an application is in this state, it is essentially paused. Once an application gets an external request, it will automatically return to a running state.</i></small>
+
 ### Version: 0.2.22
 Lister is an on-line organizer that is written in HTML5, CSS, JavaScript, Java and is mobile-ready, natively looking, and backed by AngularJS and Ionic Frameworks
 

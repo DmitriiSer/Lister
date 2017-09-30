@@ -1,3 +1,7 @@
+### This project will no longer has a Demo since Red Hat OpenShift v2 won't be available after September 30th, 2017
+### All development will be moved to [google-appengine-lister](https://github.com/DmitriiSer/google-appengine-lister) repository
+#### The deceision to start using Google Cloud Platform was based on my not really good experience with the new Red Hat OpenShift Origin v3. I wish Red Hat fix all the >1000 issues, but, in the mean time, I choose a robust and stable cloud platform, such as Google Cloud platform.
+
 # Lister ([DEMO](http://lister-advancedlists.rhcloud.com)) (Hosted using [RedHat OpenShift](https://www.openshift.com/) PaaS v2)
 <small><b>Note</b>: <i>If the application didn't receive an external http/https request for 24 hours, then it will enter an idled state. When an application is in this state, it is essentially paused. Once an application gets an external request, it will automatically return to a running state.</i></small>
 

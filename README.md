@@ -1,8 +1,9 @@
 ### This project will no longer has a Demo since Red Hat OpenShift v2 won't be available after September 30th, 2017
-### All development will be moved to [google-appengine-lister](https://github.com/DmitriiSer/google-appengine-lister) repository
-#### The deceision to start using Google Cloud Platform was based on my not really good experience with the new Red Hat OpenShift Origin v3. I wish Red Hat fix all the >1000 issues, but, in the mean time, I choose a robust and stable cloud platform, such as Google Cloud platform.
+### All development will be moved to [heroku-lister](https://github.com/DmitriiSer/heroku-lister) repository
 
-# Lister ([DEMO](http://lister-advancedlists.rhcloud.com)) (Hosted using [RedHat OpenShift](https://www.openshift.com/) PaaS v2)
+#### The deceision to migrate this project to Heroku platform has been made based on the changes in the OpenShift. The old platform has reached it's sunset, and all the customers were notified to migrate their projects to the new OpenShift Origin platform. Sadly, the new platform is not production ready with about 1300 open issues.
+
+# Lister
 <small><b>Note</b>: <i>If the application didn't receive an external http/https request for 24 hours, then it will enter an idled state. When an application is in this state, it is essentially paused. Once an application gets an external request, it will automatically return to a running state.</i></small>
 
 ### Version: 0.2.22

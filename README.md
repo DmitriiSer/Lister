@@ -1,5 +1,4 @@
 ### This project will no longer has a Demo since Red Hat OpenShift v2 won't be available after September 30th, 2017
-### All development will be moved to [heroku-lister](https://github.com/DmitriiSer/heroku-lister) repository
 
 #### The deceision to migrate this project to Heroku platform has been made based on the changes in the OpenShift. The old platform has reached it's sunset, and all the customers were notified to migrate their projects to the new OpenShift Origin platform. Sadly, the new platform is not production ready with about 1300 open issues.
 
